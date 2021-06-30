@@ -1,0 +1,16 @@
+~ the "~" marks the beginning of a comment..
+
+~ How to use this file?
+
+~ syntax for a Runner:
+~ NAME::[.EXTENSION::COMMAND]
+~ in this NAME is name of the Runner
+~ .EXTENSION is file extension (only one)
+~ COMMAND is the command to use
+~	Inside command you can use these:
+~ 		$file (the file path. example: E:\path\that\is\weird.py)
+~ 		$base (the base name of the file. example: weird (if $file is E:\path\that\is\weird.py))
+~ 		$dir (the folder where file is located. example: E:\path\that\is\ (if $file is E:\path\that\is\weird.py))
+
+Python::[".py"::"python $file"]
+G++::[".cpp"::"g++ -o $base $file"]
