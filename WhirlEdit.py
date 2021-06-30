@@ -200,6 +200,8 @@ style.theme_use('azure-dark') #('winnative', 'clam', 'alt', 'default', 'classic'
 
 note = {}
 openedfiles = {}
+canvas = {}
+scrolly = {}
 var = 0
 
 def opencmd(*args):
@@ -268,10 +270,10 @@ def saveAsFile(*args):
 		return
 	with open(filepath, "w") as output_file:
 		extension[curnote()] = "."+filepath.split(".")[-1]
-		variable = curnote2()
+		variable = int(curnote2())
 		text = note[variable].get(1.0, tk.END)
 		output_file.write(text)
-	notebook.tab(note[variable], text = filepath)
+	notebook.tab(note[variable], text = filepath.split("/")[-1])
 
 def saveFile(*args):
 	global notebook
@@ -287,7 +289,7 @@ def saveFile(*args):
 		else:
 			variable = int(variable) -1
 
-	variable = curnote2()
+	variable = int(curnote2())
 
 	if openedfiles[variable] == "":
 		saveAsFile()
@@ -298,7 +300,7 @@ def saveFile(*args):
 
 			text = note[variable].get(1.0, tk.END)
 			output_file.write(text)
-			notebook.tab(note[variable], text = openedfiles[curnote()])
+			notebook.tab(note[variable], text = openedfiles[curnote2()].split("/")[-1])
 
 def openFile(*self): 
 	#print("a",notebook.select())
@@ -319,7 +321,7 @@ def openFile(*self):
 		note[variable].insert(1.0,file.read()) 
 		openedfiles[variable] = filepath
 		file.close() 
-		notebook.tab(note[variable], text = filepath)
+		notebook.tab(note[variable], text = filepath.split("/")[-1])
 
 def newTab(*args):
 	global var
@@ -332,6 +334,10 @@ def newTab(*args):
 	openedfiles[var] = ""
 	notebook.add(note[var], text='Untitled')
 	extension[curnote()] = ".*"
+	scrolly[var] = ttk.Scrollbar(note[var],orient=VERTICAL)
+	scrolly[var].pack(side = RIGHT, fill=Y)
+	scrolly[var].config(command = note[var].yview)
+	note[var].config(yscrollcommand=scrolly[var].set)
 	var = var + 1
 
 
