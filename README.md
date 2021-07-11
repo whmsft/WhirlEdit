@@ -30,7 +30,9 @@ SPECIAL THANKS:
 
 Guido Van Rossum
 - for python
+
 @rdbende
 - for Azure ttk theme
+
 stackoverflow
 - for helping me to deal problems
