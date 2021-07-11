@@ -297,6 +297,8 @@ def saveAsFile(*args):
 		output_file.write(text)	
 	notebook.tab(frames[int(curnote2())], text = filepath.split("/")[-1])
 	note[curnote2()].config(language=identify(filepath.split("/")[-1]))
+	note[curnote2()].update()
+	root.update()
 
 def saveFile(*args):
 	global notebook
@@ -336,7 +338,6 @@ def openFile(*self):
 		filepath = None
 	else: 
 		extension[curnote()] = "."+filepath.split(".")[-1]
-		print(extension)
 		note[variable].delete(1.0,END) 
 		file = open(filepath,"r") 
 		note[curnote2()]["language"] = identify(filepath.split("/")[-1])
@@ -344,8 +345,7 @@ def openFile(*self):
 		openedfiles[variable] = filepath
 		file.close() 
 		notebook.tab(frames[variable], text = filepath.split("/")[-1])
-		print(identify("."+filepath.split(".")[-1]))
-		note[curnote2()].config(language=identify(filepath.split("/")[-1]))
+		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
 
 def select_all(event):
@@ -359,7 +359,7 @@ def newTab(*args):
 	global var
 	global notebook
 	frames[var] = ttk.Frame(notebook)
-	note[var] = CodeEditor(frames[var],width=40, height=100, language="python",autofocus=True, insertofftime=0, padx=0, pady=0, font = "Consolas", highlighter = "azure")
+	note[var] = CodeEditor(frames[var],width=40, height=100, language="c++",autofocus=True, insertofftime=0, padx=0, pady=0, font = "Consolas", highlighter = "azure")
 	note[var].pack(fill="both", expand=True)
 	font = tkfont.Font(font=note[var]['font'])
 	note[var].config(tabs=font.measure('    '))
