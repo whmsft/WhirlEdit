@@ -1,13 +1,15 @@
 # Whirledit
 
-### version 2.0 out now!!!
+### v3 is on its way!
 
- WhirlEdit has got the geatest update ever!
- This is just great!
- 
- It has only one syntax highlight.. that's just python..
- 
-looks like no one wants to help me in this project.. (please prove me wrong)
+v3 will include great fratures..
+some of them are 
+```
+> multi-language syntax highlighting (thanks to @rdbende for tkcode)
+> Folders view (thanks to stackoverflow community)
+> minor bug fix
+> and more to come..
+```
 
 ```
 CHANGELOG:
@@ -29,10 +31,11 @@ v1:
 SPECIAL THANKS:
 
 Guido Van Rossum
-- for python
+- For python
 
 @rdbende
 - for Azure ttk theme
+- for tkcode
 
 stackoverflow
-- for helping me to deal problems
+- for helping me to deal with problems
