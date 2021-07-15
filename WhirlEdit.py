@@ -9,6 +9,8 @@ from WhirlData import *
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkcode import CodeEditor
 
+openedfolders = []
+
 highlight = {
             "ada"         : [".adb",".ads"],
             "brainfuck"   : [".b",".bf"],
