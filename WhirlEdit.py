@@ -11,6 +11,33 @@ from tkcode import CodeEditor
 
 openedfolders = []
 
+class PathView(object):
+	def __init__(self, master, paths):
+		frame = tk.Frame(master)
+		self.tree = ttk.Treeview(frame)
+		self.nodes = dict()
+		ysb = ttk.Scrollbar(frame, orient='vertical', command=self.tree.yview)
+		self.tree.configure(yscroll=ysb.set)
+		self.tree.heading('#0', text='FOLDERS', anchor='w')
+		ysb.pack(side=RIGHT,fill=Y)
+		self.tree.pack(fill=BOTH,expand=1)
+		frame.pack(fill=BOTH,expand=1)
+		abspath = os.path.abspath(path)
+		self.insert_node('', abspath, abspath)
+		self.tree.bind('<<TreeviewOpen>>', self.open_node)
+	def insert_node(self, parent, text, abspath):
+		node = self.tree.insert(parent, 'end', text=text, open=False)
+		if os.path.isdir(abspath):
+			self.nodes[node] = abspath
+			self.tree.insert(node, 'end')
+	def open_node(self, event):
+		node = self.tree.focus()
+		abspath = self.nodes.pop(node, None)
+		if abspath:
+			self.tree.delete(self.tree.get_children(node))
+			for p in os.listdir(abspath):
+				self.insert_node(node, p, os.path.join(abspath, p))
+
 highlight = {
             "ada"         : [".adb",".ads"],
             "brainfuck"   : [".b",".bf"],
