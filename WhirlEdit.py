@@ -10,6 +10,17 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkcode import CodeEditor
 
 openedfolders = []
+nothing = 0
+
+def togglefolders():
+	global nothing
+	if nothing == 0:
+		splitter.forget(leftFrame)
+		nothing = 1
+	else:
+		splitter.add(leftFrame, before = root,width=200)
+		nothing = 0
+
 
 def update(*args):
 	fdir = "/".join(openedfiles[curnote2()].split("/")[:-1])
@@ -411,7 +422,6 @@ def newTab(*args):
 	note[var].bind("Control-a",select_all)
 	var = var + 1
 
-
 Menubar = Menu(root, activebackground ="#0084FF", activeforeground = "#FFFFFF",bg = "#FFFFFF", fg = "#0084FF" ,font = "consolas")
 
 Filemenu = Menu(root, tearoff = 0)
@@ -425,6 +435,10 @@ Filemenu.add_command(label="Close", command=deltab)
 Filemenu.add_separator()
 Filemenu.add_command(label="Exit", command=root.destroy)
 Menubar.add_cascade(label="File", menu=Filemenu)
+
+viewMenu = Menu(root,tearoff=0)
+viewMenu.add_command(label = "Toggle Folders", command = lambda:togglefolders())
+Menubar.add_cascade(label = "View", menu = viewMenu)
 
 toolsMenu = Menu(root,tearoff=0)
 confmenu = Menu(root,tearoff=0)
