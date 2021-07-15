@@ -12,6 +12,10 @@ from tkcode import CodeEditor
 openedfolders = []
 
 class PathView(object):
+	def add(self,path):
+		abspath = os.path.abspath(path)
+		self.insert_node('', abspath, abspath)
+		self.tree.bind('<<TreeviewOpen>>', self.open_node)
 	def __init__(self, master, paths):
 		frame = tk.Frame(master)
 		self.tree = ttk.Treeview(frame)
@@ -22,9 +26,10 @@ class PathView(object):
 		ysb.pack(side=RIGHT,fill=Y)
 		self.tree.pack(fill=BOTH,expand=1)
 		frame.pack(fill=BOTH,expand=1)
-		abspath = os.path.abspath(path)
-		self.insert_node('', abspath, abspath)
-		self.tree.bind('<<TreeviewOpen>>', self.open_node)
+		for path in paths:
+			abspath = os.path.abspath(path)
+			self.insert_node('', abspath, abspath)
+			self.tree.bind('<<TreeviewOpen>>', self.open_node)
 	def insert_node(self, parent, text, abspath):
 		node = self.tree.insert(parent, 'end', text=text, open=False)
 		if os.path.isdir(abspath):
@@ -37,6 +42,7 @@ class PathView(object):
 			self.tree.delete(self.tree.get_children(node))
 			for p in os.listdir(abspath):
 				self.insert_node(node, p, os.path.join(abspath, p))
+
 
 highlight = {
             "ada"         : [".adb",".ads"],
