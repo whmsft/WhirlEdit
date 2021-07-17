@@ -270,7 +270,7 @@ def runconf(*args):
 
 thisroot = tk.Tk()
 thisroot.iconbitmap(r"favicon.ico")
-thisroot.title('WhirlEdit 2.1')
+thisroot.title('WhirlEdit Azure Insiders')
 windowWidth = 800
 windowHeight = 530
 screenWidth  = thisroot.winfo_screenwidth()
