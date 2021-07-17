@@ -1,8 +1,8 @@
-# Whirledit
+# WhirlEdit
 
 ### v3 is on its way!
 
-v3 will include great fratures..
+v3 will include great features..
 some of them are 
 ```
 > multi-language syntax highlighting (thanks to @rdbende for tkcode)
