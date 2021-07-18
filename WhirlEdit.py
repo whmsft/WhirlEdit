@@ -1,30 +1,42 @@
 import os
 import subprocess
+import shutil
 import tkinter
+import zipfile
+import tempfile
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 import tkinter.font as tkfont
-from WhirlData import *
+from wday import *
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkcode import CodeEditor
 
 openedfolders = []
-nothing = 0
+nothing = [0,0]
 
-def togglefolders():
+def fullscreen(*args):
+	if nothing[1] == 0:
+		thisroot.wm_attributes("-fullscreen",1)
+		nothing[1] = 1
+	else:
+		thisroot.wm_attributes("-fullscreen",0)
+		nothing[1] = 0
+
+def set_syntax(lang):
+	note[curnote2()].config(language=lang)
+
+def togglesidepane():
 	global nothing
-	if nothing == 0:
+	if nothing[0] == 0:
 		splitter.forget(leftFrame)
-		nothing = 1
+		nothing[0] = 1
 	else:
 		splitter.add(leftFrame, before = root,width=200)
-		nothing = 0
-
+		nothing[0] = 0
 
 def update(*args):
 	fdir = "/".join(openedfiles[curnote2()].split("/")[:-1])
-	print(fdir)
 	if fdir in openedfolders:
 		pass
 	else:
@@ -41,6 +53,9 @@ class PathView(object):
 		self.tree = ttk.Treeview(frame)
 		self.nodes = dict()
 		ysb = ttk.Scrollbar(frame, orient='vertical', command=self.tree.yview)
+		xsb = ttk.Scrollbar(frame, orient='horizontal', command=self.tree.xview)
+		xsb.pack(side=BOTTOM,fill=X)
+		self.tree.configure(xscroll=xsb.set)
 		self.tree.configure(yscroll=ysb.set)
 		self.tree.heading('#0', text='FOLDERS', anchor='w')
 		ysb.pack(side=RIGHT,fill=Y)
@@ -64,33 +79,46 @@ class PathView(object):
 				self.insert_node(node, p, os.path.join(abspath, p))
 
 highlight = {
-			"ada"         : [".adb",".ads"],
-			"brainfuck"   : [".b",".bf"],
-			"c"           : [".c",".h"],
-			"css"         : [".css"],
-			"c#"          : [".cs",".csx"],
-			"c++"         : [".cc",".cpp",".cxx",".c++",".hh",".hpp",".hxx",".h++"],
-			"dart"        : [".dart"],
-			"delphi"      : [".dpr"],
-			"go"          : [".go"],
-			"haskell"     : [".hs",".lhs"],
-			"html"        : [".htm",".html"],
-			"java"        : [".java",".jar",".class"],
-			"javascript"  : [".js",".cjs",".mjs"],
-			"kotlin"      : [".kt",".kts",".ktm"],
-			"lisp"        : [".lsp"],
-			"lua"         : [".lua"],
-			"matlab"      : [".m",".p",".mex",".mat",".fig",".mlx",".mlapp",".mltbx",".mlappinstall",".mlpkginstall"],
-			"objective-c" : [".mm"],
-			"perl"        : [".plx",".pl",".pm",".xs",".t",".pod"],
-			"php"         : [".php",".phar",".phtml",".pht",".phps"],
-			"python"      : [".py",".pyi",".pyc",".pyd",".pyo",".pyw",".pyz"],
-			"r"           : [".r",".rdata",".rds",".rda"],
-			"ruby"        : [".rb"],
-			"swift"       : [".swift"],
-			"sql"         : [".sql"],
-			"tcl"         : [".tcl",".tbc"],
-			"typescript"  : [".ts",".tsx"],
+			"Ada"         : [".adb",".ads"],
+			"Bash"        : [],#new
+			"Batch"       : [".cmd",".bat"],#new
+			"BrainFuck"   : [".b",".bf"],
+			"C"           : [".c",".h"],
+			"CMake"       : [],#new
+			"CoffeeScript": [],#new
+			"CSS"         : [".css"],
+			"C#"          : [".cs",".csx"],
+			"C++"         : [".cc",".cpp",".cxx",".c++",".hh",".hpp",".hxx",".h++"],
+			"Dart"        : [".dart"],
+			"Delphi"      : [".dpr"],
+			"Dockerfile"  : [],#new
+			"Fortran"     : [".f"],#new
+			"Go"          : [".go"],
+			"Groovy"      : [".groovy",".gvy",".gradle",".jenkinsfile"],#new
+			"Haskell"     : [".hs",".lhs"],
+			"HTML"        : [".htm",".html"],
+			"Java"        : [".java",".jar",".class"],
+			"JavaScript"  : [".js",".cjs",".mjs"],
+			"JSON"        : [".json"],#new
+			"Kotlin"      : [".kt",".kts",".ktm"],
+			"Lisp"        : [".lsp"],
+			"Lua"         : [".lua"],
+			"MATLAB"      : [".m",".p",".mex",".mat",".fig",".mlx",".mlapp",".mltbx"],
+			"MakeFile"    : [".make",".makefile"],#new
+			"NASM"        : [".asm"],#new
+			"Objective-C" : [".mm"],
+			"Perl"        : [".plx",".pl",".pm",".xs",".t",".pod"],
+			"PHP"         : [".php",".phar",".phtml",".pht",".phps"],
+			"Powershell"  : [".ps1"],#new
+			"Python"      : [".py",".pyi",".pyc",".pyd",".pyo",".pyw",".pyz"],
+			"R"           : [".r",".rdata",".rds",".rda"],
+			"Ruby"        : [".rb"],
+			"Swift"       : [".swift"],
+			"SQL"         : [".sql"],
+			"Tcl"         : [".tcl",".tbc"],
+			"TypeScript"  : [".ts",".tsx"],
+			"Vim"         : [".vim"],#new
+			"YAML"        : [".yaml",".yml"],#new
 			}
 
 filepath = ""
@@ -136,10 +164,10 @@ extension = {}
 
 def curnote2(*args):
 	variable = notebook.select()
-	if notebook.select().replace('.!notebook.!frame',"").replace('.!panedwindow.!frame2',"") == "":
+	if notebook.select().replace('.!panedwindow.!frame2.!notebook.!frame','') == "":
 		variable = 0
 	else:
-		variable = int(notebook.select().replace('.!notebook.!frame',"").replace('.!panedwindow.!frame2',""))
+		variable = int(notebook.select().replace('.!panedwindow.!frame2.!notebook.!frame',''))
 		if variable == 0:
 			pass
 		else:
@@ -234,43 +262,62 @@ def newrunner():
 	def switchFunction():
 		if gui.get():
 			switch.config(text='Console')
-		else:
-			switch.config(text='No Console')
+		#else:
+			#switch.config(text='No Console')
+	def helpwindow():
+		a = tk.Toplevel(conf)
+		a.wm_attributes("-topmost",1)
+		a.resizable(False,False)
+		a.iconbitmap(r"favicon.v3.ico")
+		a.title("Help")
+		helpvartxt = """
+Keywords:                               
+  $file                                 
+  	the file path.                      
+  $base                                 
+  	the base name of the file.          
+  $dir                                  
+    the folder where file is located.   
+		"""
+		b = Label(a,text = helpvartxt,font="Consolas")
+		b.pack(side = LEFT)
+		a.mainloop()
 	conf = tk.Toplevel(root)
-	conf.iconbitmap(r"favicon.ico")
+	conf.wm_attributes("-topmost",1)
+	conf.iconbitmap(r"favicon.v3.ico")
 	conf.resizable(False, False)
 	conf.title("Configure runner for {} files".format(extension[curnote()]))
 	conf.geometry("400x200")
 	gui = BooleanVar()
 	label = Label(conf,text = "Runner Name", font = "consolas")
-	name = ttk.Entry(conf,width = 22, font = "consolas")
+	name = ttk.Entry(conf,width = 25, font = "consolas")
 	name.place(x = 150, y = 10)
 	label.place(x=10,y=16)
 	label = Label(conf,text = "Command", font = "consolas")
 	label.place(x=10,y=55)
-	entry = AutocompleteEntry(conf,width = 22, font = "consolas")
+	entry = AutocompleteEntry(conf,width = 25, font = "consolas")
 	entry.set_completion_list((u'$file', u'$base', u'$dir', u'/k'))
 	entry.place(x=150, y=50)
 	entry.insert(0, 'compiler -o $base $file')
-	submit = ttk.Button(conf,text = "Confirm", command = lambda:done())
-	submit.place(x=150,y=150)
+	helptxt = Label(conf,text = "Do you need some", font = "consolas")
+	helptxt.place(x=60,y=100)
+	helpbtn = ttk.Button(conf,text = "Help",command = lambda:helpwindow())
+	helpbtn.place(x=220,y=100)
+	submit = ttk.Button(conf,text = "Confirm & Create Runner", command = lambda:done())
+	submit.place(x=125,y=150)
 	conf.mainloop()
 
 def runconf(*args):
-	for i in datafile.split("\n"):
-		if "[{}::".format(extension[curnote()]) in i:
-			cmd = read(datafile)
-			command = cmds[thisType][1]
-			command.replace("$file",'"'+filepath+'"')
-			base = filepath.split("/")[-1]
-			base = base[:base.find(".")]
-			command = command.replace("$base",base.replace(" ","_"))
-			command = command.replace("$dir",'"'+"/".join(filepath.split("/")[:-1])+'"')
-			subprocess.call("start cmd /k {}".format(command), shell = True)
+	evaled = read(datafile)
+	for i in evaled.keys():
+		for x in evaled[i][0]:
+			if x == extension[curnote2()]:
+				thisext = i
+	runnerConf(thisext)
 
 thisroot = tk.Tk()
-thisroot.iconbitmap(r"favicon.ico")
-thisroot.title('WhirlEdit Azure Insiders')
+thisroot.iconbitmap(r"favicon.v3.ico")
+thisroot.title('WhirlEdit Azure')
 windowWidth = 800
 windowHeight = 530
 screenWidth  = thisroot.winfo_screenwidth()
@@ -288,27 +335,35 @@ root = tk.Frame(splitter)
 framed = PathView(leftFrame, paths=[])
 splitter.add(leftFrame, width=200)
 splitter.add(root)
-
 try:
-	thisroot.tk.call('source', '.\\Themes\\azure-dark.tcl')
-	style.theme_use('azure-dark') #('winnative', 'clam', 'alt', 'default', 'classic', 'vista', 'xpnative','azure-dark')
-	#root.tk.call('source','C:/Users/Lenovo/Downloads/tkBreeze/breeze-dark/breeze-dark.tcl')
-	#style.theme_use('breeze-dark')
-	
+	configdata = read(open('./configure.whirldata').read())
+	themefolder = configdata['Themefolder'][0]
+	listdir = os.listdir(configdata['Themefolder'][0])
+	themeslist = []
+	for i in listdir:
+		if i.lower().endswith('.whtheme'):
+			themeslist.append(i)
+	default_theme = configdata['DefaultTheme'][0]
+	zipfile.ZipFile(themefolder+'/'+default_theme,'r').extractall(tempfile.gettempdir()+"/whTheme/")
+	themefile = tempfile.gettempdir()+"/whTheme/"+read(open(tempfile.gettempdir()+"/whTheme/__init__.whirldata").read())['main'][0]
+	themebase = read(open(tempfile.gettempdir()+"/whTheme/__init__.whirldata").read())['name'][0]
+	thisroot.tk.call('source', themefile)
+	style.theme_use(themebase)
+	default_highlight = configdata['DefaultScheme'][0]
 except:
-	pass
+	default_highlight = 'azure'
 
-note = {}
+note        = {}
 openedfiles = {}
-canvas = {}
-scrolly = {}
-scrollx = {}
-var = 0
+canvas      = {}
+scrolly     = {}
+scrollx     = {}
+var         = 0
 
 def opencmd(*args):
 	try:
 		if filepath == "":
-			cwd = "C:/"
+			cwd = os.getcwd()
 		else:
 			cwd = "/".join(filepath.split("/")[:-1])
 		drive = cwd[:2]
@@ -335,10 +390,14 @@ def getpos(*args):
 	line.set(pos)
 def curnote():
 	variable = notebook.select()
-	if notebook.select().replace('.!notebook.!frame',"") == "":
+	if notebook.select().replace('.!panedwindow.!frame2.!notebook.!frame','') == "":
 		variable = 0
 	else:
-		variable = notebook.select().replace('.!notebook.!frame',"")
+		variable = int(notebook.select().replace('.!panedwindow.!frame2.!notebook.!frame',''))
+		if variable == 0:
+			pass
+		else:
+			variable = int(variable) -1
 	return variable
 
 def deltab(*args):
@@ -412,7 +471,7 @@ def newTab(*args):
 	global var
 	global notebook
 	frames[var] = ttk.Frame(notebook)
-	note[var] = CodeEditor(frames[var],width=40, height=100, language="c++",autofocus=True, insertofftime=0, padx=0, pady=0, font = "Consolas", highlighter = "azure")
+	note[var] = CodeEditor(frames[var],width=40, height=100, language="python",autofocus=True, insertofftime=0, padx=0, pady=0, font = "Consolas", highlighter = default_highlight)
 	note[var].pack(fill="both", expand=True)
 	font = tkfont.Font(font=note[var]['font'])
 	note[var].config(tabs=font.measure('    '))
@@ -433,11 +492,11 @@ Filemenu.add_command(label="Save As", command=saveAsFile)
 Filemenu.add_separator()
 Filemenu.add_command(label="Close", command=deltab)
 Filemenu.add_separator()
-Filemenu.add_command(label="Exit", command=root.destroy)
+Filemenu.add_command(label="Exit", command=thisroot.destroy)
 Menubar.add_cascade(label="File", menu=Filemenu)
 
 viewMenu = Menu(root,tearoff=0)
-viewMenu.add_command(label = "Toggle Folders", command = lambda:togglefolders())
+viewMenu.add_command(label = "Toggle Side Pane", command = lambda:togglesidepane())
 Menubar.add_cascade(label = "View", menu = viewMenu)
 
 toolsMenu = Menu(root,tearoff=0)
@@ -454,6 +513,13 @@ runmenu.add_command(label= "New Runner",command = lambda:newrunner())
 toolsMenu.add_cascade(label = "Runner", menu = runmenu)
 toolsMenu.add_command(label = "Open cmd here", command = lambda:opencmd())
 Menubar.add_cascade(label="Tools",menu = toolsMenu)
+
+syntaxMenu = Menu(root,tearoff=0)
+setSyntaxMenu = Menu(root,tearoff=0)
+for i in highlight.keys():
+	setSyntaxMenu.add_command(label = i,command = lambda lang=i: set_syntax(lang))
+syntaxMenu.add_cascade(label = "Syntax", menu = setSyntaxMenu)
+Menubar.add_cascade(label = "Looks",menu = syntaxMenu)
 
 #Helpmenu = Menu(root, tearoff = 0)
 #Helpmenu.add_command(label = "Website", command=lambda:webbrowser.open("http://www.github.com/Whirlpool-Programmer/WhirlEdit/"))
@@ -481,6 +547,11 @@ thisroot.bind("<Control-F5>",runfile)
 thisroot.bind("<F5>",runconf)
 thisroot.bind("<Control-Shift-T>", opencmd)
 thisroot.bind_all("<Key>",update)
+thisroot.bind("<F11>",fullscreen)
 thisroot.config(menu = Menubar)
 thisroot.mainloop()
 configs.close()
+try:
+	shutil.rmtree(tempfile.gettempdir()+'/whTheme')
+except:
+	pass	
