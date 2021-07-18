@@ -1,0 +1,15 @@
+~ WhirlEdit Azure builds' config
+~ lines with '~' are comments
+~ lines with '@' are remarks
+~ $default is the default value of any data..
+
+@config.theme
+Themefolder::['./Themes/']
+DefaultTheme::['azure-dark.whTheme']
+
+@config.scheme/highlight
+Schemefolder::['$default']
+DefaultScheme::['azure']
+
+@config.font
+Font::['Consolas'::12]
