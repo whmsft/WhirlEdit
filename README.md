@@ -11,6 +11,9 @@ some of them are
 > and more to come..
 ```
 
+v3 finale concept design:
+
+![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/concept.png)
 ```
 CHANGELOG:
 
