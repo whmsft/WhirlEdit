@@ -13,7 +13,7 @@ some of them are
 
 v3 finale concept design:
 
-![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/concept.png)
+![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/capture.png)
 ```
 CHANGELOG:
 
