@@ -6,7 +6,10 @@ v3 will include great features..
 some of them are 
 ```
 > multi-language syntax highlighting (thanks to @rdbende for tkcode)
-> Folders view (thanks to stackoverflow community)
+> Side bar
+- > Files
+- > Looks
+- > Settings
 > minor bug fix
 > and more to come..
 ```
