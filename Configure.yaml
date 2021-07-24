@@ -1,0 +1,31 @@
+Looks:
+  WindowTitle: Whirledit Insiders
+  InitialSyntax: python
+  Theme:
+    Default: azure-darker.whTheme
+    Folder: ./Themes/
+  Scheme:
+    Default: azure-darker.json
+    Folder: ./Schemes/
+  Font:
+    Font: Consolas
+    Size: 12
+    BlockCursor: False
+
+#NOTE:
+# It is case sensative.. (example: a != A)
+# so <Control-s> means "Control+s"
+# and <Control-S> means "Control+Shift+s"
+# this is because shift key capitalizes a letter
+Key Bindings:
+  File:
+    Save: <Control-s>
+    New: <Control-n>
+    Close: <Control-w>
+    Open: <Control-o>
+  View:
+    Fullscreen: <F11>
+    Project: <Control-Shift-f>
+  Runner:
+    Run: <F5>
+    Terminal: <Control-Shift-t>
