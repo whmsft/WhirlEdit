@@ -2,6 +2,8 @@
 
 ### v3 is on its way!
 
+[![Run on Repl.it](https://repl.it/badge/github/Whirlpool-programmer/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
+
 v3 will include great features..
 some of them are 
 ```
