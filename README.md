@@ -1,4 +1,4 @@
-# WhirlEdit
+# WhirlEdit 3 (code: Confetti)
 
 ### v3 is on its way!
 
