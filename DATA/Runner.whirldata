@@ -1,0 +1,35 @@
+~ the "~" marks the beginning of a comment..
+
+~ How to use this file?
+
+~ syntax for a Runner:
+~ NAME::[EXTENSIONS::COMMAND]
+~ in this NAME is name of the Runner
+~ EXTENSIONS is the list of extensions.. example [".py",".exe",".yaml",".whirldata"]
+~ COMMAND is the command to use
+~	Inside command you can use these:
+~ 		$file (the file path. example: E:\path\that\is\weird.py)
+~ 		$base (the base name of the file. example: weird (if $file is E:\path\that\is\weird.py))
+~ 		$dir  (the folder where file is located. example: E:\path\that\is\ (if $file is E:\path\that\is\weird.py))
+
+Bash::[[".sh",".csh",".ksh"]::"bash $file"]
+Batch::[[".cmd",".bat"]::"$file"]
+CoffeeScript::[[".coffee",".cson",".litcoffee"]::"coffee $file"]
+Dart::[[".dart"]::"dart $file"]
+F90::[['.f','.f90']::"f90 $file"]
+G++::[[".cc",".cpp",".cxx",".c++",".hh",".hpp",".hxx",".h++"]::"g++ -o $base $file"]
+Gcc::[[".c",".h"]::"gcc $file -o $dir/$base"]
+Go::[['.go']::'go run $file']
+runHaskell::[[".hs",".lhs"]::"runhaskell $file"]
+JavaC::[[".java",".jar",".class"]::"javac $file"]
+KotlinC::[[".kt",".kts",".ktm"]::'kotlinc $file -include-runtime -d $base.jar']
+Lua::[[".lua"]::"lua $file"]
+Makefile::[".make",".makefile"::"cd $dir && make"]
+NASM::[[".asm",".asm",".inc"]::'nasm -f elf $file']
+Perl::[[".plx",".pl",".pm",".xs",".t",".pod"]::"perl $file"]
+Powershell::[['.ps1']::' PowerShell.exe -command $file']
+Python::[[".py",".pyi",".pyc",".pyd",".pyo",".pyw",".pyz"]::"python $file"]
+RScript::[[".r",".rdata",".rds",".rda"]::"rscript $file"]
+Ruby::[[".rb"]::"ruby $file"]
+Swift::[[".swift"]::'swift $file']
+Tcl::[[".tcl",".tbc"]::'tclsh $file']
