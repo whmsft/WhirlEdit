@@ -20,6 +20,7 @@ some of them are
 v3 as of now
 
 ![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/Capture.PNG)
+
 ```
 CHANGELOG:
 
