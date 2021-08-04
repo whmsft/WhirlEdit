@@ -3,7 +3,7 @@
 ### v3 is on its way!
 
 [![Run on Repl.it](https://repl.it/badge/github/Whirlpool-programmer/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
-[![Build Status](https://travis-ci.org/whirlpool-programmer/whirledit.svg?branch=master)]()
+[![Build Status](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml)
 
 v3 will include great features..
 some of them are 
