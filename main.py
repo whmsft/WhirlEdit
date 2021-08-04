@@ -10,98 +10,106 @@ import shutil
 import tkinter
 import zipfile
 import tempfile
-from wday import *
+from wday import read
 from tkcode import CodeEditor
 import webbrowser
-import re
-
 from pygments.lexer import RegexLexer
 from pygments.token import Comment, Name, String, Number, Punctuation
 
-class WhirlDataLexer(RegexLexer):
-
-    name = 'WhirlData'
-    aliases = ['whirldata']
-    filenames = ['*.whirldata',"*.wday","*.whdata"]
-
-    tokens = {
-        'root': [
-            (r'~.*$', Comment.Single),
-            (r'@.*$', Name.Other),
-            (r'\'\$.*\'', Name.Variable),
-            (r'\d(?:_?\d)*', Number.Integer),
-            (r'::', Punctuation),
-            (r'\'.*\'', String.Single),
-        ],
-    }
-
-class defaults:
-	configuration = """
+configuration = """
 Looks:
-  Theme:
-    Default: azure-dark.whTheme
-    Folder: ./Themes/
-  Scheme:
-    Default: azure.json
-    Folder: ./Schemes/
-  Font:
-    Font: Consolas
-    Size: 12
+	WindowTitle: Whirledit Insiders
+	InitialSyntax: python
+	Theme:
+		Default: azure-darker.whTheme
+		Folder: ./DATA/Themes/
+	Scheme:
+		Default: azure-darker.json
+		Folder: ./DATA/Schemes/
+	Font:
+		Font: Consolas
+		Size: 12
+		BlockCursor: False
 
+#NOTE:
+# It is case sensative.. (example: a != A)
+# so <Control-s> means "Control+s"
+# and <Control-S> means "Control+Shift+s"
+# this is because shift key capitalizes a letter
 Key Bindings:
-  File:
-    Save: <Control-s>
-    New: <Control-s>
-    Close: <Control-s>
-    Open: <Control-o>
-  View:
-    Fullscreen: <F11>
-    Project: <Control-Shift-P>
-  Runner:
-    Run: <F5>
-    Terminal: <Control-Shift-T>
-
+	File:
+		Save: <Control-s>
+		New: <Control-n>
+		Close: <Control-w>
+		Open: <Control-o>
+	View:
+		Fullscreen: <F11>
+		Project: <Control-Shift-f>
+	Runner:
+		Run: <F5>
+		Terminal: <Control-Shift-t>
 	"""
 
 try:
 	configuration = (yaml.safe_load(open('configure.yaml').read()))
-except:
-	configuration = (yaml.safe_load(defaults.configuration))
+except Exception:
+	pass
+
+
+class WhirlDataLexer(RegexLexer):
+	name = 'WhirlData'
+	aliases = ['whirldata']
+	filenames = ['*.whirldata', "*.wday", "*.whdata"]
+	tokens = {
+			'root': [
+					(r'~.*$', Comment.Single),
+					(r'@.*$', Name.Other),
+					(r'\'\$.*\'', Name.Variable),
+					(r'\d(?:_?\d)*', Number.Integer),
+					(r'::', Punctuation),
+					(r'\'.*\'', String.Single),
+			],
+	}
+
+class data:
+	font = "{} {}".format(configuration['Looks']['Font']['Font'],configuration['Looks']['Font']['Size'])
+	isBlockcursor = configuration['Looks']['Font']['BlockCursor']
+	config = configuration
+
 openedfolders = []
 
 highlight = {
-			"WhirlData"   : ['*.whirldata',"*.wday","*.whdata"],
 			"Ada"         : [".adb",".ads"],
-			"Bash"        : [".sh",".csh",".ksh"],#new
-			"Batch"       : [".cmd",".bat"],#new
+			"Bash"        : [".sh",".csh",".ksh"],
+			"Batch"       : [".cmd",".bat"],
 			"BrainFuck"   : [".b",".bf"],
 			"C"           : [".c",".h"],
-			"CMake"       : [],#new
-			"CoffeeScript": [".coffee",".cson",".litcoffee"],#new
+			"CMake"       : [],
+			"CoffeeScript": [".coffee",".cson",".litcoffee"],
 			"CSS"         : [".css"],
 			"C#"          : [".cs",".csx"],
 			"C++"         : [".cc",".cpp",".cxx",".c++",".hh",".hpp",".hxx",".h++"],
 			"Dart"        : [".dart"],
 			"Delphi"      : [".dpr"],
-			"Dockerfile"  : [".dockerfile"],#new
-			"Fortran"     : [".f",".f90",".f95"],#new
+			"Dockerfile"  : [".dockerfile"],
+			"Fortran"     : [".f",".f90",".f95"],
 			"Go"          : [".go"],
-			"Groovy"      : [".groovy",".gvy",".gradle",".jenkinsfile"],#new
+			"Groovy"      : [".groovy",".gvy",".gradle",".jenkinsfile"],
 			"Haskell"     : [".hs",".lhs"],
 			"HTML"        : [".htm",".html"],
 			"Java"        : [".java",".jar",".class"],
 			"JavaScript"  : [".js",".cjs",".mjs"],
-			"JSON"        : [".json"],#new
+			"JSON"        : [".json"],
 			"Kotlin"      : [".kt",".kts",".ktm"],
 			"Lisp"        : [".lsp"],
 			"Lua"         : [".lua"],
 			"MATLAB"      : [".m",".p",".mex",".mat",".fig",".mlx",".mlapp",".mltbx"],
-			"MakeFile"    : [".make",".makefile"],#new
-			"NASM"        : [".asm",".asm",".inc"],#new
+			"MakeFile"    : [".make",".makefile"],
+			"NASM"        : [".asm",".asm",".inc"],
 			"Objective-C" : [".mm"],
 			"Perl"        : [".plx",".pl",".pm",".xs",".t",".pod"],
 			"PHP"         : [".php",".phar",".phtml",".pht",".phps"],
-			"Powershell"  : [".ps1"],#new
+			"Powershell"  : [".ps1"],
 			"Python"      : [".py",".pyi",".pyc",".pyd",".pyo",".pyw",".pyz"],
 			"R"           : [".r",".rdata",".rds",".rda"],
 			"Ruby"        : [".rb"],
@@ -109,27 +117,35 @@ highlight = {
 			"SQL"         : [".sql"],
 			"Tcl"         : [".tcl",".tbc"],
 			"TypeScript"  : [".ts",".tsx"],
-			"Vim"         : [".vim"],#new
-			"YAML"        : [".yaml",".yml"],#new
+			"Vim"         : [".vim"],
+			"YAML"        : [".yaml",".yml"],
 			}
 
-nothing = [1,0,1]
+nothing = [1,0,1,1,1,1]
 
 def about(*args):
-	a = tk.Toplevel(thisroot)
-	a.wm_attributes("-topmost",1)
-	a.title('About Whirledit')
-	a.resizable(False,False)
-	a.iconbitmap(r"favicon.v3.ico")
-	a.geometry("300x200")
-	b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
-	b.pack()
-	c = Label(a,text='v3.0.500',font='Consolas 10')
-	c.pack()
-	d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
-	d.pack()
-	e = ttk.Button(a,text='GitHub', command=lambda:webbrowser.open('http://Whirlpool-Programmer.github.io/software/WhirlEdit'))
-	e.pack()
+	def nothingmod(pos,val, ext=None):
+		nothing[pos] = val
+		a.destroy()
+	if nothing[4] == 1:
+		a = tk.Toplevel(thisroot)
+		nothing[4] = 0
+		a.wm_attributes("-topmost",1)
+		a.title('Whirledit')
+		a.resizable(False,False)
+		a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
+		a.geometry("300x200")
+		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
+		b.pack()
+		c = Label(a,text='v3.0.940',font='Consolas 10')
+		c.pack()
+		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
+		d.pack()
+		e = ttk.Button(a,text='GitHub', command=lambda:webbrowser.open('http://Whirlpool-Programmer.github.io/software/WhirlEdit'))
+		e.pack()
+		a.protocol("WM_DELETE_WINDOW", lambda:nothingmod(4,1))
+	else:
+		pass
 
 def fullscreen(*args):
 	if nothing[1] == 0:
@@ -142,14 +158,28 @@ def fullscreen(*args):
 def set_syntax(lang):
 	note[curnote2()].config(language=lang)
 
+def togglesetti(*args):
+	global nothing
+	if nothing[5] ==0:
+		splitter.forget(settipaneframe)
+		nothing[5] = 1
+	else:
+		splitter.add(settipaneframe,before=root,width=220)
+		splitter.forget(runnerpaneframe)
+		splitter.forget(filespaneframe)
+		splitter.forget(lookspaneframe)
+		nothing[5] =0
+
 def togglesidepane(*args):
 	global nothing
 	if nothing[0] == 0:
 		splitter.forget(filespaneframe)
 		nothing[0] = 1
 	else:
-		splitter.add(filespaneframe, before = root,width=200)
+		splitter.add(filespaneframe, before = root,width=220)
 		splitter.forget(lookspaneframe)
+		splitter.forget(runnerpaneframe)
+		splitter.forget(settipaneframe)
 		nothing[0] = 0
 
 def togglelookpane(*args):
@@ -158,13 +188,29 @@ def togglelookpane(*args):
 		splitter.forget(lookspaneframe)
 		nothing[2] = 1
 	else:
-		splitter.add(lookspaneframe, before = root,width=200)
+		splitter.add(lookspaneframe, before = root,width=220)
 		splitter.forget(filespaneframe)
+		splitter.forget(runnerpaneframe)
+		splitter.forget(settipaneframe)
 		nothing[2] =0
+
+def togglerunner(*args):
+	global nothing
+	if nothing[3] ==0:
+		splitter.forget(runnerpaneframe)
+		nothing[3] = 1
+	else:
+		splitter.add(runnerpaneframe, before = root,width=220)
+		splitter.forget(filespaneframe)
+		splitter.forget(lookspaneframe)
+		splitter.forget(settipaneframe)
+		nothing[3] =0
 
 def update(*args):
 	fdir = "/".join(openedfiles[curnote2()].split("/")[:-1])
 	line = note[curnote2()].index(tk.INSERT).split('.')
+	note[curnote2()]['font'] = data.font
+	note[curnote2()]['blockcursor'] = data.isBlockcursor
 	status['text'] = "Line {}, Column {}".format(line[0],line[1])
 	if fdir in openedfolders:
 		pass
@@ -178,7 +224,6 @@ def openthisfile(event):
 	item_id = event.widget.focus()
 	item = event.widget.item(item_id)
 	values = item['text']
-	print(values)
 	if os.path.isfile(values):
 		variable = curnote2()
 		filepath = values
@@ -192,15 +237,63 @@ def openthisfile(event):
 		notebook.tab(frames[variable], text = filepath.split("/")[-1])
 		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
-class lookspane(object):
+class Settings(object):
 	def __init__(self,master):
 		frame = tk.Frame(master)
-		curscheme = tk.StringVar()
+		
+		frame.pack(expand=True, fill='both')
+
+class runnerpane(object):
+	def __init__(self,master):
+		frame = tk.Frame(master)
+		self.button = ttk.Button(frame,text='Open CMD', command = lambda:opencmd())
+		self.rubbish0 = tk.Label(frame,text=' ')
+		self.rubbish0.grid()
+		self.l1 = tk.Label(frame,text='  ')
+		self.l1.grid(row=2,column=0)
+		currun = StringVar()
+		self.runners = ['This runner']
+		self.rns = tk.Menu(frame)
+		for i in getConfs():
+			if i != "@":
+				self.rns.add("command",label = i, command = lambda i=i: runnerConf(i))
+		self.chooserunner = ttk.Menubutton(frame, menu=self.rns,text = 'Run current file with')
+		self.chooserunner.grid(row=2,column=1, sticky='nsew')
+		self.rubbish1 = tk.Label(frame,text=' ')
+		self.rubbish1.grid()
+		self.button.grid(row=4,column=1)
+		self.rubbish2=tk.Label(frame,text=' ').grid()
+		self.newrunbtn = ttk.Button(frame,text = 'New Runner',command=lambda:newrunner()).grid(row=6,column=1)
+		frame.grid()
+
+class lookspane(object):
+	def configsave(self,*args):
+		if self.g.get() =='':
+			pass
+		else:
+			thisroot.title(self.g.get())
+			data.config['Looks']['WindowTitle'] = thisroot.title()
+		
+		if self.i.get() == '':
+			pass
+		else:
+			data.font = self.i.get()
+			data.config['Looks']['Font']['Font'] = data.font.split()[0]
+			data.config['Looks']['Font']['Size'] = data.font.split()[-1]
+
+		data.isBlockcursor = self.isBlockcursor.get()
+		data.config['Looks']['Font']['BlockCursor'] = self.isBlockcursor.get()
+		data.config['Looks']['Scheme'] = self.curscheme.get()
+
+	def __init__(self,master):
+		frame = tk.Frame(master)
+		self.curscheme = tk.StringVar()
+		self.curscheme.set(data.config['Looks']['Scheme'])
 		curscheme_values = ['Scheme']
 		for i in os.listdir(configuration['Looks']['Scheme']['Folder']):
 			if i.lower().endswith('.json'):
 				curscheme_values.append(i[:-5])
-		self.b = ttk.OptionMenu(frame, curscheme, *curscheme_values, command = lambda a='s':note[curnote2()].config(highlighter = configuration['Looks']['Scheme']['Folder']+curscheme.get()+'.json'))
+		self.b = ttk.OptionMenu(frame, self.curscheme, *curscheme_values, command = lambda a='s':note[curnote2()].config(highlighter = configuration['Looks']['Scheme']['Folder']+self.curscheme.get()+'.json'))
 		self.d = tk.Label(frame,text='Syntax')
 		self.d.grid(row=2,column=0)
 		self.e = tk.Label(frame,text='Scheme')
@@ -211,8 +304,32 @@ class lookspane(object):
 			languages.append(i)
 		self.c = ttk.OptionMenu(frame, cursyntax, *languages,command=lambda name="__main__": note[curnote2()].config(language=cursyntax.get()))
 		self.c.grid(row=2,column=1)
-		self.b.grid(row=3,column=1,sticky ="SE")
-		frame.grid(sticky='NSEW')
+		self.b.grid(row=3,column=1)
+		self.f = tk.Label(frame,text='Window Title')
+		self.f.grid(row=4,column=0)
+		self.g = ttk.Entry(frame,width=20)
+		self.g.grid(row=4,column=1)
+		self.h = tk.Label(frame,text='Font:')
+		self.curfont=StringVar()
+		self.curfont.set('{} {}'.format(configuration['Looks']['Font']['Font'],str(configuration['Looks']['Font']['Size'])))
+		self.j = tk.Label(frame,text='Font')
+		self.j.grid(row=5,column=0)
+		self.i = ttk.Entry(frame, text= self.curfont.get())
+		self.i.insert(0,self.curfont.get())
+		self.i.grid(row=5,column=1)
+		self.k = tk.Label(frame,text='Block Cursor')
+		self.k.grid(row=6,column=0)
+		self.isBlockcursor = BooleanVar()
+		self.isBlockcursor.set(data.config['Looks']['Font']['BlockCursor'])
+		self.j = ttk.Checkbutton(frame, variable=self.isBlockcursor)
+		self.j.grid(row=6, column=1, sticky='w')
+		rubbish1 = tk.Label(frame)
+		rubbish1.grid()
+
+		self.configconfirm = ttk.Button(frame,text="Save", command=self.configsave)
+		self.configconfirm.grid(row=8,column=0)
+		frame.grid(sticky='NEWS')
+
 
 class PathView(object):
 	def add(self,path):
@@ -220,7 +337,13 @@ class PathView(object):
 		self.insert_node('', abspath.split('\\')[-1], abspath)
 		self.tree.bind('<<TreeviewOpen>>', self.open_node)
 	def __init__(self, master, paths):
-		frame = tk.Frame(master)
+		main = tk.PanedWindow(master,handlesize=5,orient=VERTICAL)
+		main.pack(expand=True, fill='both')
+		tabspane = tk.Frame(main)
+		listbox = tk.Listbox(tabspane)
+		listbox.pack(expand=True,fill='both')
+		#tabspane.pack(fill=BOTH,expand=1)
+		frame = tk.Frame(main)
 		self.tree = ttk.Treeview(frame)
 		self.tree.bind("<Double-Button-1>", openthisfile)
 		self.nodes = dict()
@@ -257,18 +380,17 @@ def identify(extension):
 				return y
 
 try:
-	configs = open("runner.whirldata","r+")
+	configs = open("./DATA/runner.whirldata","r+")
 except FileNotFoundError:
-	configs = open("runner.whirldata", "x")
+	configs = open("./DATA/runner.whirldata", "x")
 
-datafile = open("runner.whirldata").read()
+datafile = open("./DATA/runner.whirldata").read()
 if datafile.isspace():
 	isConf = False
 else:
 	isConf = True
 
 def runnerConf(thisType):
-	print(thisType)
 	cmds = read(datafile)
 	command = cmds[thisType][1]
 	command = command.replace("$file",'"'+filepath+'"')
@@ -290,10 +412,10 @@ extension = {}
 
 def curnote2(*args):
 	variable = notebook.select()
-	if notebook.select().replace('.!panedwindow.!frame3.!notebook.!frame','') == "":
+	if notebook.select().replace('.!panedwindow.!frame4.!notebook.!frame','') == "":
 		variable = 0
 	else:
-		variable = int(notebook.select().replace('.!panedwindow.!frame3.!notebook.!frame',''))
+		variable = int(notebook.select().replace('.!panedwindow.!frame4.!notebook.!frame',''))
 		if variable == 0:
 			pass
 		else:
@@ -382,7 +504,7 @@ def newrunner():
 	def done():
 		print(entry.get())
 		thisconf = ""
-		configs.writelines(datafile+'\n{}::[["{}"]::"{}"]'.format(name.get(),extension[curnote()],entry.get()))
+		configs.write(datafile+'\n{}::[["{}"]::"{}"]'.format(name.get(),'","'.join(entriee.get().split(',')),entry.get()))
 		print(thisconf)
 		conf.quit()
 	def switchFunction():
@@ -391,29 +513,30 @@ def newrunner():
 		#else:
 			#switch.config(text='No Console')
 	def helpwindow():
-		a = tk.Toplevel(conf)
+		a = tk.Toplevel(root)
 		a.wm_attributes("-topmost",1)
 		a.resizable(False,False)
-		a.iconbitmap(r"favicon.v3.ico")
+		a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
 		a.title("Help")
 		helpvartxt = """
+command entry:
 Keywords:                               
-  $file                                 
+	$file                                 
 	the file path.                      
-  $base                                 
+	$base                                 
 	the base name of the file.          
-  $dir                                  
-	the folder where file is located.   
-		"""
+	$dir                                  
+	the folder where file is located.
+"""
 		b = Label(a,text = helpvartxt,font="Consolas")
-		b.pack(side = LEFT)
+		b.pack(side = 'left',expand=True)
 		a.mainloop()
 	conf = tk.Toplevel(root)
 	conf.wm_attributes("-topmost",1)
-	conf.iconbitmap(r"favicon.v3.ico")
+	conf.iconbitmap(r"./DATA/icons/favicon.v3.ico")
 	conf.resizable(False, False)
-	conf.title("Configure runner for {} files".format(extension[curnote()]))
-	conf.geometry("400x200")
+	conf.title("Configure new Runner")
+	conf.geometry("400x250")
 	gui = BooleanVar()
 	label = Label(conf,text = "Runner Name", font = "consolas")
 	name = ttk.Entry(conf,width = 25, font = "consolas")
@@ -425,12 +548,17 @@ Keywords:
 	entry.set_completion_list((u'$file', u'$base', u'$dir', u'/k'))
 	entry.place(x=150, y=50)
 	entry.insert(0, 'compiler -o $base $file')
+	label = Label(conf, text='Extensions',font='consolas')
+	label.place(x=10,y=100)
+	entriee = ttk.Entry(conf,width=25, font='Consolas')
+	entriee.place(x=150,y=95)
+	entriee.insert(0, '.py,.cpp,.h')
 	helptxt = Label(conf,text = "Do you need some", font = "consolas")
-	helptxt.place(x=60,y=100)
+	helptxt.place(x=60,y=150)
 	helpbtn = ttk.Button(conf,text = "Help",command = lambda:helpwindow())
-	helpbtn.place(x=220,y=100)
+	helpbtn.place(x=220,y=150)
 	submit = ttk.Button(conf,text = "Confirm & Create Runner", command = lambda:done())
-	submit.place(x=125,y=150)
+	submit.place(x=125,y=200)
 	conf.mainloop()
 
 def runconf(*args):
@@ -448,8 +576,8 @@ def runconf(*args):
 		pass
 	
 thisroot = tk.Tk()
-thisroot.iconbitmap(r"favicon.v3.ico")
-thisroot.title('WhirlEdit')
+thisroot.iconbitmap(r"./data/icons/favicon.v3.ico")
+thisroot.title(configuration['Looks']['WindowTitle'])
 windowWidth = 800
 windowHeight = 530
 screenWidth  = thisroot.winfo_screenwidth()
@@ -462,36 +590,40 @@ style = ttk.Style(thisroot)
 splitter = tk.PanedWindow(thisroot, handlesize=2, orient=tk.HORIZONTAL)
 splitter.pack(side='right',expand=True, fill='both')
 
-filespaneframe = tk.Frame(splitter, bg='#202020')
-lookspaneframe = tk.Frame(splitter,bg='#202020')
+filespaneframe = tk.Frame(splitter)
+lookspaneframe = tk.Frame(splitter)
+settipaneframe = tk.Frame(splitter)
 root = tk.Frame(splitter)
+runnerpaneframe = tk.Frame(splitter)
 framed = PathView(filespaneframe, paths=[])
+settingpane= Settings(settipaneframe)
 lookpane = lookspane(lookspaneframe)
+runpane= runnerpane(runnerpaneframe)
 
 toolbar = tk.Frame(thisroot)
 toolbar.pack()
 
-toolbar_menu_icon = PhotoImage(file = "./logo.sq.png", master = toolbar).subsample(6)
+toolbar_menu_icon = PhotoImage(file = "./DATA/icons/logo.sq.png", master = toolbar).subsample(6)
 toolbar_menu = tk.Button(toolbar,image=toolbar_menu_icon, borderwidth=0, command=about)
 toolbar_menu.pack()
 
-tools_files_icon = PhotoImage(file = "./icons/wh3.icons-files.png", master = toolbar)
+tools_files_icon = PhotoImage(file = "./DATA/icons/wh3.icons-files.png", master = toolbar)
 tools_files = tk.Button(toolbar,image=tools_files_icon, borderwidth=0, command=togglesidepane)
 tools_files.pack()
 
-tools_project_icon = PhotoImage(file = "./icons/wh3.icons-project.png", master = toolbar)
+tools_project_icon = PhotoImage(file = "./DATA/icons/wh3.icons-project.png", master = toolbar)
 tools_project = tk.Button(toolbar,image=tools_project_icon, borderwidth=0, command=None)
 tools_project.pack()
 
-tools_runner_icon = PhotoImage(file = "./icons/wh3.icons-runner.png", master = toolbar)
-tools_runner = tk.Button(toolbar,image=tools_runner_icon, borderwidth=0, command=None)
+tools_runner_icon = PhotoImage(file = "./DATA/icons/wh3.icons-runner.png", master = toolbar)
+tools_runner = tk.Button(toolbar,image=tools_runner_icon, borderwidth=0, command=togglerunner)
 tools_runner.pack()
 
-tools_settings_icon = PhotoImage(file = "./icons/wh3.icons-settings.png", master = toolbar)
-tools_settings = tk.Button(toolbar,image=tools_settings_icon, borderwidth=0, command=None)
+tools_settings_icon = PhotoImage(file = "./DATA/icons/wh3.icons-settings.png", master = toolbar)
+tools_settings = tk.Button(toolbar,image=tools_settings_icon, borderwidth=0, command=togglesetti)
 tools_settings.pack()
 
-tools_looks_icon = PhotoImage(file = "./icons/wh3.icons-looks.png", master = toolbar)
+tools_looks_icon = PhotoImage(file = "./DATA/icons/wh3.icons-looks.png", master = toolbar)
 tools_looks = tk.Button(toolbar,image=tools_looks_icon, borderwidth=0, command=togglelookpane)
 tools_looks.pack(side='bottom')
 
@@ -509,7 +641,7 @@ try:
 	themebase = read(open(tempfile.gettempdir()+"/whTheme/__init__.whirldata").read())['name'][0]
 	thisroot.tk.call('source', themefile)
 	style.theme_use(themebase)
-	default_highlight = configuration['Looks']['Scheme']['Folder']+configuration['Looks']['Scheme']['Default']
+	default_highlight = configuration['Looks']['Scheme']['Folder']+configuration['Looks']['Scheme']['Default']+'.json'
 except:
 	default_highlight = 'azure'
 
@@ -550,10 +682,10 @@ def getpos(*args):
 	line.set(pos)
 def curnote():
 	variable = notebook.select()
-	if notebook.select().replace('.!panedwindow.!frame3.!notebook.!frame','') == "":
+	if notebook.select().replace('.!panedwindow.!frame4.!notebook.!frame','') == "":
 		variable = 0
 	else:
-		variable = int(notebook.select().replace('.!panedwindow.!frame3.!notebook.!frame',''))
+		variable = int(notebook.select().replace('.!panedwindow.!frame4.!notebook.!frame',''))
 		if variable == 0:
 			pass
 		else:
@@ -631,7 +763,7 @@ def newTab(*args):
 	global var
 	global notebook
 	frames[var] = ttk.Frame(notebook)
-	note[var] = CodeEditor(frames[var],blockcursor=configuration['Looks']['Font']['BlockCursor'],width=40, height=100, language=configuration['Looks']['InitialSyntax'],autofocus=True, insertofftime=0, padx=0, pady=0, font = "{} {}".format(configuration['Looks']['Font']['Font'],configuration['Looks']['Font']['Size']), highlighter = default_highlight)
+	note[var] = CodeEditor(frames[var],blockcursor=configuration['Looks']['Font']['BlockCursor'],width=40, height=100, language=configuration['Looks']['InitialSyntax'],autofocus=True, insertofftime=0, padx=0, pady=0, font =data.font, highlighter = default_highlight)
 	note[var].pack(fill="both", expand=True)
 	font = tkfont.Font(font=note[var]['font'])
 	note[var].config(tabs=font.measure('    '))
@@ -686,7 +818,7 @@ Helpmenu = Menu(root, tearoff = 0)
 Helpmenu.add_command(label = "Website", command=lambda:webbrowser.open("http://Whirlpool-Programmer.github.io/software/WhirlEdit/"))
 Helpmenu.add_separator()
 Helpmenu.add_command(label = "Changelog", command=None)
-Helpmenu.add_command(label = "About",command = None)
+Helpmenu.add_command(label = "About",command = about)
 Menubar.add_cascade(label = "Help", menu=Helpmenu)
 
 root.grid_rowconfigure(0, weight=1) 
@@ -703,6 +835,9 @@ status = Label(root, text = line.get(), anchor='w')
 status.grid(sticky=E+S+W)
 extension[curnote()] = ".*"
 
+btn = ttk.Button(thisroot,text = 'NEW')
+btn.place(anchor='ne')
+
 notebook.bind("<Double-Button>", newTab)
 thisroot.bind(configuration['Key Bindings']['File']['Save'], saveFile)
 thisroot.bind(configuration['Key Bindings']['File']['New'], newTab)
@@ -712,6 +847,7 @@ thisroot.bind("<Control-F5>",runfile)
 thisroot.bind(configuration['Key Bindings']['Runner']['Run'],runconf)
 thisroot.bind(configuration['Key Bindings']['Runner']['Terminal'], opencmd)
 thisroot.bind_all("<Key>",update)
+thisroot.bind_all("<Button-1>",update)
 thisroot.bind(configuration['Key Bindings']['View']['Fullscreen'],fullscreen)
 thisroot.bind(configuration['Key Bindings']['View']['Project'],togglesidepane)
 thisroot.config(menu = Menubar)
@@ -720,6 +856,7 @@ thisroot.mainloop()
 #except:
 	#print("Something's wrong.. :|")
 configs.close()
+print(yaml.dump(data.config))
 try:
 	shutil.rmtree(tempfile.gettempdir()+'/whTheme')
 except:
