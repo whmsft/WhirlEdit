@@ -1,6 +1,6 @@
-# WhirlEdit 3 (code: Confetti)
+# WhirlEdit 3 (codename: Confetti)
 
-### v3 is on its way!
+### v3.1 is on its way!
 
 [![Run on Repl.it](https://repl.it/badge/github/Whirlpool-programmer/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
 [![Build Status](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml)
