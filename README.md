@@ -6,15 +6,24 @@
 [![Build Status](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml)
 
 v3 will include great features..
-some of them are 
+
+v3 development changelog:
 ```
-> multi-language syntax highlighting (thanks to @rdbende for tkcode)
-> Side bar
-- > Files
-- > Looks
-- > Settings
-> minor bug fix
-> and more to come..
+v3.1b0
+- Switch tabs with <Ctrl-Tab>
+- added settings bar
+- improved runner bar
+v3.0.5
+- Runner bar
+- started updating config
+- fixed many small bugs
+v3.0.3
+- bugfixes
+v3.0.2
+- added Looks bar
+v3.0.1
+- started project sidebar
+- added Folders side bar
 ```
 
 v3 as of now
