@@ -1,3 +1,9 @@
+
+'''
+note #1:
+python -m pystage.convert.sb3 <SB3 File> -l en -d <DIRECTORY>
+'''
+
 import os
 import yaml
 import tkinter as tk
@@ -137,7 +143,7 @@ def about(*args):
 		a.geometry("300x200")
 		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
 		b.pack()
-		c = Label(a,text='v3.0.940',font='Consolas 10')
+		c = Label(a,text='v3.1b0',font='Consolas 10')
 		c.pack()
 		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
 		d.pack()
@@ -207,11 +213,17 @@ def togglerunner(*args):
 		nothing[3] =0
 
 def update(*args):
+	thisfile = ""
+	if openedfiles[curnote2()] == '' or openedfiles[curnote2()] == ' ':
+		thisfile='None'
+	else:
+		thisfile = openedfiles[curnote2()]
+	root.update()
 	fdir = "/".join(openedfiles[curnote2()].split("/")[:-1])
 	line = note[curnote2()].index(tk.INSERT).split('.')
 	note[curnote2()]['font'] = data.font
 	note[curnote2()]['blockcursor'] = data.isBlockcursor
-	status['text'] = "Line {}, Column {}".format(line[0],line[1])
+	status['text'] = "File: {} | Line {}, Column {}".format(thisfile,line[0],line[1])
 	if fdir in openedfolders:
 		pass
 	else:
@@ -237,10 +249,41 @@ def openthisfile(event):
 		notebook.tab(frames[variable], text = filepath.split("/")[-1])
 		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
+def changekeybind(*args):
+	menu = tk.Toplevel(thisroot)
+	menu.mainloop()
+
 class Settings(object):
 	def __init__(self,master):
 		frame = tk.Frame(master)
-		
+		setlooks = ttk.LabelFrame(frame,text='Looks')
+		settheme = ttk.LabelFrame(setlooks,text='Theme')
+		setscheme = ttk.LabelFrame(setlooks,text='Scheme')
+
+		label01 = tk.Label(settheme,text='Folder:').pack()
+		self.themeFolder = ttk.Entry(settheme, font='Consolas',width=15)
+		self.themeFolder.pack(fill='x')
+		self.themeFolder.insert(0, data.config['Looks']['Theme']['Folder'])
+		label02 = ttk.Label(settheme,text='Use theme:').pack()
+		self.themeName =ttk.Entry(settheme,font='Consolas')
+		self.themeName.pack(fill='x')
+		self.themeName.insert(0, data.config['Looks']['Theme']['Default'])
+		label03 = ttk.Label(setscheme,text='Folder').pack()
+		self.schemeFolder= ttk.Entry(setscheme,font='Consolas')
+		self.schemeFolder.pack(fill='x')
+		self.schemeFolder.insert(0, data.config['Looks']['Scheme']['Folder'])
+
+		labelrubbish1 = tk.Label(frame,text=' ')
+
+		keybindchangebtnfor_settings = ttk.Button(frame,text='Change Key Bindings',command = lambda:changekeybind())
+
+		settheme.pack(side='top', fill='both')
+		setscheme.pack(side='top', fill='both')
+		setlooks.pack(side='top', fill='both')
+
+		labelrubbish1.pack()
+		keybindchangebtnfor_settings.pack(fill='x')
+
 		frame.pack(expand=True, fill='both')
 
 class runnerpane(object):
@@ -505,6 +548,7 @@ def newrunner():
 		print(entry.get())
 		thisconf = ""
 		configs.write(datafile+'\n{}::[["{}"]::"{}"]'.format(name.get(),'","'.join(entriee.get().split(',')),entry.get()))
+		#datafile += '\n{}::[["{}"]::"{}"]\n'.format(name.get(),'","'.join(entriee.get().split(',')),entry.get())
 		print(thisconf)
 		conf.quit()
 	def switchFunction():
@@ -770,6 +814,7 @@ def newTab(*args):
 	openedfiles[var] = ""
 	notebook.add(frames[var], text='Untitled')
 	extension[curnote()] = ".*"
+	note[var].bind('<Control-Tab>',nexttab)
 	note[var].bind("Control-a",select_all)
 	var = var + 1
 
@@ -825,14 +870,23 @@ root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1) 
 
 line = StringVar()
-line.set('ready to edit!')
+line.set('Ready to edit. Whirledit 3.1b0')
 
 notebook = ttk.Notebook(root)
 notebook.grid(sticky = N + E + S + W)
+
+def nexttab(*args):
+	print('hello')
+	try:
+		notebook.select(curnote2()+1)
+	except:
+		notebook.select(0)
+
 newTab()
 
 status = Label(root, text = line.get(), anchor='w')
-status.grid(sticky=E+S+W)
+status.grid(sticky=S+E+W)
+
 extension[curnote()] = ".*"
 
 btn = ttk.Button(thisroot,text = 'NEW')
@@ -848,6 +902,9 @@ thisroot.bind(configuration['Key Bindings']['Runner']['Run'],runconf)
 thisroot.bind(configuration['Key Bindings']['Runner']['Terminal'], opencmd)
 thisroot.bind_all("<Key>",update)
 thisroot.bind_all("<Button-1>",update)
+#<Control-Tab>
+thisroot.bind_all('<Control-Tab>',nexttab)
+notebook.bind_all('<Control-Tab>',nexttab)
 thisroot.bind(configuration['Key Bindings']['View']['Fullscreen'],fullscreen)
 thisroot.bind(configuration['Key Bindings']['View']['Project'],togglesidepane)
 thisroot.config(menu = Menubar)
