@@ -64,7 +64,9 @@ Guido Van Rossum
 stackoverflow
 - for helping me to deal with problems
 
-
+<br>
+<hr>
+<br>
 # And now something completely different:
 
 ![Joke](https://readme-jokes.vercel.app/api)
