@@ -1,22 +1,19 @@
 Looks:
-  WindowTitle: Whirledit Confetti
+  WindowTitle: WhirlEdit Confetti
   InitialSyntax: python
   Theme:
-    Default: azure-darker.whTheme
-    Folder: ./Themes/
+    Default: sun-valley-dark.whTheme
+    Folder: ./DATA/Themes/
   Scheme:
-    Default: azure-darker.json
-    Folder: ./Schemes/
+    Default: azure-modified
+    Folder: ./DATA/Schemes/
   Font:
     Font: Consolas
-    Size: 12
+    Size: '12'
     BlockCursor: False
+  Icons:
+    Theme: dark
 
-#NOTE:
-# It is case sensative.. (example: a != A)
-# so <Control-s> means "Control+s"
-# and <Control-S> means "Control+Shift+s"
-# this is because shift key capitalizes a letter
 Key Bindings:
   File:
     Save: <Control-s>
