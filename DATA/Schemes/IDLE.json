@@ -1,0 +1,91 @@
+{
+    "general":
+    {
+        "background":"#fff",
+        "foreground": "#000",
+        "insertbackground": "#0000ff",
+        "insertwidth": 1,
+        "inactiveselectbackground": "#000000",
+      "highlightthickness": 0,
+      "borderwidth": 0
+    },
+    
+    
+    "selection":
+    {
+        "background": "#000000",
+        "foreground": "gray"
+    },
+    
+
+    "syntax":
+    {
+        "Token.Text": "#ffffff",
+        "Token.Other": "#ffffff",
+        "Token.Eror": "#000",
+        "Token.Whitespace": "#eee",
+        "Token.Escape": "#ffffff",
+        
+        "Token.Keyword": "#ff7700",
+        "Token.Keyword.Constant": "#ff7700",
+        "Token.Keyword.Declaration": "#ff7700",
+        "Token.Keyword.Namespace": "#ff7700",
+        "Token.Keyword.Pseudo": "#ff7700",
+        "Token.Keyword.Reserved": "#ff7700",
+        "Token.Keyword.Type": "#ff7700",
+        "Token.Keyword.Other": "#ff7700",
+
+        "Token.Punctuation": "#000",
+
+        "Token.Name.Attribute": "#0000ff",
+        "Token.Name.Builtin": "#900090",
+        "Token.Name.Builtin.Pseudo": "#900090",
+        "Token.Name.Class": "#0000ff",
+        "Token.Name.Constant": "#f8f8f2",
+        "Token.Name.Decorator": "#007fff",
+        "Token.Name.Entity": "#0000ff",
+        "Token.Name.Exception": "#0000ff",
+        "Token.Name.Function": "#0000ff",
+        "Token.Name.Function.Magic": "#0000ff",
+        "Token.Name.Label": "#0000ff",
+        "Token.Name.Namespace": "#0000ff",
+        "Token.Name.Other": "#0000ff",
+        "Token.Name.Tag": "#0000ff",
+        "Token.Name.Variable": "#0000ff",
+        "Token.Name.Variable.Class": "#0000ff",
+        "Token.Name.Variable.Global": "#0000ff",
+        "Token.Name.Variable.Instance": "#0000ff",
+        "Token.Name.Variable.Magic": "#0000ff",
+
+        "Token.Operator": "#ff8058",
+        "Token.Operator.Word": "#d170e9",
+        
+        "Token.Comment": "#dd0000",
+        "Token.Comment.Hashbang": "#dd0000",
+        "Token.Comment.Multiline": "#dd0000",
+        "Token.Comment.Preproc": "#dd0000",
+        "Token.Comment.Preprocfile": "#dd0000",
+        "Token.Comment.Single": "#dd0000",
+        "Token.Comment.Special": "#dd0000",
+        
+        "Token.Literal.Number.Bin": "#000",
+        "Token.Literal.Number.Float": "#000",
+        "Token.Literal.Number.Hex": "#000",
+        "Token.Literal.Number.Integer": "#000",
+        "Token.Literal.Number.Integer.Long": "#000",
+        "Token.Literal.Number.Oct": "#000",
+
+        "Token.Literal.String.Affix": "#00aa00",
+        "Token.Literal.String.Char": "#00aa00",
+        "Token.Literal.String.Delimeter": "#00aa00",
+        "Token.Literal.String.Doc": "#00aa00",
+        "Token.Literal.String.Double": "#00aa00",
+        "Token.Literal.String.Escape": "#00aa00",
+        "Token.Literal.String.Heredoc": "#00aa00",
+        "Token.Literal.String.Interpol": "#00aa00",
+        "Token.Literal.String.Other": "#00aa00",
+        "Token.Literal.String.Regex": "#00aa00",
+        "Token.Literal.String.Single": "#00aa00",
+        "Token.Literal.String.Symbol": "#00aa00"
+    }
+}
