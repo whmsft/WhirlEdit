@@ -12,6 +12,9 @@ v3 will include great features..
 
 v3 development changelog:
 ```
+v3.1b3
+- A small rework to overall UI
+- Sidebar icons can now be themed
 v3.1b0
 - Switch tabs with <Ctrl-Tab>
 - added settings bar
