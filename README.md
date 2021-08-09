@@ -8,8 +8,6 @@
 [![GitHub license](https://img.shields.io/github/license/Whirlpool-programmer/whirledit.svg)](https://github.com/whirlpool-programmer/whirledit/blob/master/LICENSE)
 ![Last updated](https://badges.pufler.dev/updated/whirlpool-programmer/whirledit)
 
-![visits to this page](https://visitor-badge.glitch.me/badge?page_id=whirlpool-programmer.whirledit)
-
 v3 will include great features..
 
 v3 development changelog:
