@@ -28,7 +28,7 @@ v3.0.1
 
 v3 as of now
 
-![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/Capture.PNG)
+![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/Capture.JPG)
 
 ```
 CHANGELOG:
