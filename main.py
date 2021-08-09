@@ -18,37 +18,34 @@ from pygments.token import Comment, Name, String, Number, Punctuation
 
 configuration = """
 Looks:
-	WindowTitle: Whirledit Insiders
-	InitialSyntax: python
-	Theme:
-		Default: azure-darker.whTheme
-		Folder: ./DATA/Themes/
-	Scheme:
-		Default: azure-darker.json
-		Folder: ./DATA/Schemes/
-	Font:
-		Font: Consolas
-		Size: 12
-		BlockCursor: False
+  WindowTitle: WhirlEdit Confetti
+  InitialSyntax: python
+  Theme:
+    Default: sun-valley-dark.whTheme
+    Folder: ./DATA/Themes/
+  Scheme:
+    Default: azure-modified
+    Folder: ./DATA/Schemes/
+  Font:
+    Font: Consolas
+    Size: '12'
+    BlockCursor: False
+  Icons:
+    Theme: dark
 
-#NOTE:
-# It is case sensative.. (example: a != A)
-# so <Control-s> means "Control+s"
-# and <Control-S> means "Control+Shift+s"
-# this is because shift key capitalizes a letter
 Key Bindings:
-	File:
-		Save: <Control-s>
-		New: <Control-n>
-		Close: <Control-w>
-		Open: <Control-o>
-	View:
-		Fullscreen: <F11>
-		Project: <Control-Shift-f>
-	Runner:
-		Run: <F5>
-		Terminal: <Control-Shift-t>
-	"""
+  File:
+    Save: <Control-s>
+    New: <Control-n>
+    Close: <Control-w>
+    Open: <Control-o>
+  View:
+    Fullscreen: <F11>
+    Project: <Control-Shift-f>
+  Runner:
+    Run: <F5>
+    Terminal: <Control-Shift-t>
+"""
 
 try:
 	configuration = (yaml.safe_load(open('configure.yaml').read()))
@@ -168,7 +165,7 @@ def about(*args):
 		a.geometry("300x200")
 		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
 		b.pack()
-		c = Label(a,text='v3.1b1',font='Consolas 10')
+		c = Label(a,text='v3.1b3',font='Consolas 10')
 		c.pack()
 		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
 		d.pack()
@@ -919,7 +916,7 @@ btn.place(anchor='ne')
 
 if len(sys.argv) >= 2:
 	if os.path.isfile(sys.argv[1]):
-		pass
+		pass # THIS IS A TODO.. What is this? : open files from cmd example: whirledit.exe main.py (it will open main.py)
 
 notebook.bind("<Double-Button>", newTab)
 thisroot.bind(configuration['Key Bindings']['File']['Save'], saveFile)
