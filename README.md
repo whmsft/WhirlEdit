@@ -15,6 +15,12 @@ v3 development changelog:
 v3.1b3
 - A small rework to overall UI
 - Sidebar icons can now be themed
+- default theme is now Sun-valley-dark
+- New schemes
+  + IDLE
+  + ayu-dark
+  + ayu-mirage
+  + ayu-light
 v3.1b0
 - Switch tabs with <Ctrl-Tab>
 - added settings bar
