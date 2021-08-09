@@ -1,3 +1,9 @@
+
+'''
+note #1:
+python -m pystage.convert.sb3 <SB3 File> -l en -d <DIRECTORY>
+'''
+
 import os
 import yaml
 import tkinter as tk
@@ -122,7 +128,38 @@ highlight = {
 			}
 
 nothing = [1,0,1,1,1,1]
-
+def updatethis():
+	global marquee
+	while True:
+		try:
+			marquee['text'] = 'CREDITS\n\n\n'
+			time.sleep(0.3)
+			marquee['text'] = '\n\n\nGuido Van Rossum'
+			time.sleep(0.3)
+			marquee['text'] = '\n\nGuido Van Rossum\n\tPython'
+			time.sleep(0.3)
+			marquee['text'] = '\nGuido Van Rossum\n\tPython\n\nrdbende'
+			time.sleep(0.3)
+			marquee['text'] = 'Guido Van Rossum      \n\tPython            \n\nrdbende               '
+			time.sleep(0.3)
+			marquee['text'] = '\tPython            \n\nrdbende               \n\ttkcode            \n\tGUI help          '
+			time.sleep(0.3)
+			marquee['text'] = '\nrdbende               \n\ttkcode            \n\tGUI help          '
+			time.sleep(0.3)
+			marquee['text'] = 'rdbende               \n\ttkcode            \n\tGUI help          \n\nStackoverflow        '
+			time.sleep(0.3)
+			marquee['text'] = '\ttkcode            \n\tGUI help          \n\nStackoverflow        \n\thelp'
+			time.sleep(0.3)
+			marquee['text'] = '\tGUI help          \n\nStackoverflow        \n\thelp'
+			time.sleep(0.3)
+			marquee['text'] = 'Stackoverflow        \n\thelp'
+			time.sleep(0.3)
+			marquee['text'] = '\thelp'
+			time.sleep(0.3)
+			marquee['text'] = ' '
+			time.sleep(0.3)
+		except:
+			break
 def about(*args):
 	def nothingmod(pos,val, ext=None):
 		nothing[pos] = val
@@ -137,12 +174,13 @@ def about(*args):
 		a.geometry("300x200")
 		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
 		b.pack()
-		c = Label(a,text='v3.1b0',font='Consolas 10')
+		c = Label(a,text='v3.1b1',font='Consolas 10')
 		c.pack()
 		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
 		d.pack()
 		e = ttk.Button(a,text='GitHub', command=lambda:webbrowser.open('http://Whirlpool-Programmer.github.io/software/WhirlEdit'))
 		e.pack()
+		tk.Label(a,text=' ').pack()
 		a.protocol("WM_DELETE_WINDOW", lambda:nothingmod(4,1))
 	else:
 		pass
@@ -641,29 +679,29 @@ runpane= runnerpane(runnerpaneframe)
 toolbar = tk.Frame(thisroot)
 toolbar.pack()
 
-toolbar_menu_icon = PhotoImage(file = "./DATA/icons/logo.sq.png", master = toolbar).subsample(6)
-toolbar_menu = tk.Button(toolbar,image=toolbar_menu_icon, borderwidth=0, command=about)
-toolbar_menu.pack()
+toolbar_menu_icon = PhotoImage(file = "./DATA/icons/logo-mini.png", master = toolbar).subsample(5)
+toolbar_menu = ttk.Button(toolbar,image=toolbar_menu_icon, command=about)
+toolbar_menu.pack(fill='x')
 
-tools_files_icon = PhotoImage(file = "./DATA/icons/wh3.icons-files.png", master = toolbar)
-tools_files = tk.Button(toolbar,image=tools_files_icon, borderwidth=0, command=togglesidepane)
-tools_files.pack()
+tools_files_icon = PhotoImage(file = "./DATA/icons/{}/wh3.icons-files.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+tools_files = ttk.Button(toolbar,image=tools_files_icon, command=togglesidepane)
+tools_files.pack(fill='x')
 
-tools_project_icon = PhotoImage(file = "./DATA/icons/wh3.icons-project.png", master = toolbar)
-tools_project = tk.Button(toolbar,image=tools_project_icon, borderwidth=0, command=None)
-tools_project.pack()
+tools_project_icon = PhotoImage(file = "./DATA/icons/{}/wh3.icons-edit.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+tools_project = ttk.Button(toolbar,image=tools_project_icon, command=None)
+tools_project.pack(fill='x')
 
-tools_runner_icon = PhotoImage(file = "./DATA/icons/wh3.icons-runner.png", master = toolbar)
-tools_runner = tk.Button(toolbar,image=tools_runner_icon, borderwidth=0, command=togglerunner)
-tools_runner.pack()
+tools_runner_icon = PhotoImage(file = "./DATA/icons/{}/wh3.icons-runner.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+tools_runner = ttk.Button(toolbar,image=tools_runner_icon, command=togglerunner)
+tools_runner.pack(fill='x')
 
-tools_settings_icon = PhotoImage(file = "./DATA/icons/wh3.icons-settings.png", master = toolbar)
-tools_settings = tk.Button(toolbar,image=tools_settings_icon, borderwidth=0, command=togglesetti)
-tools_settings.pack()
+tools_settings_icon = PhotoImage(file = "./DATA/icons/{}/wh3.icons-settings.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+tools_settings = ttk.Button(toolbar,image=tools_settings_icon, command=togglesetti)
+tools_settings.pack(fill='x')
 
-tools_looks_icon = PhotoImage(file = "./DATA/icons/wh3.icons-looks.png", master = toolbar)
-tools_looks = tk.Button(toolbar,image=tools_looks_icon, borderwidth=0, command=togglelookpane)
-tools_looks.pack(side='bottom')
+tools_looks_icon = PhotoImage(file = "./DATA/icons/{}/wh3.icons-looks.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+tools_looks = ttk.Button(toolbar,image=tools_looks_icon, command=togglelookpane)
+tools_looks.pack(fill='x')
 
 splitter.add(root)
 try:
@@ -870,7 +908,6 @@ notebook = ttk.Notebook(root)
 notebook.grid(sticky = N + E + S + W)
 
 def nexttab(*args):
-	print('hello')
 	try:
 		notebook.select(curnote2()+1)
 	except:
@@ -885,6 +922,10 @@ extension[curnote()] = ".*"
 
 btn = ttk.Button(thisroot,text = 'NEW')
 btn.place(anchor='ne')
+
+if len(sys.argv) >= 2:
+	if os.path.isfile(sys.argv[1]):
+		pass
 
 notebook.bind("<Double-Button>", newTab)
 thisroot.bind(configuration['Key Bindings']['File']['Save'], saveFile)
