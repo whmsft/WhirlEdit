@@ -1,11 +1,11 @@
 # WhirlEdit 3 (codename: Confetti)
 
-# I have to make a VERY BIG decision... 
-the thing is that,
-v3 has been for sooo long a pre-release...
-and it won't seem good to make v3.1 instead of v3.0
-so shall i skip v3.1 and create v4.0 instead?
-# help me [here](https://linkto.run/p/B8RKH1QY)
+
+
+
+
+
+
 
 ### v3.1 is on its way!
 
