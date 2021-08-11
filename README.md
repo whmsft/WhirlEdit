@@ -1,12 +1,5 @@
 # WhirlEdit 3 (codename: Confetti)
 
-
-
-
-
-
-
-
 ### v3.1 is on its way!
 
 [![Run on Repl.it](https://repl.it/badge/github/Whirlpool-programmer/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
@@ -19,6 +12,11 @@ v3 will include great features..
 
 v3 development changelog:
 ```
+v3.1b4
+- new icon themes:
+  + light
+  + fluent.dark
+  + fluent.light
 v3.1b3
 - A small rework to overall UI
 - Sidebar icons can now be themed
