@@ -1,3 +1,12 @@
+
+'''
+note #1:
+python -m pystage.convert.sb3 <SB3 File> -l en -d <DIRECTORY>
+
+note #2:
+9/9
+'''
+
 import os
 import yaml
 import tkinter as tk
@@ -45,10 +54,10 @@ Key Bindings:
   Runner:
     Run: <F5>
     Terminal: <Control-Shift-t>
-"""
+	"""
 
 try:
-	configuration = (yaml.safe_load(open('configure.yaml').read()))
+	configuration = (yaml.safe_load(open('./DATA/configure.yaml').read()))
 except Exception:
 	pass
 
@@ -165,7 +174,7 @@ def about(*args):
 		a.geometry("300x200")
 		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
 		b.pack()
-		c = Label(a,text='v3.1b3',font='Consolas 10')
+		c = Label(a,text='v3.1b1',font='Consolas 10')
 		c.pack()
 		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
 		d.pack()
@@ -263,12 +272,12 @@ def openthisfile(event):
 		variable = curnote2()
 		filepath = values
 		extension[curnote()] = "."+filepath.split(".")[-1]
-		note[variable].delete(1.0,END) 
-		file = open(filepath,"r") 
+		note[variable].delete(1.0,END)
+		file = open(filepath,"r")
 		note[curnote2()]["language"] = identify(filepath.split("/")[-1])
-		note[variable].insert(1.0,file.read()) 
+		note[variable].insert(1.0,file.read())
 		openedfiles[variable] = filepath
-		file.close() 
+		file.close()
 		notebook.tab(frames[variable], text = filepath.split("/")[-1])
 		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
@@ -339,7 +348,7 @@ class lookspane(object):
 		else:
 			thisroot.title(self.g.get())
 			data.config['Looks']['WindowTitle'] = thisroot.title()
-		
+
 		if self.i.get() == '':
 			pass
 		else:
@@ -491,7 +500,7 @@ def curnote2(*args):
 class AutocompleteEntry(ttk.Entry):
 	"""
 	Subclass of tkinter.Entry that features autocompletion.
-	To enable autocompletion use set_completion_list(list) to define 
+	To enable autocompletion use set_completion_list(list) to define
 	a list of possible strings to hit.
 	To cycle through hits use down and up arrow keys.
 	"""
@@ -501,7 +510,7 @@ class AutocompleteEntry(ttk.Entry):
 		self._hits = []
 		self._hit_index = 0
 		self.position = 0
-		self.bind('<KeyRelease>', self.handle_keyrelease)               
+		self.bind('<KeyRelease>', self.handle_keyrelease)
 
 	def autocomplete(self, delta=0):
 		"""autocomplete the Entry, delta may be 0/1/-1 to cycle through possible hits"""
@@ -526,11 +535,11 @@ class AutocompleteEntry(ttk.Entry):
 			self.delete(0,tkinter.END)
 			self.insert(0,self._hits[self._hit_index])
 			self.select_range(self.position,tkinter.END)
-						
+
 	def handle_keyrelease(self, event):
 		"""event handler for the keyrelease event on this widget"""
 		if event.keysym == "BackSpace":
-			self.delete(self.index(tkinter.INSERT), tkinter.END) 
+			self.delete(self.index(tkinter.INSERT), tkinter.END)
 			self.position = self.index(tkinter.END)
 		if event.keysym == "Left":
 			if self.position < self.index(tkinter.END): # delete the selection
@@ -587,12 +596,12 @@ def newrunner():
 		a.title("Help")
 		helpvartxt = """
 command entry:
-Keywords:                               
-	$file                                 
-	the file path.                      
-	$base                                 
-	the base name of the file.          
-	$dir                                  
+Keywords:
+	$file
+	the file path.
+	$base
+	the base name of the file.
+	$dir
 	the folder where file is located.
 """
 		b = Label(a,text = helpvartxt,font="Consolas")
@@ -641,7 +650,7 @@ def runconf(*args):
 		runnerConf(thisext)
 	except:
 		pass
-	
+
 thisroot = tk.Tk()
 thisroot.iconbitmap(r"./data/icons/favicon.v3.ico")
 thisroot.title(configuration['Looks']['WindowTitle'])
@@ -776,7 +785,7 @@ def saveAsFile(*args):
 		extension[curnote()] = "."+filepath.split(".")[-1]
 		variable = int(curnote2())
 		text = note[variable].get(1.0, tk.END)
-		output_file.write(text) 
+		output_file.write(text)
 	notebook.tab(frames[int(curnote2())], text = filepath.split("/")[-1])
 	note[curnote2()].config(language=identify(filepath.split("/")[-1]))
 	note[curnote2()].update()
@@ -796,7 +805,7 @@ def saveFile(*args):
 			output_file.write(text)
 			notebook.tab(frames[variable], text = openedfiles[curnote2()].split("/")[-1])
 
-def openFile(*self): 
+def openFile(*self):
 	#print("a",notebook.select())
 	global extension
 	global filepath
@@ -804,17 +813,17 @@ def openFile(*self):
 		newTab()
 
 	variable = curnote2()
-	filepath = askopenfilename(defaultextension="*.*", filetypes=[("All Files","*.*"), ("Text","*.txt"),("Ada"         ,[".adb",".ads"]),("Bash"        ,[".sh",".csh",".ksh"]),("Batch"       ,[".cmd",".bat"]),("BrainFuck"   ,[".b",".bf"]),("C"           ,[".c",".h"]),("CMake"       ,[]),("CoffeeScript",[".coffee",".cson",".litcoffee"]),("CSS"         ,[".css"]),("C#"          ,[".cs",".csx"]),("C++"         ,[".cc",".cpp",".cxx",".c++",".hh",".hpp",".hxx",".h++"]),("Dart"        ,[".dart"]),("Delphi"      ,[".dpr"]),("Dockerfile"  ,[".dockerfile"]),("Fortran"     ,[".f",".f90",".f95"]),("Go"          ,[".go"]),("Groovy"      ,[".groovy",".gvy",".gradle",".jenkinsfile"]),("Haskell"     ,[".hs",".lhs"]),("HTML"        ,[".htm",".html"]),("Java"        ,[".java",".jar",".class"]),("JavaScript"  ,[".js",".cjs",".mjs"]),("JSON"        ,[".json"]),("Kotlin"      ,[".kt",".kts",".ktm"]),("Lisp"        ,[".lsp"]),("Lua"         ,[".lua"]),("MATLAB"      ,[".m",".p",".mex",".mat",".fig",".mlx",".mlapp",".mltbx"]),("MakeFile"    ,[".make",".makefile"]),("NASM"        ,[".asm",".asm",".inc"]),("Objective-C" ,[".mm"]),("Perl"        ,[".plx",".pl",".pm",".xs",".t",".pod"]),("PHP"         ,[".php",".phar",".phtml",".pht",".phps"]),("Powershell"  ,[".ps1"]),("Python"      ,[".py",".pyi",".pyc",".pyd",".pyo",".pyw",".pyz"]),("R"           ,[".r",".rdata",".rds",".rda"]),("Ruby"        ,[".rb"]),("Swift"       ,[".swift"]),("SQL"         ,[".sql"]),("Tcl"         ,[".tcl",".tbc"]),("TypeScript"  ,[".ts",".tsx"]),("Vim"         ,[".vim"]),("YAML"        ,[".yaml",".yml"]),]) 
-	if filepath == "": 
+	filepath = askopenfilename(defaultextension="*.*", filetypes=[("All Files","*.*"), ("Text","*.txt"),("Ada"         ,[".adb",".ads"]),("Bash"        ,[".sh",".csh",".ksh"]),("Batch"       ,[".cmd",".bat"]),("BrainFuck"   ,[".b",".bf"]),("C"           ,[".c",".h"]),("CMake"       ,[]),("CoffeeScript",[".coffee",".cson",".litcoffee"]),("CSS"         ,[".css"]),("C#"          ,[".cs",".csx"]),("C++"         ,[".cc",".cpp",".cxx",".c++",".hh",".hpp",".hxx",".h++"]),("Dart"        ,[".dart"]),("Delphi"      ,[".dpr"]),("Dockerfile"  ,[".dockerfile"]),("Fortran"     ,[".f",".f90",".f95"]),("Go"          ,[".go"]),("Groovy"      ,[".groovy",".gvy",".gradle",".jenkinsfile"]),("Haskell"     ,[".hs",".lhs"]),("HTML"        ,[".htm",".html"]),("Java"        ,[".java",".jar",".class"]),("JavaScript"  ,[".js",".cjs",".mjs"]),("JSON"        ,[".json"]),("Kotlin"      ,[".kt",".kts",".ktm"]),("Lisp"        ,[".lsp"]),("Lua"         ,[".lua"]),("MATLAB"      ,[".m",".p",".mex",".mat",".fig",".mlx",".mlapp",".mltbx"]),("MakeFile"    ,[".make",".makefile"]),("NASM"        ,[".asm",".asm",".inc"]),("Objective-C" ,[".mm"]),("Perl"        ,[".plx",".pl",".pm",".xs",".t",".pod"]),("PHP"         ,[".php",".phar",".phtml",".pht",".phps"]),("Powershell"  ,[".ps1"]),("Python"      ,[".py",".pyi",".pyc",".pyd",".pyo",".pyw",".pyz"]),("R"           ,[".r",".rdata",".rds",".rda"]),("Ruby"        ,[".rb"]),("Swift"       ,[".swift"]),("SQL"         ,[".sql"]),("Tcl"         ,[".tcl",".tbc"]),("TypeScript"  ,[".ts",".tsx"]),("Vim"         ,[".vim"]),("YAML"        ,[".yaml",".yml"]),])
+	if filepath == "":
 		filepath = None
-	else: 
+	else:
 		extension[curnote()] = "."+filepath.split(".")[-1]
-		note[variable].delete(1.0,END) 
-		file = open(filepath,"r") 
+		note[variable].delete(1.0,END)
+		file = open(filepath,"r")
 		note[curnote2()]["language"] = identify(filepath.split("/")[-1])
-		note[variable].insert(1.0,file.read()) 
+		note[variable].insert(1.0,file.read())
 		openedfiles[variable] = filepath
-		file.close() 
+		file.close()
 		notebook.tab(frames[variable], text = filepath.split("/")[-1])
 		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
@@ -889,11 +898,11 @@ Helpmenu.add_command(label = "Changelog", command=None)
 Helpmenu.add_command(label = "About",command = about)
 Menubar.add_cascade(label = "Help", menu=Helpmenu)
 
-root.grid_rowconfigure(0, weight=1) 
-root.grid_columnconfigure(0, weight=1) 
+root.grid_rowconfigure(0, weight=1)
+root.grid_columnconfigure(0, weight=1)
 
 line = StringVar()
-line.set('Ready to edit. Whirledit 3.1b0')
+line.set('Ready to edit. Whirledit 3.1b3')
 
 notebook = ttk.Notebook(root)
 notebook.grid(sticky = N + E + S + W)
@@ -916,7 +925,15 @@ btn.place(anchor='ne')
 
 if len(sys.argv) >= 2:
 	if os.path.isfile(sys.argv[1]):
-		pass # THIS IS A TODO.. What is this? : open files from cmd example: whirledit.exe main.py (it will open main.py)
+		extension[curnote()] = "."+filepath.split(".")[-1]
+		note[variable].delete(1.0,END)
+		file = open(filepath,"r")
+		note[curnote2()]["language"] = identify(filepath.split("/")[-1])
+		note[variable].insert(1.0,file.read())
+		openedfiles[variable] = filepath
+		file.close()
+		notebook.tab(frames[variable], text = filepath.split("/")[-1])
+		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
 notebook.bind("<Double-Button>", newTab)
 thisroot.bind(configuration['Key Bindings']['File']['Save'], saveFile)
