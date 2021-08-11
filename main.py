@@ -1,12 +1,3 @@
-
-'''
-note #1:
-python -m pystage.convert.sb3 <SB3 File> -l en -d <DIRECTORY>
-
-note #2:
-9/9
-'''
-
 import os
 import yaml
 import tkinter as tk
