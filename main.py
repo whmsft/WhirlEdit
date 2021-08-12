@@ -1,7 +1,3 @@
-'''
-pyinstaller --noconfirm --onefile --windowed --icon "E:/Programming/WhirlEdit/favicon.v3.ico" --name "Whirledit.beta"  "E:/Programming/WhirlEdit/environment/v3.Insider.py"
-'''
-
 import os
 import yaml
 import tkinter as tk
@@ -829,6 +825,7 @@ def newTab(*args):
 	note[var].bind('<Control-Tab>',nexttab)
 	note[var].bind("Control-a",select_all)
 	var = var + 1
+	nexttab()
 
 Menubar = Menu(root, activebackground ="#0084FF", activeforeground = "#FFFFFF",bg = "#FFFFFF", fg = "#0084FF" ,font = "consolas")
 
