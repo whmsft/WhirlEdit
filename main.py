@@ -1,3 +1,7 @@
+'''
+pyinstaller --noconfirm --onefile --windowed --icon "E:/Programming/WhirlEdit/favicon.v3.ico" --name "Whirledit.beta"  "E:/Programming/WhirlEdit/environment/v3.Insider.py"
+'''
+
 import os
 import yaml
 import tkinter as tk
@@ -5,6 +9,7 @@ from tkinter import ttk
 from tkinter import *
 import tkinter.font as tkfont
 from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter.messagebox import askyesnocancel
 import subprocess
 import shutil
 import tkinter
@@ -119,38 +124,7 @@ highlight = {
 			}
 
 nothing = [1,0,1,1,1,1]
-def updatethis():
-	global marquee
-	while True:
-		try:
-			marquee['text'] = 'CREDITS\n\n\n'
-			time.sleep(0.3)
-			marquee['text'] = '\n\n\nGuido Van Rossum'
-			time.sleep(0.3)
-			marquee['text'] = '\n\nGuido Van Rossum\n\tPython'
-			time.sleep(0.3)
-			marquee['text'] = '\nGuido Van Rossum\n\tPython\n\nrdbende'
-			time.sleep(0.3)
-			marquee['text'] = 'Guido Van Rossum      \n\tPython            \n\nrdbende               '
-			time.sleep(0.3)
-			marquee['text'] = '\tPython            \n\nrdbende               \n\ttkcode            \n\tGUI help          '
-			time.sleep(0.3)
-			marquee['text'] = '\nrdbende               \n\ttkcode            \n\tGUI help          '
-			time.sleep(0.3)
-			marquee['text'] = 'rdbende               \n\ttkcode            \n\tGUI help          \n\nStackoverflow        '
-			time.sleep(0.3)
-			marquee['text'] = '\ttkcode            \n\tGUI help          \n\nStackoverflow        \n\thelp'
-			time.sleep(0.3)
-			marquee['text'] = '\tGUI help          \n\nStackoverflow        \n\thelp'
-			time.sleep(0.3)
-			marquee['text'] = 'Stackoverflow        \n\thelp'
-			time.sleep(0.3)
-			marquee['text'] = '\thelp'
-			time.sleep(0.3)
-			marquee['text'] = ' '
-			time.sleep(0.3)
-		except:
-			break
+
 def about(*args):
 	def nothingmod(pos,val, ext=None):
 		nothing[pos] = val
@@ -165,7 +139,7 @@ def about(*args):
 		a.geometry("300x200")
 		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
 		b.pack()
-		c = Label(a,text='v3.1b1',font='Consolas 10')
+		c = Label(a,text='v3.1b4',font='Consolas 10')
 		c.pack()
 		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
 		d.pack()
@@ -414,9 +388,12 @@ class PathView(object):
 		self.tree.bind("<Double-Button-1>", openthisfile)
 		self.nodes = dict()
 		ysb = ttk.Scrollbar(frame, orient='vertical', command=self.tree.yview)
-		self.tree.configure(yscroll=ysb.set)
+		xsb = ttk.Scrollbar(frame, orient='horizontal', command=self.tree.xview)
+		self.tree.configure(yscrollcommand=ysb.set,xscrollcommand=xsb.set)
 		self.tree.heading('#0', text='FOLDERS', anchor='w')
+		self.tree.column('#0',width=50,minwidth=100)
 		ysb.pack(side=RIGHT,fill=Y)
+		xsb.pack(side=BOTTOM,fill=X)
 		self.tree.pack(fill=BOTH,expand=1)
 		frame.pack(fill=BOTH,expand=1)
 		for path in paths:
@@ -761,7 +738,19 @@ def curnote():
 
 def deltab(*args):
 	try:
-		notebook.forget(notebook.select())
+		if openedfiles[curnote2()] == "":
+			notebook.forget(notebook.select())
+		else:
+			if open(openedfiles[curnote2()]).read() == note[curnote2()].get(1.0,END):
+				notebook.forget(notebook.select())
+			else:
+				optionchoosen = askyesnocancel("Save file?", "Save unsaved changes in {}".format(notebook.tab(notebook.select(), "text")))
+				if optionchoosen == True:
+					saveFile()
+				elif optionchoosen == False:
+					notebook.forget(notebook.select())
+				else:
+					pass
 	except:
 		thisroot.quit()
 
@@ -812,7 +801,7 @@ def openFile(*self):
 		note[variable].delete(1.0,END)
 		file = open(filepath,"r")
 		note[curnote2()]["language"] = identify(filepath.split("/")[-1])
-		note[variable].insert(1.0,file.read())
+		note[variable].insert(1.0,file.read()[:-1])
 		openedfiles[variable] = filepath
 		file.close()
 		notebook.tab(frames[variable], text = filepath.split("/")[-1])
@@ -937,6 +926,9 @@ thisroot.bind(configuration['Key Bindings']['Runner']['Terminal'], opencmd)
 thisroot.bind_all("<Key>",update)
 thisroot.bind_all("<Button-1>",update)
 #<Control-Tab>
+def special(*args):
+	print(str(len(note[curnote2()].get(1.0,END)))+'::'+str(len(open(openedfiles[curnote2()]).read())))
+thisroot.bind("<Control-Q>",special)
 thisroot.bind_all('<Control-Tab>',nexttab)
 notebook.bind_all('<Control-Tab>',nexttab)
 thisroot.bind(configuration['Key Bindings']['View']['Fullscreen'],fullscreen)
