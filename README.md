@@ -12,6 +12,10 @@ v3 will include great features..
 
 v3 development changelog:
 ```
+v3.1b5
+- prompt on unsaved changes
+- newtab automatically switches to newly created tab
+- open file from cmd with this syntax: "whirledit.exe file.ext"
 v3.1b4
 - new icon themes:
   + light
