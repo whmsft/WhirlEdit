@@ -135,7 +135,7 @@ def about(*args):
 		a.geometry("300x200")
 		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
 		b.pack()
-		c = Label(a,text='v3.1b4',font='Consolas 10')
+		c = Label(a,text='v3.1b5',font='Consolas 10')
 		c.pack()
 		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
 		d.pack()
@@ -923,9 +923,6 @@ thisroot.bind(configuration['Key Bindings']['Runner']['Terminal'], opencmd)
 thisroot.bind_all("<Key>",update)
 thisroot.bind_all("<Button-1>",update)
 #<Control-Tab>
-def special(*args):
-	print(str(len(note[curnote2()].get(1.0,END)))+'::'+str(len(open(openedfiles[curnote2()]).read())))
-thisroot.bind("<Control-Q>",special)
 thisroot.bind_all('<Control-Tab>',nexttab)
 notebook.bind_all('<Control-Tab>',nexttab)
 thisroot.bind(configuration['Key Bindings']['View']['Fullscreen'],fullscreen)
