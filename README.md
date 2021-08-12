@@ -19,8 +19,10 @@ v3.1b5
 v3.1b4
 - new icon themes:
   + light
-  + fluent.dark
-  + fluent.light
+  + fluent
+    - light
+    - dark
+    - don't ask why runner icon is a shoe!
 v3.1b3
 - A small rework to overall UI
 - Sidebar icons can now be themed
