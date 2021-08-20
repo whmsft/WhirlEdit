@@ -19,7 +19,7 @@ v3.1-alpha1:
 - removed 2 icon themes
   + light (to be replaced by legacy.light)
   + dark  (to be replaced by legacy.dark)
-- 
+- A very BIG rework to widget placing
 v3.1b5
 - prompt on unsaved changes
 - newtab automatically switches to newly created tab
