@@ -131,7 +131,7 @@ def about(*args):
 		a.geometry("300x200")
 		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
 		b.pack()
-		c = Label(a,text='v3.1b7',font='Consolas 10')
+		c = Label(a,text='v3.1-alpha1',font='Consolas 10')
 		c.pack()
 		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
 		d.pack()
