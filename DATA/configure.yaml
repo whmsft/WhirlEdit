@@ -1,28 +1,23 @@
+Key Bindings:
+  Close: <Control-w>
+  Fullscreen: <F11>
+  New: <Control-n>
+  Open: <Control-o>
+  Open cmd: <Control-Shift-t>
+  Run: <F5>
+  Save: <Control-s>
 Looks:
-  WindowTitle: WhirlEdit Confetti
+  Font:
+    BlockCursor: true
+    Font: Consolas
+    Size: '12'
+  Icons:
+    Theme: fluent.dark
   InitialSyntax: python
+  Scheme:
+    Default: monokai++
+    Folder: ./DATA/Schemes/
   Theme:
     Default: sun-valley-dark.whTheme
     Folder: ./DATA/Themes/
-  Scheme:
-    Default: azure-modified
-    Folder: ./DATA/Schemes/
-  Font:
-    Font: Consolas
-    Size: '12'
-    BlockCursor: False
-  Icons:
-    Theme: dark
-
-Key Bindings:
-  File:
-    Save: <Control-s>
-    New: <Control-n>
-    Close: <Control-w>
-    Open: <Control-o>
-  View:
-    Fullscreen: <F11>
-    Project: <Control-Shift-f>
-  Runner:
-    Run: <F5>
-    Terminal: <Control-Shift-t>
+  WindowTitle: WhirlEdit Confetti Insiders
