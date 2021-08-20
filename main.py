@@ -14,8 +14,6 @@ import tempfile
 from wday import read
 from tkcode import CodeEditor
 import webbrowser
-from pymgments.lexer import RegexLexer
-from pygments.token import Comment, Name, String, Number, Punctuation
 
 configuration = """
 Looks:
@@ -48,27 +46,6 @@ try:
 	configuration = (yaml.safe_load(open('./DATA/configure.yaml').read()))
 except Exception:
 	configuration = (yaml.safe_load(configuration))
-
-
-class WhirlDataLexer(RegexLexer):
-	name = 'WhirlData'
-	aliases = ['whirldata']
-	filenames = ['*.whirldata', "*.wday", "*.whdata"]
-	tokens = {
-			'root': [
-					(r'~.*$', Comment.Single),
-					(r'@.*$', Name.Other),
-					(r'\'\$.*\'', Name.Variable),
-					(r'\d(?:_?\d)*', Number.Integer),
-					(r'::', Punctuation),
-					(r'\'.*\'', String.Single),
-			],
-	}
-
-class data:
-	font = "{} {}".format(configuration['Looks']['Font']['Font'],configuration['Looks']['Font']['Size'])
-	isBlockcursor = configuration['Looks']['Font']['BlockCursor']
-	config = configuration
 
 openedfolders = []
 
