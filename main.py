@@ -14,7 +14,7 @@ import tempfile
 from wday import read
 from tkcode import CodeEditor
 import webbrowser
-from pygments.lexer import RegexLexer
+from pymgments.lexer import RegexLexer
 from pygments.token import Comment, Name, String, Number, Punctuation
 
 configuration = """
@@ -32,26 +32,22 @@ Looks:
     Size: '12'
     BlockCursor: False
   Icons:
-    Theme: dark
+    Theme: fluent.dark
 
 Key Bindings:
-  File:
-    Save: <Control-s>
-    New: <Control-n>
-    Close: <Control-w>
-    Open: <Control-o>
-  View:
-    Fullscreen: <F11>
-    Project: <Control-Shift-f>
-  Runner:
-    Run: <F5>
-    Terminal: <Control-Shift-t>
-	"""
-
+  Save: <Control-s>
+  New: <Control-n>
+  Close: <Control-w>
+  Open: <Control-o>
+  Fullscreen: <F11>
+  Project: <Control-Shift-f>
+  Run: <F5>
+  Terminal: <Control-Shift-t>
+"""
 try:
 	configuration = (yaml.safe_load(open('./DATA/configure.yaml').read()))
 except Exception:
-	pass
+	configuration = (yaml.safe_load(configuration))
 
 
 class WhirlDataLexer(RegexLexer):
@@ -135,7 +131,7 @@ def about(*args):
 		a.geometry("300x200")
 		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
 		b.pack()
-		c = Label(a,text='v3.1b5',font='Consolas 10')
+		c = Label(a,text='v3.1b7',font='Consolas 10')
 		c.pack()
 		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
 		d.pack()
@@ -195,7 +191,7 @@ def togglelookpane(*args):
 
 def togglerunner(*args):
 	global nothing
-	if nothing[3] ==0:
+	if nothing[3] == 0:
 		splitter.forget(runnerpaneframe)
 		nothing[3] = 1
 	else:
@@ -243,7 +239,26 @@ def openthisfile(event):
 		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
 def changekeybind(*args):
+	def getit__(index):
+		print(theselabels[i]['text']+"::"+theseentries[i].get())
+		data.config['Key Bindings'][theselabels[i]['text']] = theseentries[i].get()
 	menu = tk.Toplevel(thisroot)
+	theseframes  = {}
+	theselabels  = {}
+	theseentries = {}
+	listss = []
+	for i in data.config['Key Bindings'].keys():
+		listss.append(i)
+	for i in range(len(data.config['Key Bindings'].keys())):
+		theseframes[i] = ttk.Frame(menu)
+		theselabels[i] = tk.Label(theseframes[i],text=listss[i])
+		theselabels[i].pack(side='left',fill='x')
+		theseentries[i] = ttk.Entry(theseframes[i])
+		theseentries[i].insert(0, data.config['Key Bindings'][listss[i]])
+		theseentries[i].pack(side='right',fill='x')
+		theseentries[i].bind('<Return>',lambda i=i:getit__(i))
+		theseframes[i].pack(fill='x',side='bottom')
+	tk.Label(menu,text='Info: Change the entries and hit <Return> to save').pack()
 	menu.mainloop()
 
 class Settings(object):
@@ -319,13 +334,13 @@ class lookspane(object):
 
 		data.isBlockcursor = self.isBlockcursor.get()
 		data.config['Looks']['Font']['BlockCursor'] = self.isBlockcursor.get()
-		data.config['Looks']['Scheme'] = self.curscheme.get()
+		data.config['Looks']['Scheme']['Default'] = self.curscheme.get()
 
 	def __init__(self,master):
 		frame = tk.Frame(master)
 		self.curscheme = tk.StringVar()
-		self.curscheme.set(data.config['Looks']['Scheme'])
-		curscheme_values = ['Scheme']
+		self.curscheme.set(data.config['Looks']['Scheme']['Default'])
+		curscheme_values = [data.config['Looks']['Scheme']['Default']]
 		for i in os.listdir(configuration['Looks']['Scheme']['Folder']):
 			if i.lower().endswith('.json'):
 				curscheme_values.append(i[:-5])
@@ -451,10 +466,10 @@ extension = {}
 
 def curnote2(*args):
 	variable = notebook.select()
-	if notebook.select().replace('.!panedwindow.!frame4.!notebook.!frame','') == "":
+	if notebook.select().replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
 		variable = 0
 	else:
-		variable = int(notebook.select().replace('.!panedwindow.!frame4.!notebook.!frame',''))
+		variable = int(notebook.select().replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame',''))
 		if variable == 0:
 			pass
 		else:
@@ -619,7 +634,7 @@ thisroot = tk.Tk()
 thisroot.iconbitmap(r"./data/icons/favicon.v3.ico")
 thisroot.title(configuration['Looks']['WindowTitle'])
 windowWidth = 800
-windowHeight = 530
+windowHeight = 550
 screenWidth  = thisroot.winfo_screenwidth()
 screenHeight = thisroot.winfo_screenheight()
 xCordinate = int((screenWidth/2) - (windowWidth/2))
@@ -627,47 +642,75 @@ yCordinate = int((screenHeight/2) - (windowHeight/2))
 thisroot.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
 style = ttk.Style(thisroot)
 
-splitter = tk.PanedWindow(thisroot, handlesize=2, orient=tk.HORIZONTAL)
-splitter.pack(side='right',expand=True, fill='both')
+status = Label(thisroot, text = 'Ready to edit | WhirlEdit 3.1b7', anchor='w')
+status.pack(side='bottom',anchor='s',fill='x')
+
+rootframe = tk.PanedWindow(thisroot,handlesize=5,orient=tk.VERTICAL)
+rootframe.pack(side='right',expand=True,fill='both')
+splitter = tk.PanedWindow(rootframe, handlesize=5, orient=tk.HORIZONTAL)
+#splitter.pack(side='top',expand=True,fill='both')
 
 filespaneframe = tk.Frame(splitter)
 lookspaneframe = tk.Frame(splitter)
 settipaneframe = tk.Frame(splitter)
-root = tk.Frame(splitter)
+
+toolbar = ttk.Frame(thisroot)
+toolbar.pack(fill='both',expand=True)
+toolbar_menu_icon = PhotoImage(file = "./DATA/icons/logo-mini.png", master = toolbar).subsample(5)
+toolbar_menu = ttk.Button(toolbar,image=toolbar_menu_icon, command=about)
+toolbar_menu.pack(fill='x')
+tools_files_icon = PhotoImage(file = "./DATA/icons/{}/sidebar.files.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+tools_files = ttk.Button(toolbar,image=tools_files_icon, command=togglesidepane)
+tools_files.pack(fill='x')
+tools_project_icon = PhotoImage(file = "./DATA/icons/{}/sidebar.edit.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+tools_project = ttk.Button(toolbar,image=tools_project_icon, command=None)
+tools_project.pack(fill='x')
+tools_runner_icon = PhotoImage(file = "./DATA/icons/{}/sidebar.runner.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+tools_runner = ttk.Button(toolbar,image=tools_runner_icon, command=togglerunner)
+tools_runner.pack(fill='x')
+tools_looks_icon = PhotoImage(file = "./DATA/icons/{}/sidebar.looks.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+tools_looks = ttk.Button(toolbar,image=tools_looks_icon, command=togglelookpane)
+tools_looks.pack(fill='x')
+tools_settings_icon = PhotoImage(file = "./DATA/icons/{}/sidebar.settings.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+tools_settings = ttk.Button(toolbar,image=tools_settings_icon, command=togglesetti)
+tools_settings.pack(side='bottom',anchor='s',fill='x')
+
+root = tk.PanedWindow(splitter,orient=VERTICAL,handlesize=5)
+
 runnerpaneframe = tk.Frame(splitter)
 framed = PathView(filespaneframe, paths=[])
 settingpane= Settings(settipaneframe)
 lookpane = lookspane(lookspaneframe)
 runpane= runnerpane(runnerpaneframe)
 
-toolbar = tk.Frame(thisroot)
-toolbar.pack()
-
-toolbar_menu_icon = PhotoImage(file = "./DATA/icons/logo-mini.png", master = toolbar).subsample(5)
-toolbar_menu = ttk.Button(toolbar,image=toolbar_menu_icon, command=about)
-toolbar_menu.pack(fill='x')
-
-tools_files_icon = PhotoImage(file = "./DATA/icons/{}/wh3.icons-files.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
-tools_files = ttk.Button(toolbar,image=tools_files_icon, command=togglesidepane)
-tools_files.pack(fill='x')
-
-tools_project_icon = PhotoImage(file = "./DATA/icons/{}/wh3.icons-edit.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
-tools_project = ttk.Button(toolbar,image=tools_project_icon, command=None)
-tools_project.pack(fill='x')
-
-tools_runner_icon = PhotoImage(file = "./DATA/icons/{}/wh3.icons-runner.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
-tools_runner = ttk.Button(toolbar,image=tools_runner_icon, command=togglerunner)
-tools_runner.pack(fill='x')
-
-tools_settings_icon = PhotoImage(file = "./DATA/icons/{}/wh3.icons-settings.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
-tools_settings = ttk.Button(toolbar,image=tools_settings_icon, command=togglesetti)
-tools_settings.pack(fill='x')
-
-tools_looks_icon = PhotoImage(file = "./DATA/icons/{}/wh3.icons-looks.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
-tools_looks = ttk.Button(toolbar,image=tools_looks_icon, command=togglelookpane)
-tools_looks.pack(fill='x')
-
 splitter.add(root)
+
+def termreset():
+	global tkterminal
+	tkterminal.pack_forget()
+	tkterminal = Terminal(termframe, font='Consolas 10')
+	tkterminal.basename = "$"
+	tkterminal.shell = True
+	tkterminal.pack(side='left',anchor='w',fill='both',expand=True)
+
+from tkterminal import *
+termframe = ttk.Frame()
+termicon_clear = PhotoImage(file= './DATA/icons/{}/terminal.clear.png'.format(data.config['Looks']['Icons']['Theme']))
+termicon_reset = PhotoImage(file= './DATA/icons/{}/terminal.restart.png'.format(data.config['Looks']['Icons']['Theme']))
+tkterminal = Terminal(termframe, font='Consolas 10')
+tkterminal.basename = "$"
+tkterminal.shell = True
+newframe = tk.Frame(termframe)
+newframe.pack(side='right',anchor='ne')
+tkterm_clear = tk.Button(newframe,anchor='n',image=termicon_clear, relief='flat', command=lambda:tkterminal.clear())
+tkterm_reset = tk.Button(newframe,anchor='n',image=termicon_reset, relief='flat', command=lambda:termreset())
+tkterm_clear.pack(side='top')
+tkterm_reset.pack(side='top')
+tkterminal.pack(side='left',anchor='w',fill='both',expand=True)
+termframe.pack(fill='both',expand=True)
+rootframe.add(splitter,height=450)
+root.add(termframe,height=200)
+
 try:
 	themefolder = configuration['Looks']['Theme']['Folder']
 	listdir = os.listdir(themefolder)
@@ -722,10 +765,10 @@ def getpos(*args):
 	line.set(pos)
 def curnote():
 	variable = notebook.select()
-	if notebook.select().replace('.!panedwindow.!frame4.!notebook.!frame','') == "":
+	if notebook.select().replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
 		variable = 0
 	else:
-		variable = int(notebook.select().replace('.!panedwindow.!frame4.!notebook.!frame',''))
+		variable = int(notebook.select().replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame',''))
 		if variable == 0:
 			pass
 		else:
@@ -878,9 +921,6 @@ Menubar.add_cascade(label = "Help", menu=Helpmenu)
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 
-line = StringVar()
-line.set('Ready to edit. Whirledit 3.1b3')
-
 notebook = ttk.Notebook(root)
 notebook.grid(sticky = N + E + S + W)
 
@@ -891,9 +931,6 @@ def nexttab(*args):
 		notebook.select(0)
 
 newTab()
-
-status = Label(root, text = line.get(), anchor='w')
-status.grid(sticky=S+E+W)
 
 extension[curnote()] = ".*"
 
@@ -912,28 +949,30 @@ if len(sys.argv) >= 2:
 		notebook.tab(frames[variable], text = filepath.split("/")[-1])
 		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
+root.add(notebook,before=termframe,height=450)
+
 notebook.bind("<Double-Button>", newTab)
-thisroot.bind(configuration['Key Bindings']['File']['Save'], saveFile)
-thisroot.bind(configuration['Key Bindings']['File']['New'], newTab)
-thisroot.bind(configuration['Key Bindings']['File']['Close'], deltab)
-thisroot.bind(configuration['Key Bindings']['File']['Open'], openFile)
-thisroot.bind("<Control-F5>",runfile)
-thisroot.bind(configuration['Key Bindings']['Runner']['Run'],runconf)
-thisroot.bind(configuration['Key Bindings']['Runner']['Terminal'], opencmd)
+thisroot.bind_all(configuration['Key Bindings']['Save'], saveFile)
+thisroot.bind_all(configuration['Key Bindings']['New'], newTab)
+thisroot.bind_all(configuration['Key Bindings']['Close'], deltab)
+thisroot.bind_all(configuration['Key Bindings']['Open'], openFile)
+thisroot.bind_all("<Control-F5>",runfile)
+thisroot.bind_all(configuration['Key Bindings']['Run'],runconf)
+thisroot.bind_all(configuration['Key Bindings']['Open cmd'], opencmd)
 thisroot.bind_all("<Key>",update)
 thisroot.bind_all("<Button-1>",update)
 #<Control-Tab>
+def special(*args):
+	print(str(len(note[curnote2()].get(1.0,END)))+'::'+str(len(open(openedfiles[curnote2()]).read())))
+thisroot.bind("<Control-Q>",special)
 thisroot.bind_all('<Control-Tab>',nexttab)
 notebook.bind_all('<Control-Tab>',nexttab)
-thisroot.bind(configuration['Key Bindings']['View']['Fullscreen'],fullscreen)
-thisroot.bind(configuration['Key Bindings']['View']['Project'],togglesidepane)
-thisroot.config(menu = Menubar)
-#try:
+thisroot.bind_all(configuration['Key Bindings']['Fullscreen'],fullscreen)
+thisroot.config(menu = None)#Menubar)
 thisroot.mainloop()
-#except:
-	#print("Something's wrong.. :|")
 configs.close()
 print(yaml.dump(data.config))
+open('./DATA/configure.yaml','w+').write(yaml.dump(data.config))
 try:
 	shutil.rmtree(tempfile.gettempdir()+'/whTheme')
 except:
