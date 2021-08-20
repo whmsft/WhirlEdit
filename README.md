@@ -8,10 +8,18 @@
 [![GitHub license](https://img.shields.io/github/license/Whirlpool-programmer/whirledit.svg)](https://github.com/whirlpool-programmer/whirledit/blob/master/LICENSE)
 [![CodeFactor](https://www.codefactor.io/repository/github/whirlpool-programmer/whirledit/badge/main)](https://www.codefactor.io/repository/github/whirlpool-programmer/whirledit/overview/main)
 
-v3 will include great features..
-
 v3 development changelog:
 ```
+v3.1-alpha1:
+- Introducing the terminal..
+- A little bit of rework to icon naming
+- added 2 more icons
+  + terminal.clear
+  + terminal.reset
+- removed 2 icon themes
+  + light (to be replaced by legacy.light)
+  + dark  (to be replaced by legacy.dark)
+- 
 v3.1b5
 - prompt on unsaved changes
 - newtab automatically switches to newly created tab
