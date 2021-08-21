@@ -25,7 +25,7 @@ Looks:
     Default: sun-valley-dark.whTheme
     Folder: ./DATA/Themes/
   Scheme:
-    Default: azure-modified
+    Default: monokai++
     Folder: ./DATA/Schemes/
   Font:
     Font: Consolas
@@ -942,7 +942,6 @@ thisroot.bind_all(configuration['Key Bindings']['Run'],runconf)
 thisroot.bind_all(configuration['Key Bindings']['Open cmd'], opencmd)
 thisroot.bind_all("<Key>",update)
 thisroot.bind_all("<Button-1>",update)
-#<Control-Tab>
 def special(*args):
 	print(str(len(note[curnote2()].get(1.0,END)))+'::'+str(len(open(openedfiles[curnote2()]).read())))
 thisroot.bind("<Control-Q>",special)
@@ -952,7 +951,6 @@ thisroot.bind_all(configuration['Key Bindings']['Fullscreen'],fullscreen)
 thisroot.config(menu = None)#Menubar)
 thisroot.mainloop()
 configs.close()
-print(yaml.dump(data.config))
 open('./DATA/configure.yaml','w+').write(yaml.dump(data.config))
 try:
 	shutil.rmtree(tempfile.gettempdir()+'/whTheme')
