@@ -15,6 +15,8 @@ from wday import read
 from tkcode import CodeEditor
 import webbrowser
 
+__version__ = 'v3.1-alpha-1'
+
 configuration = """
 Looks:
   WindowTitle: WhirlEdit Confetti
@@ -94,6 +96,12 @@ highlight = {
 
 nothing = [1,0,1,1,1,1]
 
+
+class data:
+  font = "{} {}".format(configuration['Looks']['Font']['Font'],configuration['Looks']['Font']['Size'])
+  isBlockcursor = configuration['Looks']['Font']['BlockCursor']
+  config = configuration
+
 def about(*args):
 	def nothingmod(pos,val, ext=None):
 		nothing[pos] = val
@@ -108,7 +116,7 @@ def about(*args):
 		a.geometry("300x200")
 		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
 		b.pack()
-		c = Label(a,text='v3.1-alpha1',font='Consolas 10')
+		c = Label(a,text=__version__,font='Consolas 10')
 		c.pack()
 		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
 		d.pack()
@@ -536,7 +544,6 @@ def newrunner():
 		print(entry.get())
 		thisconf = ""
 		configs.write(datafile+'\n{}::[["{}"]::"{}"]'.format(name.get(),'","'.join(entriee.get().split(',')),entry.get()))
-		#datafile += '\n{}::[["{}"]::"{}"]\n'.format(name.get(),'","'.join(entriee.get().split(',')),entry.get())
 		print(thisconf)
 		conf.quit()
 	def switchFunction():
@@ -619,13 +626,12 @@ yCordinate = int((screenHeight/2) - (windowHeight/2))
 thisroot.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
 style = ttk.Style(thisroot)
 
-status = Label(thisroot, text = 'Ready to edit | WhirlEdit 3.1b7', anchor='w')
+status = Label(thisroot, text = 'Ready to edit | WhirlEdit {}'.format(__version__), anchor='w')
 status.pack(side='bottom',anchor='s',fill='x')
 
 rootframe = tk.PanedWindow(thisroot,handlesize=5,orient=tk.VERTICAL)
 rootframe.pack(side='right',expand=True,fill='both')
 splitter = tk.PanedWindow(rootframe, handlesize=5, orient=tk.HORIZONTAL)
-#splitter.pack(side='top',expand=True,fill='both')
 
 filespaneframe = tk.Frame(splitter)
 lookspaneframe = tk.Frame(splitter)
@@ -791,7 +797,6 @@ def saveFile(*args):
 	global notebook
 	global extension
 	variable = int(curnote2())
-
 	if openedfiles[variable] == "":
 		saveAsFile()
 	else:
@@ -802,7 +807,6 @@ def saveFile(*args):
 			notebook.tab(frames[variable], text = openedfiles[curnote2()].split("/")[-1])
 
 def openFile(*self):
-	#print("a",notebook.select())
 	global extension
 	global filepath
 	if notebook.select() == "":
