@@ -6,7 +6,6 @@
 [![Build Status](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![GitHub license](https://img.shields.io/github/license/Whirlpool-programmer/whirledit.svg)](https://github.com/whirlpool-programmer/whirledit/blob/master/LICENSE)
-[![CodeFactor](https://www.codefactor.io/repository/github/whirlpool-programmer/whirledit/badge/main)](https://www.codefactor.io/repository/github/whirlpool-programmer/whirledit/overview/main)
 [![Created..](https://badges.pufler.dev/created/Whirlpool-Programmer/Whirledit)]() 
 [![Size](https://shields.io/github/repo-size/Whirlpool-Programmer/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whirlpool-programmer/whirledit)]()
