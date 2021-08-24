@@ -8,7 +8,7 @@
 [![GitHub license](https://img.shields.io/github/license/Whirlpool-programmer/whirledit.svg)](https://github.com/whirlpool-programmer/whirledit/blob/master/LICENSE)
 [![CodeFactor](https://www.codefactor.io/repository/github/whirlpool-programmer/whirledit/badge/main)](https://www.codefactor.io/repository/github/whirlpool-programmer/whirledit/overview/main)
 [![Created..](https://badges.pufler.dev/created/Whirlpool-Programmer/Whirledit)]() 
-
+[![Size](https://shields.io/github/repo-size/Whirlpool-Programmer/whirledit)]()
 
 v3 development changelog:
 ```
