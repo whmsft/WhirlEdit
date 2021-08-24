@@ -9,6 +9,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/whirlpool-programmer/whirledit/badge/main)](https://www.codefactor.io/repository/github/whirlpool-programmer/whirledit/overview/main)
 [![Created..](https://badges.pufler.dev/created/Whirlpool-Programmer/Whirledit)]() 
 [![Size](https://shields.io/github/repo-size/Whirlpool-Programmer/whirledit)]()
+[![How much i wrote!](https://shields.io/tokei/lines/github/whirlpool-programmer/whirledit)]()
 
 v3 development changelog:
 ```
