@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 import tkinter.font as tkfont
-from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter.filedialog import askopenfilename, asksaveasfilename, askdirectory
 from tkinter.messagebox import askyesnocancel
 import subprocess
 import shutil
@@ -15,34 +15,34 @@ from wday import read
 from tkcode import CodeEditor
 import webbrowser
 
-__version__ = 'v3.1-alpha-1'
+__version__ = 'v3.1-alpha-2'
 
 configuration = """
 Looks:
-  WindowTitle: WhirlEdit Confetti
-  InitialSyntax: python
-  Theme:
-    Default: sun-valley-dark.whTheme
-    Folder: ./DATA/Themes/
-  Scheme:
-    Default: monokai++
-    Folder: ./DATA/Schemes/
-  Font:
-    Font: Consolas
-    Size: '12'
-    BlockCursor: False
-  Icons:
-    Theme: fluent.dark
+	WindowTitle: WhirlEdit Confetti
+	InitialSyntax: python
+	Theme:
+		Default: sun-valley-dark.whTheme
+		Folder: ./DATA/Themes/
+	Scheme:
+		Default: monokai++
+		Folder: ./DATA/Schemes/
+	Font:
+		Font: Consolas
+		Size: '12'
+		BlockCursor: False
+	Icons:
+		Theme: fluent.dark
 
 Key Bindings:
-  Save: <Control-s>
-  New: <Control-n>
-  Close: <Control-w>
-  Open: <Control-o>
-  Fullscreen: <F11>
-  Project: <Control-Shift-f>
-  Run: <F5>
-  Terminal: <Control-Shift-t>
+	Save: <Control-s>
+	New: <Control-n>
+	Close: <Control-w>
+	Open: <Control-o>
+	Fullscreen: <F11>
+	Project: <Control-Shift-f>
+	Run: <F5>
+	Terminal: <Control-Shift-t>
 """
 try:
 	configuration = (yaml.safe_load(open('./DATA/configure.yaml').read()))
@@ -98,9 +98,9 @@ nothing = [1,0,1,1,1,1]
 
 
 class data:
-  font = "{} {}".format(configuration['Looks']['Font']['Font'],configuration['Looks']['Font']['Size'])
-  isBlockcursor = configuration['Looks']['Font']['BlockCursor']
-  config = configuration
+	font = "{} {}".format(configuration['Looks']['Font']['Font'],configuration['Looks']['Font']['Size'])
+	isBlockcursor = configuration['Looks']['Font']['BlockCursor']
+	config = configuration
 
 def about(*args):
 	def nothingmod(pos,val, ext=None):
@@ -246,6 +246,47 @@ def changekeybind(*args):
 	tk.Label(menu,text='Info: Change the entries and hit <Return> to save').pack()
 	menu.mainloop()
 
+class ToolTip(object):
+
+    def __init__(self, widget):
+        self.widget = widget
+        self.tipwindow = None
+        self.id = None
+        self.x = self.y = 0
+
+    def showtip(self, text):
+        "Display text in tooltip window"
+        self.text = text
+        if self.tipwindow or not self.text:
+            return
+        x, y, cx, cy = self.widget.bbox("insert")
+        x = x + self.widget.winfo_rootx() + 57
+        y = y + cy + self.widget.winfo_rooty() +27
+        self.tipwindow = tw = Toplevel(self.widget)
+        tw.wm_overrideredirect(1)
+        tw.wm_geometry("+%d+%d" % (x, y))
+        label = Label(tw, text=self.text, justify=LEFT,
+        							fg="#101010",
+                      background="#ffffe0", relief=SOLID, borderwidth=1,
+                      font=("Consolas", "8", "normal"))
+        label.pack(ipadx=1)
+
+    def hidetip(self):
+        tw = self.tipwindow
+        self.tipwindow = None
+        if tw:
+            tw.destroy()
+
+def CreateToolTip(widget, text):
+    toolTip = ToolTip(widget)
+    def enter(event):
+        toolTip.showtip(text)
+    def leave(event):
+        toolTip.hidetip()
+    widget.bind('<Enter>', enter)
+    widget.bind('<Leave>', leave)
+
+
 class Settings(object):
 	def __init__(self,master):
 		frame = tk.Frame(master)
@@ -283,6 +324,7 @@ class runnerpane(object):
 	def __init__(self,master):
 		frame = tk.Frame(master)
 		self.button = ttk.Button(frame,text='Open CMD', command = lambda:opencmd())
+		CreateToolTip(self.button, text='open Windows Command Processor (cmd)\nin the current directory')
 		self.rubbish0 = tk.Label(frame,text=' ')
 		self.rubbish0.grid()
 		self.l1 = tk.Label(frame,text='  ')
@@ -294,12 +336,15 @@ class runnerpane(object):
 			if i != "@":
 				self.rns.add("command",label = i, command = lambda i=i: runnerConf(i))
 		self.chooserunner = ttk.Menubutton(frame, menu=self.rns,text = 'Run current file with')
+		CreateToolTip(self.chooserunner, text="Choose the runner to run\nthe currently opened\ntab..")
 		self.chooserunner.grid(row=2,column=1, sticky='nsew')
 		self.rubbish1 = tk.Label(frame,text=' ')
 		self.rubbish1.grid()
 		self.button.grid(row=4,column=1)
 		self.rubbish2=tk.Label(frame,text=' ').grid()
-		self.newrunbtn = ttk.Button(frame,text = 'New Runner',command=lambda:newrunner()).grid(row=6,column=1)
+		self.newrunbtn = ttk.Button(frame,text = 'New Runner',command=lambda:newrunner())
+		self.newrunbtn.grid(row=6,column=1)
+		CreateToolTip(self.newrunbtn, text='Create a new runner \nand save to\nrunners file')
 		frame.grid()
 
 class lookspane(object):
@@ -331,6 +376,7 @@ class lookspane(object):
 				curscheme_values.append(i[:-5])
 		self.b = ttk.OptionMenu(frame, self.curscheme, *curscheme_values, command = lambda a='s':note[curnote2()].config(highlighter = configuration['Looks']['Scheme']['Folder']+self.curscheme.get()+'.json'))
 		self.d = tk.Label(frame,text='Syntax')
+		CreateToolTip(self.b, text='Select The color-scheme\nto use..')
 		self.d.grid(row=2,column=0)
 		self.e = tk.Label(frame,text='Scheme')
 		self.e.grid(row=3,column=0)
@@ -339,25 +385,29 @@ class lookspane(object):
 		for i in highlight.keys():
 			languages.append(i)
 		self.c = ttk.OptionMenu(frame, cursyntax, *languages,command=lambda name="__main__": note[curnote2()].config(language=cursyntax.get()))
-		self.c.grid(row=2,column=1)
-		self.b.grid(row=3,column=1)
+		self.c.grid(row=2,column=1, pady=5)
+		CreateToolTip(self.c, text='Select the programming language\nsyntax to use')
+		self.b.grid(row=3,column=1,pady=5)
 		self.f = tk.Label(frame,text='Window Title')
-		self.f.grid(row=4,column=0)
+		self.f.grid(row=4,column=0,pady=5)
 		self.g = ttk.Entry(frame,width=20)
-		self.g.grid(row=4,column=1)
+		CreateToolTip(self.g, text='Add a new window title')
+		self.g.grid(row=4,column=1,pady=5)
 		self.h = tk.Label(frame,text='Font:')
 		self.curfont=StringVar()
 		self.curfont.set('{} {}'.format(configuration['Looks']['Font']['Font'],str(configuration['Looks']['Font']['Size'])))
 		self.j = tk.Label(frame,text='Font')
-		self.j.grid(row=5,column=0)
+		self.j.grid(row=5,column=0,pady=5)
 		self.i = ttk.Entry(frame, text= self.curfont.get())
+		CreateToolTip(self.i, text='Write the font to be used\nsyntax: "NAME SIZE"')
 		self.i.insert(0,self.curfont.get())
-		self.i.grid(row=5,column=1)
+		self.i.grid(row=5,column=1, pady=5)
 		self.k = tk.Label(frame,text='Block Cursor')
-		self.k.grid(row=6,column=0)
+		self.k.grid(row=6,column=0, pady=5)
 		self.isBlockcursor = BooleanVar()
 		self.isBlockcursor.set(data.config['Looks']['Font']['BlockCursor'])
 		self.j = ttk.Checkbutton(frame, variable=self.isBlockcursor)
+		CreateToolTip(self.j, text='Shall you use Block Cursor\ninstead of normal "thin" one?')
 		self.j.grid(row=6, column=1, sticky='w')
 		rubbish1 = tk.Label(frame)
 		rubbish1.grid()
@@ -368,6 +418,9 @@ class lookspane(object):
 
 
 class PathView(object):
+	def add_openfold(self):
+		the_Folder = askdirectory()
+		self.add(the_Folder)
 	def add(self,path):
 		abspath = os.path.abspath(path)
 		self.insert_node('', abspath.split('\\')[-1], abspath)
@@ -380,16 +433,27 @@ class PathView(object):
 		listbox.pack(expand=True,fill='both')
 		#tabspane.pack(fill=BOTH,expand=1)
 		frame = tk.Frame(main)
+		nf=tk.Frame(frame)
+		self.newfilebtn = tk.Button(nf, relief='flat', image=projectBar_icon_newfile, borderwidth=0, command= lambda:newTab())
+		self.newfilebtn.grid(row=0, column=0, ipady=5, ipadx=5)
+		self.newfoldbtn = tk.Button(nf,relief='flat', image=projectBar_icon_newfold, borderwidth=0, command = lambda:self.add_openfold())
+		self.newfoldbtn.grid(row=0, column=1, ipady=5, ipadx=5)
+		self.closetabtn = tk.Button(nf, relief='flat', image=projectBar_icon_closefi,borderwidth=0, command=lambda:deltab())
+		self.closetabtn.grid(row=0, column=2, ipady=5, ipadx=5)
+		CreateToolTip(self.newfilebtn, text='New Tab')
+		CreateToolTip(self.newfoldbtn, text='Add Folder')
+		CreateToolTip(self.closetabtn, text='Close Tab')
+		nf.pack(side='top', fill='x')
 		self.tree = ttk.Treeview(frame)
 		self.tree.bind("<Double-Button-1>", openthisfile)
 		self.nodes = dict()
 		ysb = ttk.Scrollbar(frame, orient='vertical', command=self.tree.yview)
-		xsb = ttk.Scrollbar(frame, orient='horizontal', command=self.tree.xview)
-		self.tree.configure(yscrollcommand=ysb.set,xscrollcommand=xsb.set)
+		#xsb = ttk.Scrollbar(frame, orient='horizontal', command=self.tree.xview)
+		self.tree.configure(yscrollcommand=ysb.set)#,xscrollcommand=xsb.set)
 		self.tree.heading('#0', text='FOLDERS', anchor='w')
 		self.tree.column('#0',width=50,minwidth=100)
 		ysb.pack(side=RIGHT,fill=Y)
-		xsb.pack(side=BOTTOM,fill=X)
+		#xsb.pack(side=BOTTOM,fill=X)
 		self.tree.pack(fill=BOTH,expand=1)
 		frame.pack(fill=BOTH,expand=1)
 		for path in paths:
@@ -658,6 +722,10 @@ tools_settings_icon = PhotoImage(file = "./DATA/icons/{}/sidebar.settings.png".f
 tools_settings = ttk.Button(toolbar,image=tools_settings_icon, command=togglesetti)
 tools_settings.pack(side='bottom',anchor='s',fill='x')
 
+projectBar_icon_newfile = PhotoImage(file='./DATA/icons/{}/project.newfile.png'.format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+projectBar_icon_newfold = PhotoImage(file='./DATA/icons/{}/project.newfolder.png'.format(data.config['Looks']['Icons']['Theme']), master = toolbar)
+projectBar_icon_closefi = PhotoImage(file='./DATA/icons/{}/project.closefile.png'.format(data.config['Looks']['Icons']['Theme']))
+
 root = tk.PanedWindow(splitter,orient=VERTICAL,handlesize=5)
 
 runnerpaneframe = tk.Frame(splitter)
@@ -702,11 +770,14 @@ try:
 		if i.lower().endswith('.whtheme'):
 			themeslist.append(i)
 	default_theme = configuration['Looks']['Theme']['Default']
-	zipfile.ZipFile(themefolder+'/'+default_theme,'r').extractall(tempfile.gettempdir()+"/whTheme/")
-	themefile = tempfile.gettempdir()+"/whTheme/"+read(open(tempfile.gettempdir()+"/whTheme/__init__.whirldata").read())['main'][0]
-	themebase = read(open(tempfile.gettempdir()+"/whTheme/__init__.whirldata").read())['name'][0]
-	thisroot.tk.call('source', themefile)
-	style.theme_use(themebase)
+	if default_theme != '__default__':
+		zipfile.ZipFile(themefolder+'/'+default_theme,'r').extractall(tempfile.gettempdir()+"/WhirlEdit/")
+		themefile = tempfile.gettempdir()+"/WhirlEdit/"+read(open(tempfile.gettempdir()+"/WhirlEdit/__init__.whirldata").read())['main'][0]
+		themebase = read(open(tempfile.gettempdir()+"/WhirlEdit/__init__.whirldata").read())['name'][0]
+		thisroot.tk.call('source', themefile)
+		style.theme_use(themebase)
+	else:
+		pass
 	default_highlight = configuration['Looks']['Scheme']['Folder']+configuration['Looks']['Scheme']['Default']+'.json'
 except:
 	default_highlight = 'azure'
@@ -931,6 +1002,32 @@ if len(sys.argv) >= 2:
 		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
 root.add(notebook,before=termframe,height=450)
+class generate:
+	def copy(__widget__):
+		try:
+			__widget__.event_generate("<<Copy>>")
+		except:
+			pass
+	def cut(__widget__):
+		try:
+			__widget__.event_generate("<<Cut>>")
+		except:
+			pass
+	def paste(__widget__):
+		try:
+			__widget__.event_generate("<<Paste>>")
+		except:
+			pass
+def texteditmenu(event):
+	_widget = event.widget
+	tkTextmenu.entryconfigure("Cut",command=lambda: generate.cut(_widget))
+	tkTextmenu.entryconfigure("Copy",command=lambda: generate.copy(_widget))
+	tkTextmenu.entryconfigure("Paste",command=lambda: generate.paste(_widget))
+	tkTextmenu.tk.call("tk_popup", tkTextmenu, event.x_root, event.y_root)
+tkTextmenu = tk.Menu(root, tearoff=0)
+tkTextmenu.add_command(label="Cut")
+tkTextmenu.add_command(label="Copy")
+tkTextmenu.add_command(label="Paste")
 
 notebook.bind("<Double-Button>", newTab)
 thisroot.bind_all(configuration['Key Bindings']['Save'], saveFile)
@@ -948,11 +1045,12 @@ thisroot.bind("<Control-Q>",special)
 thisroot.bind_all('<Control-Tab>',nexttab)
 notebook.bind_all('<Control-Tab>',nexttab)
 thisroot.bind_all(configuration['Key Bindings']['Fullscreen'],fullscreen)
+thisroot.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
 thisroot.config(menu = None)#Menubar)
 thisroot.mainloop()
 configs.close()
 open('./DATA/configure.yaml','w+').write(yaml.dump(data.config))
 try:
-	shutil.rmtree(tempfile.gettempdir()+'/whTheme')
+	shutil.rmtree(tempfile.gettempdir()+'/WhirlEdit')
 except:
 	pass
