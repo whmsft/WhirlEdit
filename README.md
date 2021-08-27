@@ -12,7 +12,14 @@
 
 v3 development changelog:
 ```
-v3.1-alpha1:
+v3.1-alpha-2:
+- added 3 more icons:
+  + project.newfile
+  + project.newfolder
+  + project.closetab
+- added tooltips
+- added popup menu to editor
+v3.1-alpha-1:
 - Introducing the terminal..
 - A little bit of rework to icon naming
 - added 2 more icons
