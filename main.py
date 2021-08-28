@@ -693,7 +693,7 @@ style = ttk.Style(thisroot)
 statusbar = tk.Frame(thisroot)
 statusbar.pack(side='bottom', anchor='s', fill='x')
 
-status = Label(statusbar, text = 'Ready to edit | WhirlEdit {}'.format(__version__), anchor='w')
+status = Label(statusbar, text = 'setting up!', anchor='w')
 status.pack(side='left')
 
 cursyntax = StringVar()
@@ -735,6 +735,8 @@ tools_settings.pack(side='bottom',anchor='s',fill='x')
 projectBar_icon_newfile = PhotoImage(file='./DATA/icons/{}/project.newfile.png'.format(data.config['Looks']['Icons']['Theme']), master = toolbar)
 projectBar_icon_newfold = PhotoImage(file='./DATA/icons/{}/project.newfolder.png'.format(data.config['Looks']['Icons']['Theme']), master = toolbar)
 projectBar_icon_closefi = PhotoImage(file='./DATA/icons/{}/project.closefile.png'.format(data.config['Looks']['Icons']['Theme']))
+
+newtabICON = PhotoImage(file='./DATA/icons/{}/main.newtab.png'.format(data.config['Looks']['Icons']['Theme']))
 
 root = tk.PanedWindow(splitter,orient=VERTICAL,handlesize=5)
 
@@ -983,6 +985,9 @@ Menubar.add_cascade(label = "Help", menu=Helpmenu)
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 
+newtabbtn=tk.Button(thisroot,relief='flat', borderwidth=0,image=newtabICON, command=newTab)
+newtabbtn.place(anchor='ne',relx = 1, x =-5, y = 5)
+
 notebook = ttk.Notebook(root)
 notebook.grid(sticky = N + E + S + W)
 
@@ -1057,6 +1062,7 @@ notebook.bind_all('<Control-Tab>',nexttab)
 thisroot.bind_all(configuration['Key Bindings']['Fullscreen'],fullscreen)
 thisroot.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
 thisroot.config(menu = None)#Menubar)
+thisroot.after(100, update)
 thisroot.mainloop()
 configs.close()
 open('./DATA/configure.yaml','w+').write(yaml.dump(data.config))
