@@ -690,8 +690,18 @@ yCordinate = int((screenHeight/2) - (windowHeight/2))
 thisroot.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
 style = ttk.Style(thisroot)
 
-status = Label(thisroot, text = 'Ready to edit | WhirlEdit {}'.format(__version__), anchor='w')
-status.pack(side='bottom',anchor='s',fill='x')
+statusbar = tk.Frame(thisroot)
+statusbar.pack(side='bottom', anchor='s', fill='x')
+
+status = Label(statusbar, text = 'Ready to edit | WhirlEdit {}'.format(__version__), anchor='w')
+status.pack(side='left')
+
+cursyntax = StringVar()
+languages = [data.config['Looks']['InitialSyntax']]
+for i in highlight.keys():
+	languages.append(i)
+syntaxchoose = ttk.OptionMenu(statusbar, cursyntax, *languages,command=lambda name="__main__": note[curnote2()].config(language=cursyntax.get()))
+syntaxchoose.pack(side='right')
 
 rootframe = tk.PanedWindow(thisroot,handlesize=5,orient=tk.VERTICAL)
 rootframe.pack(side='right',expand=True,fill='both')
