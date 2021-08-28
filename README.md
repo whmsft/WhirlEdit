@@ -19,6 +19,7 @@ v3.1-alpha-2:
   + project.closetab
 - added tooltips
 - added popup menu to editor
+- change syntax with an optionmenu (situated at the bottom)
 v3.1-alpha-1:
 - Introducing the terminal..
 - A little bit of rework to icon naming
