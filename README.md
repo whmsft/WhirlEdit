@@ -8,70 +8,20 @@
 [![Size](https://shields.io/github/repo-size/Whirlpool-Programmer/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whirlpool-programmer/whirledit)]()
 
-
-```
-v3.1-alpha-2:
-- added 3 more icons:
-  + project.newfile
-  + project.newfolder
-  + project.closetab
-- added tooltips
-- added popup menu to editor
-- change syntax with an optionmenu (situated at the bottom)
-- new tab button
-v3.1-alpha-1:
-- Introducing the terminal..
-- A little bit of rework to icon naming
-- added 2 more icons
-  + terminal.clear
-  + terminal.reset
-- removed 2 icon themes
-  + light (to be replaced by legacy.light)
-  + dark  (to be replaced by legacy.dark)
-- A very BIG rework to widget placing
-v3.1b5
-- prompt on unsaved changes
-- newtab automatically switches to newly created tab
-- open file from cmd with this syntax: "whirledit.exe file.ext"
-v3.1b4
-- new icon themes:
-  + light
-  + fluent
-    - light
-    - dark
-    - don't ask why runner icon is a shoe!
-v3.1b3
-- A small rework to overall UI
-- Sidebar icons can now be themed
-- default theme is now Sun-valley-dark
-- New schemes
-  + IDLE
-  + ayu-dark
-  + ayu-mirage
-  + ayu-light
-v3.1b0
-- Switch tabs with <Ctrl-Tab>
-- added settings bar
-- improved runner bar
-v3.0.5
-- Runner bar
-- started updating config
-- fixed many small bugs
-v3.0.3
-- bugfixes
-v3.0.2
-- added Looks bar
-v3.0.1
-- started project sidebar
-- added Folders side bar
-```
-
 WhirlEdit as of now:
 
 ![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/screenshot.png)
 
 ```
 CHANGELOG:
+v3.1:
+> Side Bar pane(s)
+> Configuration File
+> Many themes
+> Many syntax Support
+> simple terminal
+> Ease of use 
+> Tooltips for ease of use
 
 v2:
 > complete rewrite
