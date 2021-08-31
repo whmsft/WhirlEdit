@@ -15,7 +15,7 @@ from wday import read
 from tkcode import CodeEditor
 import webbrowser
 
-__version__ = 'v3.1-alpha-2'
+__version__ = 'v3.1.0 (Stable)'
 
 configuration = """
 Looks:
@@ -719,9 +719,6 @@ toolbar_menu.pack(fill='x')
 tools_files_icon = PhotoImage(file = "./DATA/icons/{}/sidebar.files.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
 tools_files = ttk.Button(toolbar,image=tools_files_icon, command=togglesidepane)
 tools_files.pack(fill='x')
-tools_project_icon = PhotoImage(file = "./DATA/icons/{}/sidebar.edit.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
-tools_project = ttk.Button(toolbar,image=tools_project_icon, command=None)
-tools_project.pack(fill='x')
 tools_runner_icon = PhotoImage(file = "./DATA/icons/{}/sidebar.runner.png".format(data.config['Looks']['Icons']['Theme']), master = toolbar)
 tools_runner = ttk.Button(toolbar,image=tools_runner_icon, command=togglerunner)
 tools_runner.pack(fill='x')
@@ -1039,6 +1036,7 @@ def texteditmenu(event):
 	tkTextmenu.entryconfigure("Copy",command=lambda: generate.copy(_widget))
 	tkTextmenu.entryconfigure("Paste",command=lambda: generate.paste(_widget))
 	tkTextmenu.tk.call("tk_popup", tkTextmenu, event.x_root, event.y_root)
+
 tkTextmenu = tk.Menu(root, tearoff=0)
 tkTextmenu.add_command(label="Cut")
 tkTextmenu.add_command(label="Copy")
@@ -1054,14 +1052,11 @@ thisroot.bind_all(configuration['Key Bindings']['Run'],runconf)
 thisroot.bind_all(configuration['Key Bindings']['Open cmd'], opencmd)
 thisroot.bind_all("<Key>",update)
 thisroot.bind_all("<Button-1>",update)
-def special(*args):
-	print(str(len(note[curnote2()].get(1.0,END)))+'::'+str(len(open(openedfiles[curnote2()]).read())))
-thisroot.bind("<Control-Q>",special)
 thisroot.bind_all('<Control-Tab>',nexttab)
 notebook.bind_all('<Control-Tab>',nexttab)
 thisroot.bind_all(configuration['Key Bindings']['Fullscreen'],fullscreen)
 thisroot.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
-thisroot.config(menu = None)#Menubar)
+thisroot.config(menu = None)
 thisroot.after(100, update)
 thisroot.mainloop()
 configs.close()
