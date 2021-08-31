@@ -1,6 +1,4 @@
-# WhirlEdit 3 (codename: Confetti)
-
-### v3.1 is on its way!
+# WhirlEdit 3.1 Is FINALLY RELEASED!
 
 [![Run on Repl.it](https://repl.it/badge/github/Whirlpool-programmer/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
 [![Build Status](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml)
@@ -10,7 +8,7 @@
 [![Size](https://shields.io/github/repo-size/Whirlpool-Programmer/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whirlpool-programmer/whirledit)]()
 
-v3 development changelog:
+
 ```
 v3.1-alpha-2:
 - added 3 more icons:
@@ -68,7 +66,7 @@ v3.0.1
 - added Folders side bar
 ```
 
-v3 as of now
+WhirlEdit as of now:
 
 ![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/screenshot.png)
 
@@ -88,19 +86,6 @@ v2:
 v1:
 > initial
 ```
-
-SPECIAL THANKS:
-
-Guido Van Rossum
-- For python
-
-@rdbende
-- for Azure ttk theme
-- for tkcode
-
-stackoverflow
-- for helping me to deal with problems
-
 <br>
 <hr>
 <br>
