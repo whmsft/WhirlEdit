@@ -38,7 +38,7 @@ v1:
 ```
 <br>
 <hr>
-![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/support.png)
+<img src = "https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/support.png" alt = "Support cycle"/>
 <hr>
 
 # And now something completely different:
