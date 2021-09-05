@@ -38,7 +38,8 @@ v1:
 ```
 <br>
 <hr>
-<br>
+![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/support.png)
+<hr>
 
 # And now something completely different:
 
