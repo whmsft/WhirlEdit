@@ -15,7 +15,7 @@ from wday import read
 from tkcode import CodeEditor
 import webbrowser
 
-__version__ = 'v3.1.0 (Stable)'
+__version__ = 'v3.1.1 (Stable)'
 
 configuration = """
 Looks:
@@ -102,6 +102,7 @@ class data:
 	isBlockcursor = configuration['Looks']['Font']['BlockCursor']
 	config = configuration
 
+
 def about(*args):
 	def nothingmod(pos,val, ext=None):
 		nothing[pos] = val
@@ -114,7 +115,7 @@ def about(*args):
 		a.resizable(False,False)
 		a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
 		a.geometry("300x200")
-		b = Label(a,text='WhirlEdit Insiders',font='Consolas 20')
+		b = Label(a,text='WhirlEdit',font='Consolas 20')
 		b.pack()
 		c = Label(a,text=__version__,font='Consolas 10')
 		c.pack()
@@ -288,6 +289,10 @@ def CreateToolTip(widget, text):
 
 
 class Settings(object):
+	def savechangesSETTINGS(self):
+		data.config['Looks']['Theme']['Folder']  = self.themeFolder.get()
+		data.config['Looks']['Theme']['Default'] = self.themeName.get()
+		data.config['Looks']['Scheme']['Folder'] = self.schemeFolder.get()
 	def __init__(self,master):
 		frame = tk.Frame(master)
 		setlooks = ttk.LabelFrame(frame,text='Looks')
@@ -317,7 +322,8 @@ class Settings(object):
 
 		labelrubbish1.pack()
 		keybindchangebtnfor_settings.pack(fill='x')
-
+		savebtn = ttk.Button(frame, text='Confirm & save', command=self.savechangesSETTINGS)
+		savebtn.pack(pady=15,padx=5,fill='x')
 		frame.pack(expand=True, fill='both')
 
 class runnerpane(object):
@@ -354,14 +360,10 @@ class lookspane(object):
 		else:
 			thisroot.title(self.g.get())
 			data.config['Looks']['WindowTitle'] = thisroot.title()
-
-		if self.i.get() == '':
-			pass
-		else:
-			data.font = self.i.get()
-			data.config['Looks']['Font']['Font'] = data.font.split()[0]
-			data.config['Looks']['Font']['Size'] = data.font.split()[-1]
-
+		data.font = self.i.get()
+		print(data.font.split())
+		data.config['Looks']['Font']['Font'] = "\ ".join(data.font.split()[0:-1])
+		data.config['Looks']['Font']['Size'] = data.font.split()[-1]
 		data.isBlockcursor = self.isBlockcursor.get()
 		data.config['Looks']['Font']['BlockCursor'] = self.isBlockcursor.get()
 		data.config['Looks']['Scheme']['Default'] = self.curscheme.get()
@@ -515,10 +517,10 @@ extension = {}
 
 def curnote2(*args):
 	variable = notebook.select()
-	if notebook.select().replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
+	if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
 		variable = 0
 	else:
-		variable = int(notebook.select().replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame',''))
+		variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame',''))
 		if variable == 0:
 			pass
 		else:
@@ -757,7 +759,7 @@ from tkterminal import *
 termframe = ttk.Frame()
 termicon_clear = PhotoImage(file= './DATA/icons/{}/terminal.clear.png'.format(data.config['Looks']['Icons']['Theme']))
 termicon_reset = PhotoImage(file= './DATA/icons/{}/terminal.restart.png'.format(data.config['Looks']['Icons']['Theme']))
-tkterminal = Terminal(termframe, font='Consolas 10')
+tkterminal = Terminal(termframe, font='Consolas 10', relief='flat')
 tkterminal.basename = "$"
 tkterminal.shell = True
 newframe = tk.Frame(termframe)
@@ -828,10 +830,10 @@ def getpos(*args):
 	line.set(pos)
 def curnote():
 	variable = notebook.select()
-	if notebook.select().replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
+	if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
 		variable = 0
 	else:
-		variable = int(notebook.select().replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame',''))
+		variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame',''))
 		if variable == 0:
 			pass
 		else:
@@ -919,7 +921,7 @@ def newTab(*args):
 	global var
 	global notebook
 	frames[var] = ttk.Frame(notebook)
-	note[var] = CodeEditor(frames[var],blockcursor=configuration['Looks']['Font']['BlockCursor'],width=40, height=100, language=configuration['Looks']['InitialSyntax'],autofocus=True, insertofftime=0, padx=0, pady=0, font =data.font, highlighter = default_highlight)
+	note[var] = (CodeEditor(frames[var],blockcursor=configuration['Looks']['Font']['BlockCursor'],width=40, height=100, language=configuration['Looks']['InitialSyntax'],autofocus=True, insertofftime=0, padx=0, pady=0, font =data.font, highlighter = default_highlight))
 	note[var].pack(fill="both", expand=True)
 	font = tkfont.Font(font=note[var]['font'])
 	note[var].config(tabs=font.measure('    '))
@@ -1050,14 +1052,14 @@ thisroot.bind_all(configuration['Key Bindings']['Open'], openFile)
 thisroot.bind_all("<Control-F5>",runfile)
 thisroot.bind_all(configuration['Key Bindings']['Run'],runconf)
 thisroot.bind_all(configuration['Key Bindings']['Open cmd'], opencmd)
-thisroot.bind_all("<Key>",update)
+#thisroot.bind_all("<Key>",update)
 thisroot.bind_all("<Button-1>",update)
 thisroot.bind_all('<Control-Tab>',nexttab)
 notebook.bind_all('<Control-Tab>',nexttab)
 thisroot.bind_all(configuration['Key Bindings']['Fullscreen'],fullscreen)
 thisroot.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
 thisroot.config(menu = None)
-thisroot.after(100, update)
+thisroot.after(1, update)
 thisroot.mainloop()
 configs.close()
 open('./DATA/configure.yaml','w+').write(yaml.dump(data.config))
