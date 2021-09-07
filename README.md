@@ -14,6 +14,12 @@ WhirlEdit as of now:
 
 ```
 CHANGELOG:
+v3.1.1:
+> fixed 2 big bugs
+  + unable to update config
+  + program crashes with font names having space ' ' character
+> numerous "small" bugs fixed
+> added a "Confirm & Save" button to Settings pane
 v3.1:
 > Side Bar pane(s)
 > Configuration File
