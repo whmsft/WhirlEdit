@@ -1,4 +1,8 @@
-# WhirlEdit 3.1 Is FINALLY RELEASED!
+## Latest STS release : [v3](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.1)
+## Latest preview release: [v3.1.1](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.1.1)
+## Latest LTS release : [v2](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v2)
+
+\*\*if you don't know what is MTS/STS/LTS then check APPENDIX-A (at the bottom of this README)
 
 [![Run on Repl.it](https://repl.it/badge/github/Whirlpool-programmer/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
 [![Build Status](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml)
@@ -50,3 +54,14 @@ v1:
 # And now something completely different:
 
 ![Joke](https://readme-jokes.vercel.app/api)
+
+
+<hr>
+
+## Appendix-A:
+
+MTS: Minimum term support (1-2 months support) [also known as "preview" and "unstable" release] -> not recommended for beginners
+
+STS: Standard term support (6 months support) [also known as "stable" release] -> slightly recommended
+
+LTS: Long term support (1-2 years support) [also known as "battle-tested" and "highly-stable" release] -> highly recommended
