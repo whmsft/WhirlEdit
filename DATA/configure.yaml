@@ -15,9 +15,9 @@ Looks:
     Theme: fluent.dark
   InitialSyntax: python
   Scheme:
-    Default: monokai++
+    Default: azure-modified
     Folder: ./DATA/Schemes/
   Theme:
     Default: sun-valley-dark.whTheme
     Folder: ./DATA/Themes/
-  WindowTitle: WhirlEdit Confetti
+  WindowTitle: WhirlEdit v3.1
