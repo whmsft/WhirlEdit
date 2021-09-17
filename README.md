@@ -1,5 +1,5 @@
-## Latest STS release : [v3](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.1)
-## Latest preview release: [v3.1.1](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.1.1)
+## Latest STS release : [v3.1](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.1)
+## Latest preview release: [v3.2](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.2)
 ## Latest LTS release : [v2](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v2)
 
 \*\*if you don't know what is MTS/STS/LTS then check APPENDIX-A (at the bottom of this README)
