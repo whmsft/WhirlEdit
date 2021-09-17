@@ -1,6 +1,10 @@
+__version__ = 'v3.2 (Stable)'
+#from DATA.extensions import extmgr <- experimental, making extensions..
+import time
 import os
 import yaml
 import tkinter as tk
+from tkinter import messagebox
 from tkinter import ttk
 from tkinter import *
 import tkinter.font as tkfont
@@ -15,7 +19,93 @@ from wday import read
 from tkcode import CodeEditor
 import webbrowser
 
-__version__ = 'v3.1.1 (Stable)'
+start = time.time()
+
+def log(message, call="INTERNAL"):
+	print('{} [{}]: {}'.format(round(time.time()-start,2),call,message))
+
+class Notebook(ttk.Notebook):
+    """A ttk Notebook with close buttons on each tab"""
+
+    __initialized = False
+
+    def __init__(self, *args, **kwargs):
+        if not self.__initialized:
+            self.__initialize_custom_style()
+            self.__inititialized = True
+
+        kwargs["style"] = "Notebook"
+        ttk.Notebook.__init__(self, *args, **kwargs)
+
+        self._active = None
+
+        self.bind("<ButtonPress-1>", self.on_close_press, True)
+        self.bind("<ButtonRelease-1>", self.on_close_release)
+
+    def on_close_press(self, event):
+        """Called when the button is pressed over the close button"""
+
+        element = self.identify(event.x, event.y)
+
+        if "close" in element:
+            index = self.index("@%d,%d" % (event.x, event.y))
+            self.state(['pressed'])
+            self._active = index
+            return "break"
+
+    def on_close_release(self, event):
+        """Called when the button is released"""
+        if not self.instate(['pressed']):
+            return
+
+        element =  self.identify(event.x, event.y)
+        if "close" not in element:
+            # user moved the mouse off of the close button
+            return
+
+        index = self.index("@%d,%d" % (event.x, event.y))
+
+        if self._active == index:
+            self.forget(index)
+            self.event_generate("<<NotebookTabClosed>>")
+
+        self.state(["!pressed"])
+        self._active = None
+
+    def __initialize_custom_style(self):
+        ...
+        style = ttk.Style()
+        self.images = (
+            tk.PhotoImage("img_close", file='./DATA/icons/close.n.png'),
+            tk.PhotoImage("img_closeactive", file='./DATA/icons/close.n.png'),
+            tk.PhotoImage("img_closepressed", file='./DATA/icons/close.a.png'),
+        )
+
+        style.element_create("close", "image", "img_close",
+                            ("active", "pressed", "!disabled", "img_closepressed"),
+                            ("active", "!disabled", "img_closeactive"),)
+        style.layout("Notebook", [("Notebook.client", {"sticky": "nswe"})])
+        style.layout("Notebook.Tab", [
+            ("Notebook.tab", {
+                "sticky": "nswe",
+                "children": [
+                    ("Notebook.padding", {
+                        "side": "top",
+                        "sticky": "nswe",
+                        "children": [
+                            ("Notebook.focus", {
+                                "side": "top",
+                                "sticky": "nswe",
+                                "children": [
+                                    ("Notebook.label", {"side": "left", "sticky": ''}),
+                                    ("Notebook.close", {"side": "right", "sticky": ''}),
+                                ]
+                        })
+                    ]
+                })
+            ]
+        })
+    ])
 
 configuration = """
 Looks:
@@ -104,6 +194,7 @@ class data:
 
 
 def about(*args):
+	log('opening about')
 	def nothingmod(pos,val, ext=None):
 		nothing[pos] = val
 		a.destroy()
@@ -130,14 +221,17 @@ def about(*args):
 
 def fullscreen(*args):
 	if nothing[1] == 0:
+		log('on',call='FULLSCREEN')
 		thisroot.wm_attributes("-fullscreen",1)
 		nothing[1] = 1
 	else:
+		log('off',call='FULLSCREEN')
 		thisroot.wm_attributes("-fullscreen",0)
 		nothing[1] = 0
 
 def set_syntax(lang):
 	note[curnote2()].config(language=lang)
+	log(lang,call='SYNTAX')
 
 def togglesetti(*args):
 	global nothing
@@ -196,7 +290,7 @@ def update(*args):
 	root.update()
 	fdir = "/".join(openedfiles[curnote2()].split("/")[:-1])
 	line = note[curnote2()].index(tk.INSERT).split('.')
-	note[curnote2()]['font'] = data.font
+	note[curnote2()]['font'] = data.config['Looks']['Font']['Font']+" "+data.config['Looks']['Font']['Size']
 	note[curnote2()]['blockcursor'] = data.isBlockcursor
 	status['text'] = "File: {} | Line {}, Column {}".format(thisfile,line[0],line[1])
 	if fdir in openedfolders:
@@ -204,10 +298,13 @@ def update(*args):
 	else:
 		framed.add(fdir)
 		openedfolders.append(fdir)
+		log('added {}'.format(fdir), call='FOLDER')
 
 def openthisfile(event):
 	global extension
 	global filepath
+	if notebook.select() == "":
+		newTab()
 	item_id = event.widget.focus()
 	item = event.widget.item(item_id)
 	values = item['text']
@@ -221,12 +318,12 @@ def openthisfile(event):
 		note[variable].insert(1.0,file.read())
 		openedfiles[variable] = filepath
 		file.close()
-		notebook.tab(frames[variable], text = filepath.split("/")[-1])
+		log('opened {}'.format(filepath, call='FILE'))
+		notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
 		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
 def changekeybind(*args):
 	def getit__(index):
-		print(theselabels[i]['text']+"::"+theseentries[i].get())
 		data.config['Key Bindings'][theselabels[i]['text']] = theseentries[i].get()
 	menu = tk.Toplevel(thisroot)
 	theseframes  = {}
@@ -286,6 +383,7 @@ def CreateToolTip(widget, text):
         toolTip.hidetip()
     widget.bind('<Enter>', enter)
     widget.bind('<Leave>', leave)
+    log('added {}'.format(str(widget)),call='TOOLTIP')
 
 
 class Settings(object):
@@ -293,6 +391,7 @@ class Settings(object):
 		data.config['Looks']['Theme']['Folder']  = self.themeFolder.get()
 		data.config['Looks']['Theme']['Default'] = self.themeName.get()
 		data.config['Looks']['Scheme']['Folder'] = self.schemeFolder.get()
+		log('modified',call='SETTINGS')
 	def __init__(self,master):
 		frame = tk.Frame(master)
 		setlooks = ttk.LabelFrame(frame,text='Looks')
@@ -361,12 +460,12 @@ class lookspane(object):
 			thisroot.title(self.g.get())
 			data.config['Looks']['WindowTitle'] = thisroot.title()
 		data.font = self.i.get()
-		print(data.font.split())
 		data.config['Looks']['Font']['Font'] = "\ ".join(data.font.split()[0:-1])
 		data.config['Looks']['Font']['Size'] = data.font.split()[-1]
 		data.isBlockcursor = self.isBlockcursor.get()
 		data.config['Looks']['Font']['BlockCursor'] = self.isBlockcursor.get()
 		data.config['Looks']['Scheme']['Default'] = self.curscheme.get()
+		log('Changed',call='CONFIG')
 
 	def __init__(self,master):
 		frame = tk.Frame(master)
@@ -423,6 +522,7 @@ class PathView(object):
 	def add_openfold(self):
 		the_Folder = askdirectory()
 		self.add(the_Folder)
+		log('added '+the_Folder,call='FOLDER')
 	def add(self,path):
 		abspath = os.path.abspath(path)
 		self.insert_node('', abspath.split('\\')[-1], abspath)
@@ -503,6 +603,7 @@ def runnerConf(thisType):
 	base = base[:base.find(".")]
 	command = command.replace("$base",base.replace(" ","_"))
 	command = command.replace("$dir",'"'+"/".join(filepath.split("/")[:-1])+'"')
+	log('started {} via {}'.format(filepath,thisType),call='RUNNER')
 	subprocess.call("start cmd /k {}".format(command), shell = True)
 
 def getConfs():
@@ -607,10 +708,9 @@ class CustomText(Text):
 def newrunner():
 	global conf
 	def done():
-		print(entry.get())
 		thisconf = ""
 		configs.write(datafile+'\n{}::[["{}"]::"{}"]'.format(name.get(),'","'.join(entriee.get().split(',')),entry.get()))
-		print(thisconf)
+		log('created {}'.format(name.get()),call='RUNNER')
 		conf.quit()
 	def switchFunction():
 		if gui.get():
@@ -681,8 +781,11 @@ def runconf(*args):
 		pass
 
 thisroot = tk.Tk()
+log('Main Window created')
 thisroot.iconbitmap(r"./data/icons/favicon.v3.ico")
+log('icon added')
 thisroot.title(configuration['Looks']['WindowTitle'])
+log('title set')
 windowWidth = 800
 windowHeight = 550
 screenWidth  = thisroot.winfo_screenwidth()
@@ -690,6 +793,7 @@ screenHeight = thisroot.winfo_screenheight()
 xCordinate = int((screenWidth/2) - (windowWidth/2))
 yCordinate = int((screenHeight/2) - (windowHeight/2))
 thisroot.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
+log('geometry set')
 style = ttk.Style(thisroot)
 
 statusbar = tk.Frame(thisroot)
@@ -731,6 +835,8 @@ tools_settings_icon = PhotoImage(file = "./DATA/icons/{}/sidebar.settings.png".f
 tools_settings = ttk.Button(toolbar,image=tools_settings_icon, command=togglesetti)
 tools_settings.pack(side='bottom',anchor='s',fill='x')
 
+log('Icons made and added',call='SIDEBAR')
+
 projectBar_icon_newfile = PhotoImage(file='./DATA/icons/{}/project.newfile.png'.format(data.config['Looks']['Icons']['Theme']), master = toolbar)
 projectBar_icon_newfold = PhotoImage(file='./DATA/icons/{}/project.newfolder.png'.format(data.config['Looks']['Icons']['Theme']), master = toolbar)
 projectBar_icon_closefi = PhotoImage(file='./DATA/icons/{}/project.closefile.png'.format(data.config['Looks']['Icons']['Theme']))
@@ -754,6 +860,7 @@ def termreset():
 	tkterminal.basename = "$"
 	tkterminal.shell = True
 	tkterminal.pack(side='left',anchor='w',fill='both',expand=True)
+	log('reset',call='TERMINAL')
 
 from tkterminal import *
 termframe = ttk.Frame()
@@ -764,11 +871,14 @@ tkterminal.basename = "$"
 tkterminal.shell = True
 newframe = tk.Frame(termframe)
 newframe.pack(side='right',anchor='ne')
-tkterm_clear = tk.Button(newframe,anchor='n',image=termicon_clear, relief='flat', command=lambda:tkterminal.clear())
-tkterm_reset = tk.Button(newframe,anchor='n',image=termicon_reset, relief='flat', command=lambda:termreset())
+tkterm_clear = tk.Button(newframe,anchor='n',image=termicon_clear, relief='flat', borderwidth=0,command=lambda:tkterminal.clear())
+tkterm_reset = tk.Button(newframe,anchor='n',image=termicon_reset, relief='flat', borderwidth=0,command=lambda:termreset())
+CreateToolTip(tkterm_clear, "Clear the terminal")
+CreateToolTip(tkterm_reset, "Restart the terminal\nJust in case you crashed..")
 tkterm_clear.pack(side='top')
 tkterm_reset.pack(side='top')
 tkterminal.pack(side='left',anchor='w',fill='both',expand=True)
+log('placed',call='TERMINAL')
 termframe.pack(fill='both',expand=True)
 rootframe.add(splitter,height=450)
 root.add(termframe,height=200)
@@ -787,11 +897,15 @@ try:
 		themebase = read(open(tempfile.gettempdir()+"/WhirlEdit/__init__.whirldata").read())['name'][0]
 		thisroot.tk.call('source', themefile)
 		style.theme_use(themebase)
+		log('set theme {}'.format(themebase),call='LOOKS')
 	else:
 		pass
 	default_highlight = configuration['Looks']['Scheme']['Folder']+configuration['Looks']['Scheme']['Default']+'.json'
-except:
-	default_highlight = 'azure'
+	log('set scheme {}'.format(default_highlight),call='LOOKS')
+except Exception as e:
+	log('({}) {}'.format(type(e).__name__, e), call='ERROR')
+	messagebox.showerror(type(e).__name__, e)
+	sys.exit()
 
 note        = {}
 openedfiles = {}
@@ -807,6 +921,7 @@ def opencmd(*args):
 		else:
 			cwd = "/".join(filepath.split("/")[:-1])
 		drive = cwd[:2]
+		log('cmd starting at {}'.format(cwd), call='RUNNER')
 		subprocess.call('start cmd /k cd /d "{}"'.format(cwd), shell=True)
 	except:
 		subprocess.call('start cmd /k "{}"'.format(openedfiles[curnote2()]), shell=True)
@@ -815,6 +930,7 @@ def runfile(*args):
 	try:
 		cwd = "/".join(filepath.split("/")[:-1])
 		drive = cwd[:3]
+		log('cmd starting for {}'.format(openedfiles[curnote2()]), call='RUNNER')
 		subprocess.call('start cmd /k "{}"'.format(openedfiles[curnote2()]), shell=True)
 	except:
 		subprocess.call('start cmd /k "{}"'.format(openedfiles[curnote2()]), shell=True)
@@ -826,7 +942,6 @@ def getpos(*args):
 	pos = pos[:-2]
 	pos = int(pos)
 	pos = pos -1
-	print(pos)
 	line.set(pos)
 def curnote():
 	variable = notebook.select()
@@ -855,6 +970,7 @@ def deltab(*args):
 					notebook.forget(notebook.select())
 				else:
 					pass
+		log('deleted current tab', call='TABS')
 	except:
 		thisroot.quit()
 
@@ -870,8 +986,9 @@ def saveAsFile(*args):
 		variable = int(curnote2())
 		text = note[variable].get(1.0, tk.END)
 		output_file.write(text)
-	notebook.tab(frames[int(curnote2())], text = filepath.split("/")[-1])
-	note[curnote2()].config(language=identify(filepath.split("/")[-1]))
+		log('saved file {}'.format(filepath), call='FILES')
+	notebook.tab(frames[int(curnote2())], text = filepath.split("/")[-1]+"   ")
+	note[curnote2()].config(language=identify(filepath.split("/")[-1])+"   ")
 	note[curnote2()].update()
 	root.update()
 
@@ -886,7 +1003,8 @@ def saveFile(*args):
 			extension[curnote()] = "."+openedfiles[variable].split(".")[-1]
 			text = note[variable].get(1.0, tk.END)
 			output_file.write(text)
-			notebook.tab(frames[variable], text = openedfiles[curnote2()].split("/")[-1])
+			notebook.tab(frames[variable], text = openedfiles[curnote2()].split("/")[-1]+"   ")
+			log('saved file {}'.format(filepath), call='FILES')
 
 def openFile(*self):
 	global extension
@@ -906,9 +1024,9 @@ def openFile(*self):
 		note[variable].insert(1.0,file.read()[:-1])
 		openedfiles[variable] = filepath
 		file.close()
-		notebook.tab(frames[variable], text = filepath.split("/")[-1])
+		notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
 		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
-
+		log('opened file {}'.format(filepath), call='FILES')
 
 def select_all(event):
 	note[curnote2()].tag_add(SEL, "1.0", END)
@@ -926,12 +1044,13 @@ def newTab(*args):
 	font = tkfont.Font(font=note[var]['font'])
 	note[var].config(tabs=font.measure('    '))
 	openedfiles[var] = ""
-	notebook.add(frames[var], text='Untitled')
+	notebook.add(frames[var], text='Untitled   ')
 	extension[curnote()] = ".*"
 	note[var].bind('<Control-Tab>',nexttab)
 	note[var].bind("Control-a",select_all)
 	var = var + 1
 	nexttab()
+	log('new tab added', call='TABS')
 
 Menubar = Menu(root, activebackground ="#0084FF", activeforeground = "#FFFFFF",bg = "#FFFFFF", fg = "#0084FF" ,font = "consolas")
 
@@ -987,7 +1106,7 @@ root.grid_columnconfigure(0, weight=1)
 newtabbtn=tk.Button(thisroot,relief='flat', borderwidth=0,image=newtabICON, command=newTab)
 newtabbtn.place(anchor='ne',relx = 1, x =-5, y = 5)
 
-notebook = ttk.Notebook(root)
+notebook = Notebook(root)
 notebook.grid(sticky = N + E + S + W)
 
 def nexttab(*args):
@@ -1012,7 +1131,7 @@ if len(sys.argv) >= 2:
 		note[variable].insert(1.0,file.read())
 		openedfiles[variable] = filepath
 		file.close()
-		notebook.tab(frames[variable], text = filepath.split("/")[-1])
+		notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
 		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
 
 root.add(notebook,before=termframe,height=450)
@@ -1052,18 +1171,30 @@ thisroot.bind_all(configuration['Key Bindings']['Open'], openFile)
 thisroot.bind_all("<Control-F5>",runfile)
 thisroot.bind_all(configuration['Key Bindings']['Run'],runconf)
 thisroot.bind_all(configuration['Key Bindings']['Open cmd'], opencmd)
-#thisroot.bind_all("<Key>",update)
+thisroot.bind_all("<Key>",update)
 thisroot.bind_all("<Button-1>",update)
 thisroot.bind_all('<Control-Tab>',nexttab)
 notebook.bind_all('<Control-Tab>',nexttab)
 thisroot.bind_all(configuration['Key Bindings']['Fullscreen'],fullscreen)
 thisroot.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
 thisroot.config(menu = None)
-thisroot.after(1, update)
-thisroot.mainloop()
+thisroot.after(100, update)
+log('binded all keystrokes')
+log('starting main window')
+
+try:
+	thisroot.mainloop()
+except Exception as e:
+	log('({}) {}'.format(type(e).__name__, e), call='ERROR')
+	messagebox.showerror(type(e).__name__, e)
+
 configs.close()
 open('./DATA/configure.yaml','w+').write(yaml.dump(data.config))
 try:
 	shutil.rmtree(tempfile.gettempdir()+'/WhirlEdit')
+	log('removed TEMP/WhirlEdit folder')
 except:
 	pass
+log('Exiting program')
+print('** See you later **')
+#just the 1200th LINE!!!
