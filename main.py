@@ -1,6 +1,8 @@
-__version__ = 'v3.2 (Stable)'
+__version__ = 'v3.2.1 (Stable)'
 #from DATA.extensions import extmgr <- experimental, making extensions..
 import time
+start = time.time()
+
 import os
 import yaml
 import tkinter as tk
@@ -19,10 +21,29 @@ from wday import read
 from tkcode import CodeEditor
 import webbrowser
 
-start = time.time()
+TEMP = tempfile.gettempdir()
 
-def log(message, call="INTERNAL"):
-	print('{} [{}]: {}'.format(round(time.time()-start,2),call,message))
+if os.path.isdir(TEMP+'/WhirlEdit/'):
+	pass
+else:
+	os.mkdir(TEMP+'\\Whirledit\\')
+	#logfile=os.open(TEMP+'/Whirledit/logs.txt', os.O_RDWR|os.O_CREAT)
+
+logfile = open(os.path.abspath(TEMP+'\\Whirledit\\logs.txt'),'w+')
+logfile.write('')
+
+def logCALL(message, call="INTERNAL"):
+	logs = '{} [{}]: {}'.format(round(time.time()-start,2),call,message)
+	logfile.writelines(logs+'\n')
+	print(logs)
+
+def reorder(event):
+    try:
+        index = notebook.index(f"@{event.x},{event.y}")
+        notebook.insert(index, child=notebook.select())
+
+    except tk.TclError:
+        pass
 
 class Notebook(ttk.Notebook):
     """A ttk Notebook with close buttons on each tab"""
@@ -108,36 +129,46 @@ class Notebook(ttk.Notebook):
     ])
 
 configuration = """
-Looks:
-	WindowTitle: WhirlEdit Confetti
-	InitialSyntax: python
-	Theme:
-		Default: sun-valley-dark.whTheme
-		Folder: ./DATA/Themes/
-	Scheme:
-		Default: monokai++
-		Folder: ./DATA/Schemes/
-	Font:
-		Font: Consolas
-		Size: '12'
-		BlockCursor: False
-	Icons:
-		Theme: fluent.dark
-
 Key Bindings:
-	Save: <Control-s>
-	New: <Control-n>
-	Close: <Control-w>
-	Open: <Control-o>
-	Fullscreen: <F11>
-	Project: <Control-Shift-f>
-	Run: <F5>
-	Terminal: <Control-Shift-t>
+  Close: <Control-w>
+  Fullscreen: <F11>
+  New: <Control-n>
+  Open: <Control-o>
+  Open cmd: <Control-Shift-t>
+  Run: <F5>
+  Save: <Control-s>
+Logs:
+  Logging: false
+Looks:
+  Font:
+    BlockCursor: true
+    Font: Consolas
+    Size: '12'
+  Icons:
+    Theme: fluent.dark
+  InitialSyntax: python
+  Scheme:
+    Default: azure-modified
+    Folder: ./DATA/Schemes/
+  Theme:
+    Default: forest-dark.whTheme
+    Folder: ./DATA/Themes/
+  WindowTitle: WhirlEdit
+
 """
 try:
 	configuration = (yaml.safe_load(open('./DATA/configure.yaml').read()))
 except Exception:
 	configuration = (yaml.safe_load(configuration))
+
+def logFAKE(message, call='INTERNAL'):
+	logs = '{} [{}]: {}'.format(round(time.time()-start,2),call,message)
+	logfile.writelines(logs+'\n')
+
+if configuration['Logs']['Logging']:
+	log = logCALL
+else:
+	log = logFAKE
 
 openedfolders = []
 
@@ -1108,7 +1139,7 @@ newtabbtn.place(anchor='ne',relx = 1, x =-5, y = 5)
 
 notebook = Notebook(root)
 notebook.grid(sticky = N + E + S + W)
-
+notebook.bind("<B1-Motion>", reorder)
 def nexttab(*args):
 	try:
 		notebook.select(curnote2()+1)
@@ -1195,6 +1226,8 @@ try:
 	log('removed TEMP/WhirlEdit folder')
 except:
 	pass
+
+log('removed logs file')
+
 log('Exiting program')
 print('** See you later **')
-#just the 1200th LINE!!!
