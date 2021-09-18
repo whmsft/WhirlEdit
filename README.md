@@ -56,6 +56,13 @@ v1:
 <br>
 <hr>
 <img src = "https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/support.png" alt = "Support cycle"/>
+
+
+## Known issues:
+
+1. Editing LARGE files (30kb+) may slow down experience
+2. some theme assests don't work as expected
+
 <hr>
 
 # And now something completely different:
