@@ -12,7 +12,7 @@
 [![Size](https://shields.io/github/repo-size/Whirlpool-Programmer/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whirlpool-programmer/whirledit)]()
 
-WhirlEdit as of now:
+WhirlEdit as of 1 month ago:
 
 ![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/screenshot.png)
 
@@ -63,7 +63,7 @@ v1:
 1. Editing LARGE files (30kb+) may slow down experience
 2. Some theme assests don't work as expected
 3. Language changing drop-down menu does not change with tab change
-4. Saved runners do not work
+4. Saved runners do not work (possible fix: use confscript)
 
 <hr>
 
