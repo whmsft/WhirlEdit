@@ -28,7 +28,10 @@ TEMP = tempfile.gettempdir()
 if os.path.isdir(TEMP+'/WhirlEdit/'):
 	pass
 else:
-	os.mkdir(TEMP+'\\Whirledit\\')
+  try:
+	  os.mkdir(TEMP+'\\Whirledit\\')
+  except OSError:
+    messagebox.showerror('OSError','Some errors occured while creating log file\npossibly a read-only file system')
 	#logfile=os.open(TEMP+'/Whirledit/logs.txt', os.O_RDWR|os.O_CREAT)
 
 logfile = open(os.path.abspath(TEMP+'\\Whirledit\\logs.txt'),'w+')
