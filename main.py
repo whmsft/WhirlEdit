@@ -1,4 +1,4 @@
-__version__ = 'v3.2.1 (Stable)'
+__version__ = 'v3.2.2 (Stable)'
 #from DATA.extensions import extmgr <- experimental, making extensions..
 import time
 start = time.time()
@@ -18,6 +18,8 @@ import tkinter
 import zipfile
 import tempfile
 from wday import read
+from confscript import read as cfsread
+from confscript import dump
 from tkcode import CodeEditor
 import webbrowser
 
@@ -616,19 +618,19 @@ def identify(extension):
 				return y
 
 try:
-	configs = open("./DATA/runner.whirldata","r+")
+	configs = open("./DATA/runner.confscript","r+")
 except FileNotFoundError:
-	configs = open("./DATA/runner.whirldata", "x")
+	configs = open("./DATA/runner.confscript", "x")
 
-datafile = open("./DATA/runner.whirldata").read()
+datafile = open("./DATA/runner.confscript").read()
 if datafile.isspace():
 	isConf = False
 else:
 	isConf = True
 
 def runnerConf(thisType):
-	cmds = read(datafile)
-	command = cmds[thisType][1]
+	cmds = cfsread(datafile)
+	command = cmds[thisType]['command']
 	command = command.replace("$file",'"'+filepath+'"')
 	base = filepath.split("/")[-1]
 	base = base[:base.find(".")]
@@ -639,7 +641,7 @@ def runnerConf(thisType):
 
 def getConfs():
 	confs = []
-	cmds = read(datafile)
+	cmds = cfsread(datafile)
 	for i in cmds.keys():
 		confs.append(i)
 	return confs
@@ -737,12 +739,19 @@ class CustomText(Text):
 		return result
 
 def newrunner():
+	global configs
+	configs = open("./DATA/runner.confscript","r+")
+	log('new runner dialog opened')
 	global conf
 	def done():
+		global datafile
+		global configs
 		thisconf = ""
-		configs.write(datafile+'\n{}::[["{}"]::"{}"]'.format(name.get(),'","'.join(entriee.get().split(',')),entry.get()))
-		log('created {}'.format(name.get()),call='RUNNER')
+		datafile=datafile+'---\n{}'.format(dump({name.get():{'command':entry.get(),'extensions':entriee.get()}}))
+		configs.write(datafile)
+		configs.close()
 		conf.quit()
+		log('created {}'.format(name.get()),call='RUNNER')
 	def switchFunction():
 		if gui.get():
 			switch.config(text='Console')
@@ -754,18 +763,11 @@ def newrunner():
 		a.resizable(False,False)
 		a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
 		a.title("Help")
-		helpvartxt = """
-command entry:
-Keywords:
-	$file
-	the file path.
-	$base
-	the base name of the file.
-	$dir
-	the folder where file is located.
-"""
-		b = Label(a,text = helpvartxt,font="Consolas")
-		b.pack(side = 'left',expand=True)
+		b = Label(a,text = 'Keywords',font="Consolas", anchor='w').pack(expand=True)
+		b = Label(a,text = '$file: filepath',font="Consolas", anchor='w').pack(expand=True)
+		b = Label(a,text = '$base: file base name',font="Consolas", anchor='w').pack(expand=True)
+		b = Label(a,text = '$dir: file directory',font="Consolas", anchor='w').pack(expand=True)
+		b = Label(a,text = '\nNOTE: only click "Confirm" & close\nnew runner popup to avoid errors',font="Consolas 12 \ bold", anchor='w').pack(expand=True)
 		a.mainloop()
 	conf = tk.Toplevel(root)
 	conf.wm_attributes("-topmost",1)
@@ -793,19 +795,16 @@ Keywords:
 	helptxt.place(x=60,y=150)
 	helpbtn = ttk.Button(conf,text = "Help",command = lambda:helpwindow())
 	helpbtn.place(x=220,y=150)
-	submit = ttk.Button(conf,text = "Confirm & Create Runner", command = lambda:done())
+	submit = ttk.Button(conf,text = "Confirm", command = lambda:done())
 	submit.place(x=125,y=200)
 	conf.mainloop()
 
 def runconf(*args):
-	evaled = read(datafile)
+	evaled = cfsread(datafile)
 	for i in evaled.keys():
-		if i=="@":
-			pass
-		else:
-			for x in evaled[i][0]:
-				if x == extension[curnote2()]:
-					thisext = i
+		for x in evaled[i]['extensions']:
+			if extension[curnote2()] in x:
+				thisext = i
 	try:
 		runnerConf(thisext)
 	except:
@@ -1209,15 +1208,16 @@ notebook.bind_all('<Control-Tab>',nexttab)
 thisroot.bind_all(configuration['Key Bindings']['Fullscreen'],fullscreen)
 thisroot.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
 thisroot.config(menu = None)
+thisroot.after(1000, exec('datafile = open("./DATA/runner.confscript").read()'))
 thisroot.after(100, update)
 log('binded all keystrokes')
 log('starting main window')
 
-try:
-	thisroot.mainloop()
-except Exception as e:
-	log('({}) {}'.format(type(e).__name__, e), call='ERROR')
-	messagebox.showerror(type(e).__name__, e)
+#try:
+thisroot.mainloop()
+#except Exception as e:
+#	log('({}) {}'.format(type(e).__name__, e), call='ERROR')
+#	messagebox.showerror(type(e).__name__, e)
 
 configs.close()
 open('./DATA/configure.yaml','w+').write(yaml.dump(data.config))

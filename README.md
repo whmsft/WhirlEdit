@@ -12,17 +12,19 @@
 [![Size](https://shields.io/github/repo-size/Whirlpool-Programmer/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whirlpool-programmer/whirledit)]()
 
+<!--
 WhirlEdit as of 1 month ago:
 
 ![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/screenshot.png)
-
+-->
 ```
 CHANGELOG:
 
-v3.2:
+v3.2.2:
 > refix bug
   - font with ' '
 > Tab with close button
+> runners saved in 'runner.confscript'
 
 v3.1.1:
 > fixed 2 big bugs

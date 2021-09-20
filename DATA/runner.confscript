@@ -1,0 +1,83 @@
+== Bash ==
+command: bash $file
+extensions: .sh,.csh,.ksh
+---
+== Batch ==
+command: $file
+extensions: .cmd,.bat
+---
+== CoffeeScript ==
+command: coffee $file
+extensions: .coffee,.cson,.litcoffee
+---
+== Dart ==
+command: dart $file
+extensions: .dart
+---
+== F90 ==
+command: f90 $file
+extensions: .f,.f90
+---
+== G++ ==
+command: g++ -o $base $file
+extensions: .cc,.cpp,.cxx,.c++,.hh,.hpp,.hxx,.h++
+---
+== Gcc ==
+command: gcc $file -o $dir/$base
+extensions: .c,.h
+---
+== Go ==
+command: go run $file
+extensions: .go
+---
+== runHaskell ==
+command: runhaskell $file
+extensions: .hs,.lhs
+---
+== JavaC ==
+command: javac $file
+extensions: .java,.class
+---
+== KotlinC ==
+command: kotlinc $file -include-runtime -d $base.jar
+extensions: .kt,.kts,.ktm
+---
+== Lua ==
+command: lua $file
+extensions: .lua
+---
+== Makefile ==
+command: cd $dir && make
+extensions: .make,.makefile
+---
+== NASM ==
+command: nasm -f elf $file
+extensions: .asm,.nasm,.inc
+---
+== Perl ==
+command: perl $file
+extensions: .plx,.pl,.pm
+---
+== Powershell ==
+command: pwsh.exe -command $file
+extensions: .ps1
+---
+== Python ==
+command: python $file
+extensions: .py,.pyw,.pyc,.py3,.py2
+---
+== RScript ==
+command: rscript $file
+extensions: .r,.rdata,.rds,.rda
+---
+== Ruby ==
+command: ruby $file
+extensions: .rb
+---
+== Swift ==
+command: swift $file
+extensions: .swift
+---
+== Tcl ==
+command: tclsh $file
+extensions: .tcl,.tbc
