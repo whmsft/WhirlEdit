@@ -12,6 +12,8 @@
 [![Size](https://shields.io/github/repo-size/Whirlpool-Programmer/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whirlpool-programmer/whirledit)]()
 
+### sorry this project wasn't updating for a few days now... check back in a day!
+
 <!--
 WhirlEdit as of 1 month ago:
 
