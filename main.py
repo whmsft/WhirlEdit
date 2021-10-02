@@ -1,8 +1,8 @@
-__version__ = 'v3.2.2 (Stable)'
-#from DATA.extensions import extmgr <- experimental, making extensions..
+__version__ = 'v3.4 (Stable)'
 import time
 start = time.time()
-
+import utils as txtutils
+import zlib
 import os
 import yaml
 import tkinter as tk
@@ -24,14 +24,11 @@ from tkcode import CodeEditor
 import webbrowser
 
 TEMP = tempfile.gettempdir()
-
+logx = ''
 if os.path.isdir(TEMP+'/WhirlEdit/'):
 	pass
 else:
-  try:
-	  os.mkdir(TEMP+'\\Whirledit\\')
-  except OSError:
-    messagebox.showerror('OSError','Some errors occured while creating log file\npossibly a read-only file system')
+	os.mkdir(TEMP+'\\Whirledit\\')
 	#logfile=os.open(TEMP+'/Whirledit/logs.txt', os.O_RDWR|os.O_CREAT)
 
 logfile = open(os.path.abspath(TEMP+'\\Whirledit\\logs.txt'),'w+')
@@ -39,6 +36,7 @@ logfile.write('')
 
 def logCALL(message, call="INTERNAL"):
 	logs = '{} [{}]: {}'.format(round(time.time()-start,2),call,message)
+	logx += logs+'\n'
 	logfile.writelines(logs+'\n')
 	print(logs)
 
@@ -224,10 +222,10 @@ nothing = [1,0,1,1,1,1]
 
 
 class data:
+	logo = b'x\xda-V\xc7\x1a\xa20\x10~ \x0f\x02\x02\xcaa\x0f\t\xbd7A\xe0&-A\xaa\x14\x01\x9f~q\xbf\r\x04\xc8\xf4\xf9g\x92\x8f*\x84\xb6\xb7\x12\xba\x8czp\x0c\xcb\x0f\xb0\x18\xa0\xe3Kv\x8f\x07\xacy`\xfe\xde\x8a#\x87\xedO\x00\xca9\xbc\x07"\x00\x86\xec\xf0\xe7\r\xc3\x9f\x18\x90\xbeA\x9d\xf3@\xbf\xda\x8a]\x1fk\xa3\x0f\xc4-\xf0\x82m\xc8\x8aW\xcf*!\x99\xe7\xf7\x80t.\xdc9\xe5\xd7I}\xca\xb8\xb6\x04\x97\xc0\xaa\xaf\xebU?]\xaco\x98G\xe1\xf9\xff\xa0\xc2&\x89\xb8sy\xb5\xbf\x13\xb3\xa4\xed\xcd\xe0\xd76i\x93\xc5y\xd1\x17L\x17\xf26\xa5"c\xdf?\x87\xec\xa9\x1b\xd8G3<#m\xcf:\x8f\xc8\x15\xe6T\xbe\xedW\x7f-.3\x05Ql\x1f:\xcc#l\x8e;y\xb6\xc3;\xa6\xacW\xd6i{\xc2\xbb\xb5\x18J\xde\xc3z\xc5\x9cs\'~~/\t\x95\xb7\xdc\'%\xad{\xc0\x1c|\xeb\x9b]~\xf6jO\xf4\xa4\x83\xc6\xca\xb8\x8fm\x01Q\x87\x7f\xe3I\xcd\xeda\xb3\xfc\xde\xcez\xd1\r?}\x12\xba\x81\x1d5Lz\xf8\xfe\xad\xe9\x93\xf3"\x1a\xcdOt\xbf\xfe\xc5J\xe2\xf8\xc1\xf7o\x1dA\xbbC\xb0\xda\x00\x94*\xc4\x8b\xe7\x15.\x97\xea\xa0\xfb\xa8\xd7e\xafN\xc0\xc1_\x0f\xde\xcaK\x07\xcf\xee\xbc\x9ay\xfc\xe4\xddF\xc1\xe8\xa0\xfb\xf1l\xae\xf59_\xe1k\xab\xe2\xc5\xf2j2\xa8\xfaA[\xe1\x87\x86\x9eR\xec\xf5\xa0\xbb\xa4\xd7\xf8\xfd\xa0\x03\x99?\xf9h2\xbdY\xcf\xdd\x9c\xa4\xf6\x80\xf4x4\x9b?\x7f+\xf9|\x83\xc3\xf7\n\xcd\x16A\xf9\x05=\xbbr\xa1\xd3\x03\x98-.\x0fN.\xdc\xe8\n\x8d\x06"\xb8\xd4\x85=\x81x\xe1\xec\xbb\x8b\r\x12\xf5\x90}\xb68\xb8\xc6\x9e\xa4c\xbe\x1f\r\x88\x1dTeG,\xa1\x98a\xc9o\xdc!\x9f\xaa\xecc\xad\xc3\xb2\xef\xebd\xf0\xd3\xa8\xefh\xb1xz1^\x88\xb6\x85\xe0@\x19\xac&\x7f\xc4\xc6\xd7\xa3\xf1\x9b\x1e\xb6\xd1aK\xdf$\xbf\xde\x8ex\xf1\x91\x97K&\xc3/\xd7*\x9e\xcc_\xec>1\x1b\xf7\xech\x18\x97\xb0\x04q3\xef?\x90\xa7\xa3S\xcc\xaf\xf9\xd3Y5\xb3u\xe1|\x01G\x96.l\xbf\x00+\x15\x9c\xbew@\xdf\x9ex\xa5\x02\xe8\x19\xf8\x87I\x056\xd7\x8b\xd9h\xb3\xd4\xb2:\xf0X\xc3\xe7\xb8\x1fXb\xc4<\xb0\xa5\x95\x07\xfe/x\xe4\xf6\xcb\xdb\x0bn\xf1\xe6\xa9%8\xf2\xe7E\xca_\x8f\xdc\xdc-}o\xb9\x90\xe2\x98\x8d\xbd\x1b\x1d\xf0\xd9j\x03^>\xaf\xdb\xb0\xfa\xf5d\xe0\\+\xdd9\x1bq"d.D+\x90&\xcaC\xa7\xc4\x85\xe9\xbc\x99L\xb4\x016\xf1\x0f\xbc\x10t\xba_\xdd|p\x8e`#f\xc0\xbb\xb2\x08\x86o\xbc\xa9\x99?\xbdu>\x9b-\x10j\xaf*\x9e\x8f\xcdy`\x7f\xc4\xb3e\x97\xc7\xaf>\xe8\xa8\xcf\x8ae\x8c\xa5cs&\xe8\x03\xa0\xd1B\xcby\xfd\xea\xebZWvm`\x81\x8f\x9a\x022\x1f\x8f\x9e\xb1\x80\xf5\x9c\\\xc8qh\xf3[?X\xed\x15\xab\xff\xea\xed\x07\x84[\xb9\x17\xdf\x1d\xe6\x1d\xcd\xfd\n\xe0J#LPn\xb3\x13{=\x9b\xbcz\r6-\xef\xb7$\xac\xf9xw\x80,\x9cac#\xc7\x0b\xbf\x1b\xfd;\x15\xa4\\\xd2\xec`\x05\xf1\xcaOvd87\x8e\x16\x97+R\x15:\x9d\x1f(\x88njz^n\xc8\xcd\xb9\xacT\xf7\xce\x8ai|J\xcf\x1d\xbf\xd8I\xc4P\xfbM\xa6\xec\x8ek\xaa\xear*8z\xb3\xb4;\x87=\n\x94 \x0b\xd7\xf7x\xeeW\x81\xe9?\x07\xcc\xbf\xb3\xc5\xc4~\xe0\xc1P~\x15\xd7|\x08C\xe8y\xb2)l<\x8d\r?\xca\xc6KN\xcd\xd1\x11\xa8\xfb\x92\xdcC\xf9.\xa5\xf2\x96QuP\xf3\xecu\xf9\x7fQd&Q\t%e[\xde\xb6i}c\x9d\xad\xcco\xe7\xdbw\xfa\xf2]\\~\x00\xc1\x07u\x10\xa4\xe6\x85\xcau\xe9\xb9\x9b\xdd\x93\x9a\xa2\x84\x00\x9f\xf0\x9d>\x98\xaa\xd6D\xdb\xbf\xd3W\xf7!\x87\x9f\xd8\xce\xc7\xa7X\x13\xc1xo\xf8\xb2\xae\x19\xc1:\t\x82\x10\xd4\x8bm6}\xfff\x9f_\x9d\xf3D\xb7a\x0c\x98*^\x88\xba\xaa\xf2\xf70d\x1b.\x9c\x06]3\xfd\xa6\x91\xbb\x9e\xac\xf8\xe7\x1b\xc32Q\xc3\xf4\xe1De\xf3\xa8\xd9Mo\xe8SI\xc2\xafR\xd7w\xe4\xb5\x85\xeb\x02u3q\x88\x9c\x1d\x116\xc4\xaeX\x1a\x84\xd6\xe2\xde\xa4\xe4\xa8*\xa5\xde\x1f\x8c\tLJjB?,\xd0\xeb\xbc\x03\xa46\xc1+\\\xeb\x9c~\xf7\x91\xaa\x81\xf2)\xfa\xac\xce\x17\xe1b\x14V2u\x157\xc63+ScV\xa5\xaa?~J8\xe8\xba+y\x95u\xca)C\\\xba\xea\xbd\xac^\xfc\xb9\xeb\x80\xcd\x11f(\n\xd7\xf9Z>\xd3\xa2\x9e\x88\xbc\x13vi\x86*\xe7\x0c\xea\xc9\xac\xeb\xd8O\x06f\x12\xda,\xc6\x8ac\x94\xaaX<\xabe\x0f\xc0\xbd9\x85\xb6F\xb0\x18D\x17\x02\\\xd8\x8a\xbf\x92\xb3\xa6,\r}3\x13\xe3}\xca\xe6\x131\xce\x11\xdc\xebXE\x8e\xcf\x04\xfb\xbe\x08\xc5\'\xa2\x02\xa7\x96\x0cj]KA\xd3dlV\xb2\x17ZJ\xdea\xc5\x8f\x1a$*\xa6\xf8 \xfa\xc5=7\xd7Z\x04W\\+7Ou\xef}7\xf2\xaa(\x9d\x0b\tqr\xa8|/\\[\xbd_kh\x8a\xb6\xa1\xcc\xc4I\xa8\x05\x8a\xb5\xe2\xf1\xbd\x85f[\xd9B\xf4%\xd1\x90\'j\xcf\xd5\xe6\xb3\xbee\xe4\x94]\xa5\x01F\xd7\xb2\x89\xbf\xaaa2X4\xe9A\x91j\x85\xb1\xbf\xecw\x9a\x13\xe7\x06\xb5\xa9\xd0i\xfb\xd3\x9d\x1b\xed\xb9D\xd4m\x01\x1fF\x144\xa6\xbb\xee\xd7F\xb8\xb9T\xb93\x01\x11YNT\xb8\xb2o\xf4\xeen\xc2D\x8d\xd7*0\xe9\x7f\xf6 \xb33w\rNl\xfc\n\xa9\xb3\xcd\x12\xd4X<\xe7=\x11\x01\xe5\xf3\xba\xb7R?\xd2\xd7\x0bp{\x9c\x80\x12Y\xeb\xbemY\x0b\x91\x02\x86K$\xf5^\'\xd5\x16\x7f+\xd1=\xe6\xfd\xe19\xd9.\x18\xd2\xee)\x01G:\xd5[I\xfd\xf2\x8e\xbe\xa0\'\x9b\xecR,\xad\xcf/\xc2\xe2\xf0\x97\x8f\xff>\xc3\x80\xef\xb4\x9a\xefw\x8f\xa1R\xfb\x84=\x8fdo!\xf7\x84\x89Xj4\xd6: \xdf/\xa26\xf4AQ\xad)x\xec\xef\xc9\xe4N\xe7X&\x9d"\xf1\xec\xec\xbb\x83\x98\xb6\x17\xf9,\x9a\x1b\xa0\xa9\x87X\xecz\xc9.\xc8BO\xba\xb9\x14\xb4\xd2)\xae\x0fz/\xb5\xef\xee\xbeG\xfc\xa9.ZN\x1a\xdb`p\xeaG?~\xc8\x0b\x0cr\xf8A\xfb\xddEc\xaa\xb3ch`{xJ\x1e\n\xcaW\xc3\xf6\xe3\xbc\xc9\xb3\xb7\xb4L\xf1\x88vJ\xb9\xeb\xe1\xc0\x16\xb36*H*\xd2NL\xf6d\xaf4\xa1n\xda\xe23\xd3\x98\x0b\xd3\x10\xd4\x86\x10\x85\xeb\xe8\x93/\xf6r\xab\xcc\x9b\x93i98\xbd?e\xf2Y$s\xf5\xf34\x1a\xa9\xec\xf7\xa3\x02\xfc \xb4=\x9d\xe1cU\xfd\xf3\x17\xe8\xaa\xff\xa1'
 	font = "{} {}".format(configuration['Looks']['Font']['Font'],configuration['Looks']['Font']['Size'])
 	isBlockcursor = configuration['Looks']['Font']['BlockCursor']
 	config = configuration
-
 
 def about(*args):
 	log('opening about')
@@ -241,12 +239,14 @@ def about(*args):
 		a.title('Whirledit')
 		a.resizable(False,False)
 		a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
-		a.geometry("300x200")
+		a.geometry("300x250")
+		z = Label(a, image=img100x100)
+		z.pack(pady=5,padx=5)
 		b = Label(a,text='WhirlEdit',font='Consolas 20')
 		b.pack()
 		c = Label(a,text=__version__,font='Consolas 10')
 		c.pack()
-		d = Label(a,text='\nWritten in python\nby Whirlpool-Programmer\n',font='Consolas 15')
+		d = Label(a,text='\nWritten in Python\nby Whirlpool-Programmer\n',font='Consolas 15')
 		d.pack()
 		e = ttk.Button(a,text='GitHub', command=lambda:webbrowser.open('http://Whirlpool-Programmer.github.io/software/WhirlEdit'))
 		e.pack()
@@ -266,7 +266,7 @@ def fullscreen(*args):
 		nothing[1] = 0
 
 def set_syntax(lang):
-	note[curnote2()].config(language=lang)
+	note[current_note()].config(language=lang)
 	log(lang,call='SYNTAX')
 
 def togglesetti(*args):
@@ -317,17 +317,20 @@ def togglerunner(*args):
 		splitter.forget(settipaneframe)
 		nothing[3] =0
 
+tabfmt = {}
+
 def update(*args):
 	thisfile = ""
-	if openedfiles[curnote2()] == '' or openedfiles[curnote2()] == ' ':
+	if openedfiles[current_note()] == '' or openedfiles[current_note()] == ' ':
 		thisfile='None'
 	else:
-		thisfile = openedfiles[curnote2()]
+		thisfile = openedfiles[current_note()]
 	root.update()
-	fdir = "/".join(openedfiles[curnote2()].split("/")[:-1])
-	line = note[curnote2()].index(tk.INSERT).split('.')
-	note[curnote2()]['font'] = data.config['Looks']['Font']['Font']+" "+data.config['Looks']['Font']['Size']
-	note[curnote2()]['blockcursor'] = data.isBlockcursor
+	cursyntax.set(identify(tabfmt[current_note()]))
+	fdir = "/".join(openedfiles[current_note()].split("/")[:-1])
+	line = note[current_note()].index(tk.INSERT).split('.')
+	note[current_note()]['font'] = data.config['Looks']['Font']['Font']+" "+data.config['Looks']['Font']['Size']
+	note[current_note()]['blockcursor'] = data.isBlockcursor
 	status['text'] = "File: {} | Line {}, Column {}".format(thisfile,line[0],line[1])
 	if fdir in openedfolders:
 		pass
@@ -345,18 +348,18 @@ def openthisfile(event):
 	item = event.widget.item(item_id)
 	values = item['text']
 	if os.path.isfile(values):
-		variable = curnote2()
+		variable = current_note()
 		filepath = values
-		extension[curnote()] = "."+filepath.split(".")[-1]
+		extension[current_note()] = "."+filepath.split(".")[-1]
 		note[variable].delete(1.0,END)
 		file = open(filepath,"r")
-		note[curnote2()]["language"] = identify(filepath.split("/")[-1])
+		note[current_note()]["language"] = identify(filepath.split("/")[-1])
 		note[variable].insert(1.0,file.read())
 		openedfiles[variable] = filepath
 		file.close()
 		log('opened {}'.format(filepath, call='FILE'))
 		notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
-		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
+		note[current_note()].config(language=identify("."+filepath.split(".")[-1]))
 
 def changekeybind(*args):
 	def getit__(index):
@@ -511,7 +514,7 @@ class lookspane(object):
 		for i in os.listdir(configuration['Looks']['Scheme']['Folder']):
 			if i.lower().endswith('.json'):
 				curscheme_values.append(i[:-5])
-		self.b = ttk.OptionMenu(frame, self.curscheme, *curscheme_values, command = lambda a='s':note[curnote2()].config(highlighter = configuration['Looks']['Scheme']['Folder']+self.curscheme.get()+'.json'))
+		self.b = ttk.OptionMenu(frame, self.curscheme, *curscheme_values, command = lambda a='s':note[current_note()].config(highlighter = configuration['Looks']['Scheme']['Folder']+self.curscheme.get()+'.json'))
 		self.d = tk.Label(frame,text='Syntax')
 		CreateToolTip(self.b, text='Select The color-scheme\nto use..')
 		self.d.grid(row=2,column=0)
@@ -521,7 +524,7 @@ class lookspane(object):
 		languages = ['Choose']
 		for i in highlight.keys():
 			languages.append(i)
-		self.c = ttk.OptionMenu(frame, cursyntax, *languages,command=lambda name="__main__": note[curnote2()].config(language=cursyntax.get()))
+		self.c = ttk.OptionMenu(frame, cursyntax, *languages,command=lambda name="__main__": note[current_note()].config(language=cursyntax.get()))
 		self.c.grid(row=2,column=1, pady=5)
 		CreateToolTip(self.c, text='Select the programming language\nsyntax to use')
 		self.b.grid(row=3,column=1,pady=5)
@@ -652,7 +655,7 @@ def getConfs():
 colors = []
 extension = {}
 
-def curnote2(*args):
+def current_note(*args):
 	variable = notebook.select()
 	if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
 		variable = 0
@@ -806,7 +809,7 @@ def runconf(*args):
 	evaled = cfsread(datafile)
 	for i in evaled.keys():
 		for x in evaled[i]['extensions']:
-			if extension[curnote2()] in x:
+			if extension[current_note()] in x:
 				thisext = i
 	try:
 		runnerConf(thisext)
@@ -839,7 +842,7 @@ cursyntax = StringVar()
 languages = [data.config['Looks']['InitialSyntax']]
 for i in highlight.keys():
 	languages.append(i)
-syntaxchoose = ttk.OptionMenu(statusbar, cursyntax, *languages,command=lambda name="__main__": note[curnote2()].config(language=cursyntax.get()))
+syntaxchoose = ttk.OptionMenu(statusbar, cursyntax, *languages,command=lambda name="__main__": note[current_note()].config(language=cursyntax.get()))
 syntaxchoose.pack(side='right')
 
 rootframe = tk.PanedWindow(thisroot,handlesize=5,orient=tk.VERTICAL)
@@ -873,6 +876,8 @@ log('Icons made and added',call='SIDEBAR')
 projectBar_icon_newfile = PhotoImage(file='./DATA/icons/{}/project.newfile.png'.format(data.config['Looks']['Icons']['Theme']), master = toolbar)
 projectBar_icon_newfold = PhotoImage(file='./DATA/icons/{}/project.newfolder.png'.format(data.config['Looks']['Icons']['Theme']), master = toolbar)
 projectBar_icon_closefi = PhotoImage(file='./DATA/icons/{}/project.closefile.png'.format(data.config['Looks']['Icons']['Theme']))
+
+img100x100 = tk.PhotoImage(data=zlib.decompress(data.logo))
 
 newtabICON = PhotoImage(file='./DATA/icons/{}/main.newtab.png'.format(data.config['Looks']['Icons']['Theme']))
 
@@ -957,26 +962,26 @@ def opencmd(*args):
 		log('cmd starting at {}'.format(cwd), call='RUNNER')
 		subprocess.call('start cmd /k cd /d "{}"'.format(cwd), shell=True)
 	except:
-		subprocess.call('start cmd /k "{}"'.format(openedfiles[curnote2()]), shell=True)
+		subprocess.call('start cmd /k "{}"'.format(openedfiles[current_note()]), shell=True)
 
 def runfile(*args):
 	try:
 		cwd = "/".join(filepath.split("/")[:-1])
 		drive = cwd[:3]
-		log('cmd starting for {}'.format(openedfiles[curnote2()]), call='RUNNER')
-		subprocess.call('start cmd /k "{}"'.format(openedfiles[curnote2()]), shell=True)
+		log('cmd starting for {}'.format(openedfiles[current_note()]), call='RUNNER')
+		subprocess.call('start cmd /k "{}"'.format(openedfiles[current_note()]), shell=True)
 	except:
-		subprocess.call('start cmd /k "{}"'.format(openedfiles[curnote2()]), shell=True)
+		subprocess.call('start cmd /k "{}"'.format(openedfiles[current_note()]), shell=True)
 
 def getpos(*args):
 	global pos
 	global line
-	pos = note[int(curnote())].index("end")
+	pos = note[int(current_note())].index("end")
 	pos = pos[:-2]
 	pos = int(pos)
 	pos = pos -1
 	line.set(pos)
-def curnote():
+def current_note():
 	variable = notebook.select()
 	if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
 		variable = 0
@@ -990,10 +995,10 @@ def curnote():
 
 def deltab(*args):
 	try:
-		if openedfiles[curnote2()] == "":
+		if openedfiles[current_note()] == "":
 			notebook.forget(notebook.select())
 		else:
-			if open(openedfiles[curnote2()]).read() == note[curnote2()].get(1.0,END):
+			if open(openedfiles[current_note()]).read() == note[current_note()].get(1.0,END):
 				notebook.forget(notebook.select())
 			else:
 				optionchoosen = askyesnocancel("Save file?", "Save unsaved changes in {}".format(notebook.tab(notebook.select(), "text")))
@@ -1015,28 +1020,29 @@ def saveAsFile(*args):
 	if not filepath:
 		return
 	with open(filepath, "w") as output_file:
-		extension[curnote()] = "."+filepath.split(".")[-1]
-		variable = int(curnote2())
+		extension[current_note()] = "."+filepath.split(".")[-1]
+		tabfmt[current_note()] = "."+filepath.split(".")[-1]
+		variable = int(current_note())
 		text = note[variable].get(1.0, tk.END)
 		output_file.write(text)
 		log('saved file {}'.format(filepath), call='FILES')
-	notebook.tab(frames[int(curnote2())], text = filepath.split("/")[-1]+"   ")
-	note[curnote2()].config(language=identify(filepath.split("/")[-1])+"   ")
-	note[curnote2()].update()
+	notebook.tab(frames[int(current_note())], text = filepath.split("/")[-1]+"   ")
+	note[current_note()].config(language=identify(filepath.split("/")[-1])+"   ")
+	note[current_note()].update()
 	root.update()
 
 def saveFile(*args):
 	global notebook
 	global extension
-	variable = int(curnote2())
+	variable = int(current_note())
 	if openedfiles[variable] == "":
 		saveAsFile()
 	else:
 		with open(openedfiles[variable], "w") as output_file:
-			extension[curnote()] = "."+openedfiles[variable].split(".")[-1]
+			extension[current_note()],tabfmt[current_note()] = "."+openedfiles[variable].split(".")[-1]
 			text = note[variable].get(1.0, tk.END)
 			output_file.write(text)
-			notebook.tab(frames[variable], text = openedfiles[curnote2()].split("/")[-1]+"   ")
+			notebook.tab(frames[variable], text = openedfiles[current_note()].split("/")[-1]+"   ")
 			log('saved file {}'.format(filepath), call='FILES')
 
 def openFile(*self):
@@ -1045,26 +1051,27 @@ def openFile(*self):
 	if notebook.select() == "":
 		newTab()
 
-	variable = curnote2()
+	variable = current_note()
 	filepath = askopenfilename(defaultextension="*.*", filetypes=[("All Files","*.*"), ("Text","*.txt"),("Ada"         ,[".adb",".ads"]),("Bash"        ,[".sh",".csh",".ksh"]),("Batch"       ,[".cmd",".bat"]),("BrainFuck"   ,[".b",".bf"]),("C"           ,[".c",".h"]),("CMake"       ,[]),("CoffeeScript",[".coffee",".cson",".litcoffee"]),("CSS"         ,[".css"]),("C#"          ,[".cs",".csx"]),("C++"         ,[".cc",".cpp",".cxx",".c++",".hh",".hpp",".hxx",".h++"]),("Dart"        ,[".dart"]),("Delphi"      ,[".dpr"]),("Dockerfile"  ,[".dockerfile"]),("Fortran"     ,[".f",".f90",".f95"]),("Go"          ,[".go"]),("Groovy"      ,[".groovy",".gvy",".gradle",".jenkinsfile"]),("Haskell"     ,[".hs",".lhs"]),("HTML"        ,[".htm",".html"]),("Java"        ,[".java",".jar",".class"]),("JavaScript"  ,[".js",".cjs",".mjs"]),("JSON"        ,[".json"]),("Kotlin"      ,[".kt",".kts",".ktm"]),("Lisp"        ,[".lsp"]),("Lua"         ,[".lua"]),("MATLAB"      ,[".m",".p",".mex",".mat",".fig",".mlx",".mlapp",".mltbx"]),("MakeFile"    ,[".make",".makefile"]),("NASM"        ,[".asm",".asm",".inc"]),("Objective-C" ,[".mm"]),("Perl"        ,[".plx",".pl",".pm",".xs",".t",".pod"]),("PHP"         ,[".php",".phar",".phtml",".pht",".phps"]),("Powershell"  ,[".ps1"]),("Python"      ,[".py",".pyi",".pyc",".pyd",".pyo",".pyw",".pyz"]),("R"           ,[".r",".rdata",".rds",".rda"]),("Ruby"        ,[".rb"]),("Swift"       ,[".swift"]),("SQL"         ,[".sql"]),("Tcl"         ,[".tcl",".tbc"]),("TypeScript"  ,[".ts",".tsx"]),("Vim"         ,[".vim"]),("YAML"        ,[".yaml",".yml"]),])
 	if filepath == "":
 		filepath = None
 	else:
-		extension[curnote()] = "."+filepath.split(".")[-1]
+		extension[current_note()] = "."+filepath.split(".")[-1]
+		tabfmt[current_note()]= "."+filepath.split(".")[-1]
 		note[variable].delete(1.0,END)
 		file = open(filepath,"r")
-		note[curnote2()]["language"] = identify(filepath.split("/")[-1])
+		note[current_note()]["language"] = identify(filepath.split("/")[-1])
 		note[variable].insert(1.0,file.read()[:-1])
 		openedfiles[variable] = filepath
 		file.close()
 		notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
-		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
+		note[current_note()].config(language=identify("."+filepath.split(".")[-1]))
 		log('opened file {}'.format(filepath), call='FILES')
 
 def select_all(event):
-	note[curnote2()].tag_add(SEL, "1.0", END)
-	note[curnote2()].mark_set(INSERT, "1.0")
-	note[curnote2()].see(INSERT)
+	note[current_note()].tag_add(SEL, "1.0", END)
+	note[current_note()].mark_set(INSERT, "1.0")
+	note[current_note()].see(INSERT)
 
 frames = {}
 
@@ -1078,11 +1085,12 @@ def newTab(*args):
 	note[var].config(tabs=font.measure('    '))
 	openedfiles[var] = ""
 	notebook.add(frames[var], text='Untitled   ')
-	extension[curnote()] = ".*"
+	extension[current_note()] = ".*"
 	note[var].bind('<Control-Tab>',nexttab)
 	note[var].bind("Control-a",select_all)
 	var = var + 1
 	nexttab()
+	tabfmt[current_note()] = '.py'
 	log('new tab added', call='TABS')
 
 Menubar = Menu(root, activebackground ="#0084FF", activeforeground = "#FFFFFF",bg = "#FFFFFF", fg = "#0084FF" ,font = "consolas")
@@ -1144,28 +1152,28 @@ notebook.grid(sticky = N + E + S + W)
 notebook.bind("<B1-Motion>", reorder)
 def nexttab(*args):
 	try:
-		notebook.select(curnote2()+1)
+		notebook.select(current_note()+1)
 	except:
 		notebook.select(0)
 
 newTab()
 
-extension[curnote()] = ".*"
+extension[current_note()] = ".*"
 
 btn = ttk.Button(thisroot,text = 'NEW')
 btn.place(anchor='ne')
 
 if len(sys.argv) >= 2:
 	if os.path.isfile(sys.argv[1]):
-		extension[curnote()] = "."+filepath.split(".")[-1]
+		extension[current_note()] = "."+filepath.split(".")[-1]
 		note[variable].delete(1.0,END)
 		file = open(filepath,"r")
-		note[curnote2()]["language"] = identify(filepath.split("/")[-1])
+		note[current_note()]["language"] = identify(filepath.split("/")[-1])
 		note[variable].insert(1.0,file.read())
 		openedfiles[variable] = filepath
 		file.close()
 		notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
-		note[curnote2()].config(language=identify("."+filepath.split(".")[-1]))
+		note[current_note()].config(language=identify("."+filepath.split(".")[-1]))
 
 root.add(notebook,before=termframe,height=450)
 class generate:
@@ -1191,6 +1199,12 @@ def texteditmenu(event):
 	tkTextmenu.entryconfigure("Paste",command=lambda: generate.paste(_widget))
 	tkTextmenu.tk.call("tk_popup", tkTextmenu, event.x_root, event.y_root)
 
+def startfind(*args):
+	txtutils.Find(thisroot, note[current_note()])
+
+def startreplace(*args):
+	txtutils.Replace(thisroot, note[current_note()])
+
 tkTextmenu = tk.Menu(root, tearoff=0)
 tkTextmenu.add_command(label="Cut")
 tkTextmenu.add_command(label="Copy")
@@ -1210,17 +1224,19 @@ thisroot.bind_all('<Control-Tab>',nexttab)
 notebook.bind_all('<Control-Tab>',nexttab)
 thisroot.bind_all(configuration['Key Bindings']['Fullscreen'],fullscreen)
 thisroot.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
+thisroot.bind('<Control-f>',startfind)
+thisroot.bind('<Control-h>',startreplace)
 thisroot.config(menu = None)
 thisroot.after(1000, exec('datafile = open("./DATA/runner.confscript").read()'))
 thisroot.after(100, update)
 log('binded all keystrokes')
 log('starting main window')
 
-#try:
-thisroot.mainloop()
-#except Exception as e:
-#	log('({}) {}'.format(type(e).__name__, e), call='ERROR')
-#	messagebox.showerror(type(e).__name__, e)
+try:
+	thisroot.mainloop()
+except Exception as e:
+	log('({}) {}'.format(type(e).__name__, e), call='ERROR')
+	messagebox.showerror(type(e).__name__, e)
 
 configs.close()
 open('./DATA/configure.yaml','w+').write(yaml.dump(data.config))
