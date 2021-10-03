@@ -1,5 +1,5 @@
 pyyaml
-whirldata
+wday
 tkcode
 tkterminal
-confscript>=1.5.0
+confscript
