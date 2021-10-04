@@ -1,4 +1,5 @@
-__version__ = 'v3.4 (Stable)'
+__version__ = 'v3.5 (Stable)'
+#from DATA.extensions import extmgr <- experimental, making extensions..
 import time
 start = time.time()
 import utils as txtutils
@@ -149,7 +150,7 @@ Looks:
     Size: '12'
   Icons:
     Theme: fluent.dark
-  InitialSyntax: python
+  InitialSyntax: Python
   Scheme:
     Default: azure-modified
     Folder: ./DATA/Schemes/
@@ -348,18 +349,28 @@ def openthisfile(event):
 	item = event.widget.item(item_id)
 	values = item['text']
 	if os.path.isfile(values):
-		variable = current_note()
-		filepath = values
-		extension[current_note()] = "."+filepath.split(".")[-1]
-		note[variable].delete(1.0,END)
-		file = open(filepath,"r")
-		note[current_note()]["language"] = identify(filepath.split("/")[-1])
-		note[variable].insert(1.0,file.read())
-		openedfiles[variable] = filepath
-		file.close()
-		log('opened {}'.format(filepath, call='FILE'))
-		notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
-		note[current_note()].config(language=identify("."+filepath.split(".")[-1]))
+		newTab()
+		try:
+			variable = current_note()
+			filepath = values
+			print(filepath.lower())
+			if filepath.lower().endswith('.ppm') or filepath.lower().endswith('.png') or filepath.lower().endswith('.jpg') or filepath.lower().endswith('.gif'):
+				localIMG = tk.PhotoImage(file=filepath)
+				note[current_note()].window_create(tk.END, window = tk.Label(note[current_note()], image = localIMG))
+			else:
+				extension[current_note()] = "."+filepath.split(".")[-1]
+				note[variable].delete(1.0,END)
+				file = open(filepath,"r")
+				note[current_note()]["language"] = identify(filepath.split("/")[-1])
+				note[variable].insert(1.0,file.read())
+				openedfiles[variable] = filepath
+				file.close()
+				log('opened {}'.format(filepath, call='FILE'))
+				notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
+				note[current_note()].config(language=identify("."+filepath.split(".")[-1]))
+		except UnicodeDecodeError as uce:
+			log('({}) {}'.format(type(uce).__name__, uce), call='FILES')
+			messagebox.showerror(type(uce).__name__, uce)		
 
 def changekeybind(*args):
 	def getit__(index):
@@ -591,7 +602,7 @@ class PathView(object):
 		ysb = ttk.Scrollbar(frame, orient='vertical', command=self.tree.yview)
 		#xsb = ttk.Scrollbar(frame, orient='horizontal', command=self.tree.xview)
 		self.tree.configure(yscrollcommand=ysb.set)#,xscrollcommand=xsb.set)
-		self.tree.heading('#0', text='FOLDERS', anchor='w')
+		self.tree.heading('#0', text='FOLDERS')
 		self.tree.column('#0',width=50,minwidth=100)
 		ysb.pack(side=RIGHT,fill=Y)
 		#xsb.pack(side=BOTTOM,fill=X)
@@ -842,7 +853,17 @@ cursyntax = StringVar()
 languages = [data.config['Looks']['InitialSyntax']]
 for i in highlight.keys():
 	languages.append(i)
-syntaxchoose = ttk.OptionMenu(statusbar, cursyntax, *languages,command=lambda name="__main__": note[current_note()].config(language=cursyntax.get()))
+
+def givename_ext(lang):
+	return highlight[lang][0]
+
+def syntaxchange(*args):
+	print(cursyntax.get())
+	tabfmt[current_note()] = givename_ext(cursyntax.get()) # give extension on language name
+	note[current_note()].config(language=cursyntax.get())
+
+syntaxchoose = tk.OptionMenu(statusbar, cursyntax, *languages,command=syntaxchange)
+syntaxchoose.config(indicatoron=False,bd=0,relief='flat')
 syntaxchoose.pack(side='right')
 
 rootframe = tk.PanedWindow(thisroot,handlesize=5,orient=tk.VERTICAL)
@@ -1056,17 +1077,21 @@ def openFile(*self):
 	if filepath == "":
 		filepath = None
 	else:
-		extension[current_note()] = "."+filepath.split(".")[-1]
-		tabfmt[current_note()]= "."+filepath.split(".")[-1]
-		note[variable].delete(1.0,END)
-		file = open(filepath,"r")
-		note[current_note()]["language"] = identify(filepath.split("/")[-1])
-		note[variable].insert(1.0,file.read()[:-1])
-		openedfiles[variable] = filepath
-		file.close()
-		notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
-		note[current_note()].config(language=identify("."+filepath.split(".")[-1]))
-		log('opened file {}'.format(filepath), call='FILES')
+		try:
+			extension[current_note()] = "."+filepath.split(".")[-1]
+			tabfmt[current_note()]= "."+filepath.split(".")[-1]
+			note[variable].delete(1.0,END)
+			file = open(filepath,"r")
+			note[current_note()]["language"] = identify(filepath.split("/")[-1])
+			note[variable].insert(1.0,file.read()[:-1])
+			openedfiles[variable] = filepath
+			file.close()
+			notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
+			note[current_note()].config(language=identify("."+filepath.split(".")[-1]))
+			log('opened file {}'.format(filepath), call='FILES')
+		except UnicodeDecodeError as uce:
+			log('({}) {}'.format(type(uce).__name__, uce), call='FILES')
+			messagebox.showerror(type(uce).__name__, uce)
 
 def select_all(event):
 	note[current_note()].tag_add(SEL, "1.0", END)
