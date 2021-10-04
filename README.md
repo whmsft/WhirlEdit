@@ -1,8 +1,6 @@
-## Latest STS release : [v3.1](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.1)
-## Latest preview release: [v3.4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.4)
-## Latest LTS release : [v2](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v2)
-
-\*\*if you don't know what is MTS/STS/LTS then check APPENDIX-A (at the bottom of this README)
+### Latest Stable release : [v3.4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.4)
+### Latest preview release: [v3.5](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.5)
+<hr>
 
 [![Run on Repl.it](https://repl.it/badge/github/Whirlpool-programmer/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
 [![Build Status](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml)
@@ -20,23 +18,37 @@ WhirlEdit as of 1 month ago:
 ```
 CHANGELOG:
 
+v3.5:
+> bugfixes
+  - syntax dropdown chooser
+> UI
+  + new style syntax change button
+> features
+  + an image previewer (VERY EXPERIMENTAL!)
+  + raise error on UnicodeDecodeError
+ 
 v3.4:
 > bug fixes
-> Find & replace features
-> better about window
+> UI
+  + better about window
+> features
+  + Find
+  + Find & replace
 
 v3.2.2:
 > refix bug
   - font with ' '
-> Tab with close button
-> runners saved in 'runner.confscript'
+> UI
+  + Tab with close button
+> features
+  + runners saved in 'confscript'
 
 v3.1.1:
-> fixed 2 big bugs
+> bugfixes
   - unable to update config
   - program crashes with font names having space ' ' character
-> numerous "small" bugs fixed
-> added a "Confirm & Save" button to Settings pane
+> UI
+  + added a "Confirm & Save" button to Settings pane
 
 v3.1:
 > Side Bar pane(s)
@@ -69,7 +81,6 @@ v1:
 
 1. Editing LARGE files (30kb+) may slow down experience
 2. Some theme assests don't work as expected
-3. Language changing drop-down menu does not change with tab change
 
 <hr>
 
@@ -77,13 +88,3 @@ v1:
 
 ![Joke](https://readme-jokes.vercel.app/api)
 
-
-<hr>
-
-## Appendix-A:
-
-MTS: Minimum term support (1-2 months support) [also known as "preview" and "unstable" release] -> not recommended for beginners
-
-STS: Standard term support (6 months support) [also known as "stable" release] -> slightly recommended
-
-LTS: Long term support (1-2 years support) [also known as "battle-tested" and "highly-stable" release] -> highly recommended
