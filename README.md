@@ -74,8 +74,6 @@ v1:
 ```
 <br>
 <hr>
-<img src = "https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/support.png" alt = "Support cycle"/>
-
 
 ## Known issues:
 
