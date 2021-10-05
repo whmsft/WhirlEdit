@@ -90,6 +90,16 @@ v1:
 
 <hr>
 
+### Contributers
+
+<a href="https://github.com/whmsft/WhirlEdit/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=whmsft/WhirlEdit" />
+</a>
+
+**Hope to see more people soon!
+
+<hr>
+
 # And now something completely different:
 
 ![Joke](https://readme-jokes.vercel.app/api)
