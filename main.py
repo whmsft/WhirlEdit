@@ -39,7 +39,7 @@ logfile.write('')
 
 def logCALL(message, call="INTERNAL"):
     logs = '{} [{}]: {}'.format(round(time.time()-start,2),call,message)
-    logx += logs+'\n'
+    logs += logs+'\n'
     logfile.writelines(logs+'\n')
     print(logs)
 
