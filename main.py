@@ -831,8 +831,12 @@ def runconf(*args):
 
 thisroot = tk.Tk()
 log('Main Window created')
-thisroot.iconbitmap(r"./data/icons/favicon.v3.ico")
-log('icon added')
+try:
+    thisroot.iconbitmap(r"./DATA/icons/favicon.v3.ico")
+except tkinter.TclError:
+    log('icon adding error')
+else:
+    log('icon added')
 thisroot.title(configuration['Looks']['WindowTitle'])
 log('title set')
 windowWidth = 800
