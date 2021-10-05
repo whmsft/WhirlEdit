@@ -1,7 +1,5 @@
 __version__ = 'v3.5 (Stable)'
 # from DATA.extensions import extmgr <- experimental, making extensions..
-import tkinter
-
 from confscript import dump
 from confscript import read as cfsread
 import os
@@ -698,7 +696,7 @@ class AutocompleteEntry(ttk.Entry):
     def autocomplete(self, delta=0):
         """autocomplete the Entry, delta may be 0/1/-1 to cycle through possible hits"""
         if delta: # need to delete selection otherwise we would fix the current position
-            self.delete(self.position, tkinter.END)
+            self.delete(self.position, tk.END)
         else: # set position to end so selection starts where textentry ended
             self.position = len(self.get())
         # collect hits
@@ -715,23 +713,23 @@ class AutocompleteEntry(ttk.Entry):
             self._hit_index = (self._hit_index + delta) % len(self._hits)
         # now finally perform the auto completion
         if self._hits:
-            self.delete(0,tkinter.END)
+            self.delete(0,tk.END)
             self.insert(0,self._hits[self._hit_index])
-            self.select_range(self.position,tkinter.END)
+            self.select_range(self.position,tk.END)
 
     def handle_keyrelease(self, event):
         """event handler for the keyrelease event on this widget"""
         if event.keysym == "BackSpace":
-            self.delete(self.index(tkinter.INSERT), tkinter.END)
-            self.position = self.index(tkinter.END)
+            self.delete(self.index(tk.INSERT), tk.END)
+            self.position = self.index(tk.END)
         if event.keysym == "Left":
-            if self.position < self.index(tkinter.END): # delete the selection
-                self.delete(self.position, tkinter.END)
+            if self.position < self.index(tk.END): # delete the selection
+                self.delete(self.position, tk.END)
             else:
                 self.position = self.position-1 # delete one character
-                self.delete(self.position, tkinter.END)
+                self.delete(self.position, tk.END)
         if event.keysym == "Right":
-            self.position = self.index(tkinter.END) # go to end (no selection)
+            self.position = self.index(tk.END) # go to end (no selection)
         if event.keysym == "Down":
             self.autocomplete(1) # cycle to next hit
         if event.keysym == "Up":
@@ -833,7 +831,7 @@ thisroot = tk.Tk()
 log('Main Window created')
 try:
     thisroot.iconbitmap(r"./DATA/icons/favicon.v3.ico")
-except tkinter.TclError:
+except tk.TclError:
     log('icon adding error')
 else:
     log('icon added')
