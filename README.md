@@ -88,17 +88,7 @@ v1:
 
 \> An adjective and a noun with same initials (currently preview is at "U": "Upright Umbrella")
 
-<hr>
-
-### Contributers
-
-<a href="https://github.com/whmsft/WhirlEdit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=whmsft/WhirlEdit" />
-</a>
-
-**Hope to see more people soon!
-
-<hr>
+<hr>b
 
 # And now something completely different:
 
