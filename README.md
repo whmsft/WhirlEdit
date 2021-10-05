@@ -88,7 +88,7 @@ v1:
 
 \> An adjective and a noun with same initials (currently preview is at "U": "Upright Umbrella")
 
-<hr>b
+<hr>
 
 # And now something completely different:
 
