@@ -84,13 +84,9 @@ v1:
 
 ## Questions:
 
-1. Why isn't the logo like the standard logos made by me? (logos with software initials on a blue square)
+1. What is the codename scheme?
 
-\> because focus on editing and not whirling!
-
-2. What is the codename scheme?
-
-\> 1 adjective and a noun with same initials (currently preview is at "U": "Upright Umbrella")
+\> An adjective and a noun with same initials (currently preview is at "U": "Upright Umbrella")
 
 <hr>
 
