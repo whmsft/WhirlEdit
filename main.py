@@ -7,6 +7,7 @@ from confscript import read as cfsread
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 from tkcode import CodeEditor
