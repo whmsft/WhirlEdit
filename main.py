@@ -1,28 +1,27 @@
 __version__ = 'v3.5 (Stable)'
-#from DATA.extensions import extmgr <- experimental, making extensions..
-import time
-start = time.time()
-import utils as txtutils
-import zlib
+# from DATA.extensions import extmgr <- experimental, making extensions..
+import tkinter
+
+from confscript import dump
+from confscript import read as cfsread
 import os
-import yaml
+import shutil
+import subprocess
+import tempfile
+import time
+from tkcode import CodeEditor
 import tkinter as tk
-from tkinter import messagebox
+from tkinter.filedialog import askopenfilename, asksaveasfilename, askdirectory
+from tkinter.messagebox import askyesnocancel, showerror
+import tkinter.font as tkfont
 from tkinter import ttk
 from tkinter import *
-import tkinter.font as tkfont
-from tkinter.filedialog import askopenfilename, asksaveasfilename, askdirectory
-from tkinter.messagebox import askyesnocancel
-import subprocess
-import shutil
-import tkinter
-import zipfile
-import tempfile
+import utils as txtutils
 from wday import read
-from confscript import read as cfsread
-from confscript import dump
-from tkcode import CodeEditor
 import webbrowser
+import yaml
+import zipfile
+import zlib
 
 TEMP = tempfile.gettempdir()
 logx = ''
