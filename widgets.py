@@ -64,7 +64,7 @@ class Find(tk.Toplevel):
             self.text.mark_set(tk.INSERT, start)
             self.text.focus_set()
             self.destroy()
-        except _tkinter.TclError: 
+        except _tkinter.TclError:
             #just in case nothing is  to find..
             self.destroy()
 
@@ -171,7 +171,7 @@ class Replace(tk.Toplevel):
         self.text_find.grid(row=0, column=1, sticky=tk.EW, padx=5, pady=(15, 2))
         self.text_replace.grid(row=1, column=1, sticky=tk.EW, padx=5)
         self.btn_next.grid(row=0, column=2, sticky=tk.EW, padx=(5, 15), pady=(15, 2))
-        self.btn_replace.grid(row=1, column=2, sticky=tk.EW, padx=(5, 15), pady=2)        
+        self.btn_replace.grid(row=1, column=2, sticky=tk.EW, padx=(5, 15), pady=2)
         self.btn_replace_all.grid(row=2, column=2, sticky=tk.EW, padx=(5, 15), pady=(2, 15))
         check_btn.grid(row=2, column=0, columnspan=2, sticky=tk.EW, padx=15, pady=(5, 15))
 
@@ -295,3 +295,190 @@ class Replace(tk.Toplevel):
             if not start:
                 break
             self.text.replace(start, start + ' wordend', new_term)
+
+class Notebook(ttk.Notebook):
+    """A ttk Notebook with close buttons on each tab"""
+
+    __initialized = False
+
+    def __init__(self, *args, **kwargs):
+        if not self.__initialized:
+            self.__initialize_custom_style()
+            self.__inititialized = True
+
+        kwargs["style"] = "Notebook"
+        ttk.Notebook.__init__(self, *args, **kwargs)
+
+        self._active = None
+
+        self.bind("<ButtonPress-1>", self.on_close_press, True)
+        self.bind("<ButtonRelease-1>", self.on_close_release)
+
+    def on_close_press(self, event):
+        """Called when the button is pressed over the close button"""
+
+        element = self.identify(event.x, event.y)
+
+        if "close" in element:
+            index = self.index("@%d,%d" % (event.x, event.y))
+            self.state(['pressed'])
+            self._active = index
+            return "break"
+
+    def on_close_release(self, event):
+        """Called when the button is released"""
+        if not self.instate(['pressed']):
+            return
+
+        element = self.identify(event.x, event.y)
+        if "close" not in element:
+            # user moved the mouse off of the close button
+            return
+
+        index = self.index("@%d,%d" % (event.x, event.y))
+
+        if self._active == index:
+            self.forget(index)
+            self.event_generate("<<NotebookTabClosed>>")
+
+        self.state(["!pressed"])
+        self._active = None
+
+    def __initialize_custom_style(self):
+        ...
+        style = ttk.Style()
+        self.images = (
+            tk.PhotoImage("img_close", file='./DATA/icons/close.n.png'),
+            tk.PhotoImage("img_closeactive", file='./DATA/icons/close.n.png'),
+            tk.PhotoImage("img_closepressed", file='./DATA/icons/close.a.png'),
+        )
+
+        style.element_create("close", "image", "img_close",
+                            ("active", "pressed", "!disabled", "img_closepressed"),
+                            ("active", "!disabled", "img_closeactive"),)
+        style.layout("Notebook", [("Notebook.client", {"sticky": "nswe"})])
+        style.layout("Notebook.Tab", [
+            ("Notebook.tab", {
+                "sticky": "nswe",
+                "children": [
+                    ("Notebook.padding", {
+                        "side": "top",
+                        "sticky": "nswe",
+                        "children": [
+                            ("Notebook.focus", {
+                                "side": "top",
+                                "sticky": "nswe",
+                                "children": [
+                                    ("Notebook.label", {"side": "left", "sticky": ''}),
+                                    ("Notebook.close", {"side": "right", "sticky": ''}),
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            })
+        ])
+
+class ToolTip(object):
+
+    def __init__(self, widget):
+        self.widget = widget
+        self.tipwindow = None
+        self.id = None
+        self.x = self.y = 0
+        self.text = None
+
+    def showtip(self, text):
+        """Display text in tooltip window"""
+        self.text = text
+        if self.tipwindow or not self.text:
+            return
+        x, y, cx, cy = self.widget.bbox("insert")
+        x = x + self.widget.winfo_rootx() + 57
+        y = y + cy + self.widget.winfo_rooty() + 27
+        self.tipwindow = tw = tk.Toplevel(self.widget)
+        tw.wm_overrideredirect(1)
+        tw.wm_geometry("+%d+%d" % (x, y))
+        label = tk.Label(tw, text=self.text, justify=tk.LEFT,
+                      fg="#101010",
+                      background="#ffffe0", relief=tk.SOLID, borderwidth=1,
+                      font=("Consolas", "8", "normal"))
+        label.pack(ipadx=1)
+
+    def hidetip(self):
+        tw = self.tipwindow
+        self.tipwindow = None
+        if tw:
+            tw.destroy()
+
+
+def create_tool_tip(widget, text):
+    tool_tip = ToolTip(widget)
+
+    def enter(event):
+        tool_tip.showtip(text)
+
+    def leave(event):
+        tool_tip.hidetip()
+    widget.bind('<Enter>', enter)
+    widget.bind('<Leave>', leave)
+
+class AutocompleteEntry(ttk.Entry):
+    """
+    Subclass of tkinter.Entry that features autocompletion.
+    To enable autocompletion use set_completion_list(list) to define
+    a list of possible strings to hit.
+    To cycle through hits use down and up arrow keys.
+    """
+
+    def set_completion_list(self, completion_list):
+        self._completion_list = completion_list
+        self._hits = []
+        self._hit_index = 0
+        self.position = 0
+        self.bind('<KeyRelease>', self.handle_keyrelease)
+
+    def autocomplete(self, delta=0):
+        """autocomplete the Entry, delta may be 0/1/-1 to cycle through possible hits"""
+        if delta:  # need to delete selection otherwise we would fix the current position
+            self.delete(self.position, tk.END)
+        else:  # set position to end so selection starts where textentry ended
+            self.position = len(self.get())
+        # collect hits
+        _hits = []
+        for element in self._completion_list:
+            if element.startswith(self.get().lower()):
+                _hits.append(element)
+        # if we have a new hit list, keep this in mind
+        if _hits != self._hits:
+            self._hit_index = 0
+            self._hits=_hits
+        # only allow cycling if we are in a known hit list
+        if _hits == self._hits and self._hits:
+            self._hit_index = (self._hit_index + delta) % len(self._hits)
+        # now finally perform the auto completion
+        if self._hits:
+            self.delete(0,tk.END)
+            self.insert(0,self._hits[self._hit_index])
+            self.select_range(self.position,tk.END)
+
+    def handle_keyrelease(self, event):
+        """event handler for the keyrelease event on this widget"""
+        if event.keysym == "BackSpace":
+            self.delete(self.index(tk.INSERT), tk.END)
+            self.position = self.index(tk.END)
+        if event.keysym == "Left":
+            if self.position < self.index(tk.END):  # delete the selection
+                self.delete(self.position, tk.END)
+            else:
+                self.position = self.position-1  # delete one character
+                self.delete(self.position, tk.END)
+        if event.keysym == "Right":
+            self.position = self.index(tk.END)  # go to end (no selection)
+        if event.keysym == "Down":
+            self.autocomplete(1)  # cycle to next hit
+        if event.keysym == "Up":
+            self.autocomplete(-1)  # cycle to previous hit
+        # perform normal autocomplete if event is a single key or an umlaut
+        if len(event.keysym) == 1:  # or event.keysym in tkinter_umlauts:
+            self.autocomplete()
