@@ -1,4 +1,4 @@
-__version__ = 'v3.5 (Stable)'
+__version__ = 'v3.6b0 (Visual Vector)'
 # from DATA.extensions import extmgr <- experimental, making extensions..
 
 # <ordinary> imports
