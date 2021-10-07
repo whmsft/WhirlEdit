@@ -15,6 +15,15 @@ WhirlEdit as of 1 month ago:
 
 ![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/screenshot.png)
 -->
+
+### Under development: v3.6 (Visual Vector)
+
+features of Visual Vector:
+1. able to run on Linux
+2. Code has been formatted BETTER
+3. all external widgets are available in `widgets.py`
+4. the data for default conf, icon in data format, etc. is in `data.py`
+
 ```
 CHANGELOG:
 
