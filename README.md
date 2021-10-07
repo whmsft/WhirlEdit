@@ -86,7 +86,7 @@ v1:
 
 ## Known issues:
 
-1. Editing LARGE files (30kb+) may slow down experience
+1. Editing LARGE files (30kb+) may slow down loading & customization experience
 2. Some theme assests don't work as expected
 
 <hr>
