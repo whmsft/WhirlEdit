@@ -23,6 +23,7 @@ features of Visual Vector:
 4. the data for default conf, icon in data format, etc. is in `data.py`
 5. Complete UI change with `ttkbootstrap`
 6. introduction to Monokai-Aora (theme & scheme)
+7. Downside: temporary removal to tab close button
 
 ```
 CHANGELOG:
