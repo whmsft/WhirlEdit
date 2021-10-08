@@ -16,7 +16,7 @@ WhirlEdit as of 1 month ago:
 ![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/screenshot.png)
 -->
 
-### Under development: v3.6 (Visual Vector)
+### Under development: v4 (Visual Vector)
 
 features of Visual Vector:
 1. able to run on Linux
