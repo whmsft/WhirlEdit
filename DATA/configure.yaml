@@ -20,6 +20,6 @@ Looks:
   Theme:
     Default: sun-valley-dark.whTheme
     Folder: ./DATA/Themes/
-  WindowTitle: WhirlEdit v3.1
-Logs:
+  WindowTitle: WhirlEdit
+  Logs:
   Logging: false
