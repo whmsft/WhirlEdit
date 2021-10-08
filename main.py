@@ -1,4 +1,4 @@
-__version__ = 'v3.6b0 (Visual Vector)'
+__version__ = 'v4 Visual Vector (Preview)'
 # from DATA.extensions import extmgr <- experimental, making extensions..
 
 # <ordinary> imports
@@ -14,6 +14,7 @@ import zipfile
 import tempfile
 import subprocess
 import webbrowser
+import ttkbootstrap
 import tkinter as tk
 import tkinter.font as tkfont
 
@@ -149,23 +150,27 @@ def about(*args):
         nothing[_pos] = val
         a.destroy()
     if nothing[4] == 1:
+        windowWidth = 300
+        windowHeight = 250
+        xCordinate = int((screenWidth/2) - (windowWidth/2))
+        yCordinate = int((screenHeight/2) - (windowHeight/2))
         a = tk.Toplevel(thisroot)
         nothing[4] = 0
         a.wm_attributes("-topmost", 1)
         a.title('Whirledit')
         a.resizable(False, False)
         a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
-        a.geometry("300x250")
+        a.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
         z = Label(a, image=img100x100)
         z.pack(pady=5, padx=5)
         b = Label(a, text='WhirlEdit', font='Consolas 20')
         b.pack()
         c = Label(a, text=__version__, font='Consolas 10')
         c.pack()
-        d = Label(a, text='\nWritten in Python\nby Whirlpool-Programmer\n',font='Consolas 15')
+        d = Label(a, text='\nWritten in Python\nby whMSFT\n',font='Consolas 15')
         d.pack()
         e = ttk.Button(a, text='GitHub',
-                       command=lambda: webbrowser.open('http://Whirlpool-Programmer.github.io/software/WhirlEdit'))
+                       command=lambda: webbrowser.open('http://whMSFT.github.io/software/WhirlEdit'))
         e.pack()
         tk.Label(a,text=' ').pack()
         a.protocol("WM_DELETE_WINDOW", lambda: nothingmod(4, 1))
@@ -270,7 +275,6 @@ def openthisfile(event):
     item = event.widget.item(item_id)
     values = item['text']
     if os.path.isfile(values):
-        newTab()
         try:
             variable = current_note()
             filepath = values
@@ -318,28 +322,27 @@ def changekeybind(*args):
 
 
 class Settings(object):
-    def save_changes_settings(self):
+    def savechangesSETTINGS(self):
         data.config['Looks']['Theme']['Folder']  = self.themeFolder.get()
         data.config['Looks']['Theme']['Default'] = self.themeName.get()
         data.config['Looks']['Scheme']['Folder'] = self.schemeFolder.get()
-        log('modified', call='SETTINGS')
-
+        log('modified',call='SETTINGS')
     def __init__(self,master):
         frame = tk.Frame(master)
-        setlooks = ttk.LabelFrame(frame, text='Looks')
-        settheme = ttk.LabelFrame(setlooks, text='Theme')
-        setscheme = ttk.LabelFrame(setlooks, text='Scheme')
+        setlooks = ttk.LabelFrame(frame,text='Looks')
+        settheme = ttk.LabelFrame(setlooks,text='Theme')
+        setscheme = ttk.LabelFrame(setlooks,text='Scheme')
 
-        label01 = tk.Label(settheme, text='Folder:').pack()
+        label01 = tk.Label(settheme,text='Folder:').pack()
         self.themeFolder = ttk.Entry(settheme, font='Consolas',width=15)
         self.themeFolder.pack(fill='x')
         self.themeFolder.insert(0, data.config['Looks']['Theme']['Folder'])
-        label02 = ttk.Label(settheme, text='Use theme:').pack()
-        self.themeName = ttk.Entry(settheme, font='Consolas')
+        label02 = ttk.Label(settheme,text='Use theme:').pack()
+        self.themeName =ttk.Entry(settheme,font='Consolas')
         self.themeName.pack(fill='x')
         self.themeName.insert(0, data.config['Looks']['Theme']['Default'])
-        label03 = ttk.Label(setscheme, text='Folder').pack()
-        self.schemeFolder = ttk.Entry(setscheme, font='Consolas')
+        label03 = ttk.Label(setscheme,text='Folder').pack()
+        self.schemeFolder= ttk.Entry(setscheme,font='Consolas')
         self.schemeFolder.pack(fill='x')
         self.schemeFolder.insert(0, data.config['Looks']['Scheme']['Folder'])
 
@@ -353,7 +356,7 @@ class Settings(object):
 
         labelrubbish1.pack()
         keybindchangebtnfor_settings.pack(fill='x')
-        savebtn = ttk.Button(frame, text='Confirm & save', command=self.save_changes_settings)
+        savebtn = ttk.Button(frame, text='Confirm & save', command=self.savechangesSETTINGS)
         savebtn.pack(pady=15,padx=5,fill='x')
         frame.pack(expand=True, fill='both')
 
@@ -440,7 +443,7 @@ class LooksPane(object):
         self.k.grid(row=6,column=0, pady=5)
         self.isBlockcursor = BooleanVar()
         self.isBlockcursor.set(data.config['Looks']['Font']['BlockCursor'])
-        self.j = ttk.Checkbutton(frame, variable=self.isBlockcursor)
+        self.j = tk.Checkbutton(frame, variable=self.isBlockcursor, relief='flat', borderwidth=0)
         widgets.create_tool_tip(self.j, text='Shall you use Block Cursor\ninstead of normal "thin" one?')
         self.j.grid(row=6, column=1, sticky='w')
         rubbish1 = tk.Label(frame)
@@ -471,12 +474,12 @@ class PathView(object):
         #tabspane.pack(fill=BOTH,expand=1)
         frame = tk.Frame(main)
         nf = tk.Frame(frame)
-        self.newfilebtn = tk.Button(nf, relief='flat', image=projectBar_icon_newfile, borderwidth=0, command= lambda:newTab())
-        self.newfilebtn.grid(row=0, column=0, ipady=5, ipadx=5)
-        self.newfoldbtn = tk.Button(nf,relief='flat', image=projectBar_icon_newfold, borderwidth=0, command = lambda:self.add_openfold())
-        self.newfoldbtn.grid(row=0, column=1, ipady=5, ipadx=5)
-        self.closetabtn = tk.Button(nf, relief='flat', image=projectBar_icon_closefi,borderwidth=0, command=lambda:deltab())
-        self.closetabtn.grid(row=0, column=2, ipady=5, ipadx=5)
+        self.newfilebtn = ttk.Button(nf, image=projectBar_icon_newfile, style='secondary.TButton',command= lambda:newTab())
+        self.newfilebtn.grid(row=0, column=0, pady=5, padx=5)
+        self.newfoldbtn = ttk.Button(nf,image=projectBar_icon_newfold, style='secondary.TButton',command = lambda:self.add_openfold())
+        self.newfoldbtn.grid(row=0, column=1, pady=5, padx=5)
+        self.closetabtn = ttk.Button(nf, image=projectBar_icon_closefi, style='secondary.TButton',command=lambda:deltab())
+        self.closetabtn.grid(row=0, column=2, pady=5, padx=5)
         widgets.create_tool_tip(self.newfilebtn, text='New Tab')
         widgets.create_tool_tip(self.newfoldbtn, text='Add Folder')
         widgets.create_tool_tip(self.closetabtn, text='Close Tab')
@@ -539,10 +542,10 @@ def get_confs():
 
 def current_note(*args):
     variable = notebook.select()
-    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame', '') == "":
+    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!customnotebook.!frame', '') == "":
         variable = 0
     else:
-        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame', ''))
+        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!customnotebook.!frame', ''))
         if variable == 0:
             pass
         else:
@@ -595,7 +598,7 @@ def new_runner():
     label.place(x=10, y=16)
     label = Label(conf,text="Command", font="consolas")
     label.place(x=10, y=55)
-    entry = AutocompleteEntry(conf, width=25, font="consolas")
+    entry = widgets.AutocompleteEntry(conf, width=25, font="consolas")
     entry.set_completion_list((u'$file', u'$base', u'$dir', u'/k'))
     entry.place(x=150, y=50)
     entry.insert(0, 'compiler -o $base $file')
@@ -625,7 +628,7 @@ def runconf(*args):
         pass
 
 
-thisroot = tk.Tk()
+thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Default'], themes_file=f"{data.configuration['Looks']['Theme']['Folder']}/{data.configuration['Looks']['Theme']['Default']}.json").master
 log('Main Window created')
 try:
     thisroot.iconbitmap(r"./DATA/icons/favicon.v3.ico")
@@ -656,10 +659,8 @@ languages = [data.config['Looks']['InitialSyntax']]
 for i in highlight.keys():
     languages.append(i)
 
-
 def givename_ext(lang):
     return highlight[lang][0]
-
 
 def syntaxchange(*args):
     print(cursyntax.get())
@@ -667,8 +668,8 @@ def syntaxchange(*args):
     note[current_note()].config(language=cursyntax.get())
 
 
-syntaxchoose = tk.OptionMenu(statusbar, cursyntax, *languages,command=syntaxchange)
-syntaxchoose.config(indicatoron=False, bd=0, relief='flat')
+syntaxchoose = ttk.OptionMenu(statusbar, cursyntax, *languages,command=syntaxchange, style='primary.Outline.TButton')
+#syntaxchoose.config(indicatoron=False, bd=0, relief='flat')
 syntaxchoose.pack(side='right')
 
 rootframe = tk.PanedWindow(thisroot, handlesize=5, orient=tk.VERTICAL)
@@ -682,23 +683,23 @@ settipaneframe = tk.Frame(splitter)
 toolbar = ttk.Frame(thisroot)
 toolbar.pack(fill='both', expand=True)
 toolbar_menu_icon = PhotoImage(file="./DATA/icons/logo-mini.png", master=toolbar).subsample(5)
-toolbar_menu = ttk.Button(toolbar, image=toolbar_menu_icon, command=about)
+toolbar_menu = ttk.Button(toolbar, image=toolbar_menu_icon, command=about, style='primary.Link.TButton')
 toolbar_menu.pack(fill='x')
 tools_files_icon = PhotoImage(file="./DATA/icons/{}/sidebar.files.png".format(data.config['Looks']['Icons']['Theme']),
                               master=toolbar)
-tools_files = ttk.Button(toolbar, image=tools_files_icon, command=togglesidepane)
+tools_files = ttk.Button(toolbar, image=tools_files_icon, command=togglesidepane, style='primary.Link.TButton')
 tools_files.pack(fill='x')
 tools_runner_icon = PhotoImage(file="./DATA/icons/{}/sidebar.runner.png".format(data.config['Looks']['Icons']['Theme']),
                                master=toolbar)
-tools_runner = ttk.Button(toolbar, image=tools_runner_icon, command=togglerunner)
+tools_runner = ttk.Button(toolbar, image=tools_runner_icon, command=togglerunner, style='primary.Link.TButton')
 tools_runner.pack(fill='x')
 tools_looks_icon = PhotoImage(file="./DATA/icons/{}/sidebar.looks.png".format(data.config['Looks']['Icons']['Theme']),
                               master=toolbar)
-tools_looks = ttk.Button(toolbar, image=tools_looks_icon, command=togglelookpane)
+tools_looks = ttk.Button(toolbar, image=tools_looks_icon, command=togglelookpane, style='primary.Link.TButton')
 tools_looks.pack(fill='x')
 tools_settings_icon = PhotoImage(file="./DATA/icons/{}/sidebar.settings.png".format(data.config['Looks']['Icons']['Theme']),
                                  master=toolbar)
-tools_settings = ttk.Button(toolbar,image=tools_settings_icon, command=togglesetti)
+tools_settings = ttk.Button(toolbar,image=tools_settings_icon, command=togglesetti, style='primary.Link.TButton')
 tools_settings.pack(side='bottom', anchor='s', fill='x')
 
 log('Icons made and added', call='SIDEBAR')
@@ -739,8 +740,8 @@ tkterminal.basename = "$"
 tkterminal.shell = True
 newframe = tk.Frame(termframe)
 newframe.pack(side='right',anchor='ne')
-tkterm_clear = tk.Button(newframe,anchor='n',image=termicon_clear, relief='flat', borderwidth=0,command=lambda:tkterminal.clear())
-tkterm_reset = tk.Button(newframe,anchor='n',image=termicon_reset, relief='flat', borderwidth=0,command=lambda:termreset())
+tkterm_clear = ttk.Button(newframe,style='secondary.Link.TButton',image=termicon_clear,  command=lambda:tkterminal.clear())#anchor='n',relief='flat',borderwidth=0,
+tkterm_reset = ttk.Button(newframe,style='secondary.Link.TButton',image=termicon_reset, command=lambda:termreset())#anchor='n',relief='flat', borderwidth=0,
 widgets.create_tool_tip(tkterm_clear, "Clear the terminal")
 widgets.create_tool_tip(tkterm_reset, "Restart the terminal\nJust in case you crashed..")
 tkterm_clear.pack(side='top')
@@ -748,26 +749,10 @@ tkterm_reset.pack(side='top')
 tkterminal.pack(side='left',anchor='w',fill='both',expand=True)
 log('placed',call='TERMINAL')
 termframe.pack(fill='both',expand=True)
-rootframe.add(splitter,height=450)
-root.add(termframe,height=200)
+rootframe.add(splitter,height=400)
+root.add(termframe,height=180)
 
 try:
-    themefolder = data.configuration['Looks']['Theme']['Folder']
-    listdir = os.listdir(themefolder)
-    themeslist = []
-    for i in listdir:
-        if i.lower().endswith('.whtheme'):
-            themeslist.append(i)
-    default_theme = data.configuration['Looks']['Theme']['Default']
-    if default_theme != '__default__':
-        zipfile.ZipFile(themefolder+'/'+default_theme,'r').extractall(tempfile.gettempdir()+"/WhirlEdit/")
-        themefile = tempfile.gettempdir()+"/WhirlEdit/"+read(open(tempfile.gettempdir()+"/WhirlEdit/__init__.whirldata").read())['main'][0]
-        themebase = read(open(tempfile.gettempdir()+"/WhirlEdit/__init__.whirldata").read())['name'][0]
-        thisroot.tk.call('source', themefile)
-        style.theme_use(themebase)
-        log('set theme {}'.format(themebase),call='LOOKS')
-    else:
-        pass
     default_highlight = data.configuration['Looks']['Scheme']['Folder']+data.configuration['Looks']['Scheme']['Default']+'.json'
     log('set scheme {}'.format(default_highlight),call='LOOKS')
 except Exception as e:
@@ -807,10 +792,10 @@ def getpos(*args):
 
 def current_note():
     variable = notebook.select()
-    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
+    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!customnotebook.!frame','') == "":
         variable = 0
     else:
-        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame',''))
+        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!customnotebook.!frame',''))
         if variable == 0:
             pass
         else:
@@ -863,7 +848,8 @@ def saveFile(*args):
         saveAsFile()
     else:
         with open(openedfiles[variable], "w") as output_file:
-            extension[current_note()],tabfmt[current_note()] = "."+openedfiles[variable].split(".")[-1]
+            extension[current_note()] = "."+openedfiles[variable].split(".")[-1]
+            tabfmt[current_note()] = "."+openedfiles[variable].split(".")[-1]
             text = note[variable].get(1.0, tk.END)
             output_file.write(text)
             notebook.tab(frames[variable], text = openedfiles[current_note()].split("/")[-1]+"   ")
@@ -973,10 +959,10 @@ Menubar.add_cascade(label = "Help", menu=Helpmenu)
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 
-newtabbtn = tk.Button(thisroot, relief='flat', borderwidth=0, image=newtabICON, command=newTab)
+newtabbtn = ttk.Button(thisroot, image=newtabICON, command=newTab, style='primary.Link.TButton')
 newtabbtn.place(anchor='ne', relx=1, x=-5, y=5)
 
-notebook = widgets.Notebook(root)
+notebook = widgets.CustomNotebook(root)#ttk.Notebook(root)
 notebook.grid(sticky=N + E + S + W)
 notebook.bind("<B1-Motion>", Tab_reorder)
 
@@ -1046,6 +1032,7 @@ tkTextmenu.add_command(label="Copy")
 tkTextmenu.add_command(label="Paste")
 
 notebook.bind("<Double-Button>", newTab)
+notebook.bind("<ButtonRelease-2>", deltab)
 thisroot.bind_all(data.configuration['Key Bindings']['Save'], saveFile)
 thisroot.bind_all(data.configuration['Key Bindings']['New'], newTab)
 thisroot.bind_all(data.configuration['Key Bindings']['Close'], deltab)

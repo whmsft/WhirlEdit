@@ -6,6 +6,8 @@ Key Bindings:
   Open cmd: <Control-Shift-t>
   Run: <F5>
   Save: <Control-s>
+Logs:
+  Logging: false
 Looks:
   Font:
     BlockCursor: true
@@ -13,13 +15,11 @@ Looks:
     Size: '12'
   Icons:
     Theme: fluent.dark
-  InitialSyntax: python
+  InitialSyntax: Python
   Scheme:
-    Default: azure-modified
+    Default: monokai-aora
     Folder: ./DATA/Schemes/
   Theme:
-    Default: sun-valley-dark.whTheme
+    Default: monokai-aora
     Folder: ./DATA/Themes/
   WindowTitle: WhirlEdit
-  Logs:
-  Logging: false

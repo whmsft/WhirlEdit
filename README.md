@@ -10,11 +10,9 @@
 [![Size](https://shields.io/github/repo-size/Whirlpool-Programmer/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whirlpool-programmer/whirledit)]()
 
-<!--
-WhirlEdit as of 1 month ago:
+WhirlEdit in v4b0 Visual Vector (8 October 2021):
 
-![](https://github.com/Whirlpool-Programmer/WhirlEdit/raw/main/screenshot.png)
--->
+![](screenshot.png)
 
 ### Under development: v4 (Visual Vector)
 
@@ -23,6 +21,8 @@ features of Visual Vector:
 2. Code has been formatted BETTER
 3. all external widgets are available in `widgets.py`
 4. the data for default conf, icon in data format, etc. is in `data.py`
+5. Complete UI change with `ttkbootstrap`
+6. introduction to Monokai-Aora (theme & scheme)
 
 ```
 CHANGELOG:

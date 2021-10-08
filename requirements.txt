@@ -3,3 +3,4 @@ wday
 tkcode
 tkterminal
 confscript
+ttkbootstrap
