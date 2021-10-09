@@ -2,6 +2,7 @@ __version__ = 'v4 Visual Vector (Preview)'
 # from DATA.extensions import extmgr <- experimental, making extensions..
 
 # <ordinary> imports
+import re
 import os
 import sys
 import zlib
@@ -11,7 +12,9 @@ import yaml
 import shutil
 import widgets
 import zipfile
+import textwrap
 import tempfile
+import threading
 import subprocess
 import webbrowser
 import ttkbootstrap
@@ -45,6 +48,19 @@ except FileExistsError:
 logfile = open(os.path.abspath(Path(temp_dir, 'logs.txt')), 'w+')
 logfile.write('')
 
+def auto_indent(event):
+    text = event.widget
+
+    # get leading whitespace from current line
+    line = text.get("insert linestart", "insert")
+    match = re.match(r'^(\s+)', line)
+    whitespace = match.group(0) if match else ""
+
+    # insert the newline and the whitespace
+    text.insert("insert", f"\n{whitespace}")
+
+    # return "break" to inhibit default insertion of newline
+    return "break"
 
 def log_call(message, call="INTERNAL"):
     logs = '{} [{}]: {}'.format(round(time.time()-start, 2), call, message)
@@ -855,6 +871,12 @@ def saveFile(*args):
             notebook.tab(frames[variable], text = openedfiles[current_note()].split("/")[-1]+"   ")
             log('saved file {}'.format(filepath), call='FILES')
 
+def addtext(text=''):
+    var = current_note()
+    #for i in text:#textwrap.wrap(text,1000)
+    #    note[var].insert(END,i)
+    note[var].insert(END)
+
 def openFile(*self):
     global extension
     global filepath
@@ -871,7 +893,8 @@ def openFile(*self):
             note[variable].delete(1.0,END)
             file = open(filepath,"r")
             note[current_note()]["language"] = identify(filepath.split("/")[-1])
-            note[variable].insert(1.0,file.read()[:-1])
+            threading.Thread(target=addtext,kwargs={'text':file.read()}, daemon=True).start()
+            #note[variable].insert(1.0,file.read()[:-1])
             openedfiles[variable] = filepath
             file.close()
             notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
@@ -898,7 +921,8 @@ def newTab(*args):
     notebook.add(frames[var], text='Untitled   ')
     extension[current_note()] = ".*"
     note[var].bind('<Control-Tab>',nexttab)
-    note[var].bind("Control-a",select_all)
+    note[var].bind('<Return>', auto_indent)
+    note[var].bind("<Control-a>",select_all)
     var = var + 1
     nexttab()
     tabfmt[current_note()] = '.py'
