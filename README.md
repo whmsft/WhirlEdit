@@ -96,7 +96,7 @@ v1:
 
 1. What is the codename scheme?
 
-\> An adjective and a noun with same initials (currently preview is at "U": "Upright Umbrella")
+\> An adjective and a noun with same initials (currently preview is at "V": "Visual Vector")
 
 <hr>
 
