@@ -24,6 +24,7 @@ features of Visual Vector:
 5. Complete UI change with `ttkbootstrap`
 6. introduction to Monokai-Aora (theme & scheme)
 7. Downside: temporary removal to tab close button
+8. auto indent, create an (auto) indent when last line is indented
 
 ```
 CHANGELOG:
