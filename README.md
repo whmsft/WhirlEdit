@@ -10,7 +10,7 @@
 [![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
 
-WhirlEdit in v4b0 Visual Vector (8 October 2021):
+WhirlEdit in v4b0 Vivid Violet (8 October 2021):
 
 ![](screenshot.png)
 
