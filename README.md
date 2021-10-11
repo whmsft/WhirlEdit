@@ -1,5 +1,5 @@
 ### Latest Stable release : [v3.4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.4)
-### Latest preview release: [v3.5](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.5)
+### Latest preview release: [v4b0](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4b0)
 <hr>
 
 [![Run on Repl.it](https://repl.it/badge/github/Whmsft/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
