@@ -3,12 +3,12 @@
 <hr>
 
 [![Run on Repl.it](https://repl.it/badge/github/Whmsft/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
-[![Build Status](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whirlpool-programmer/whirledit/actions/workflows/python-app.yml)
+[![Build Status](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-[![GitHub license](https://img.shields.io/github/license/Whirlpool-programmer/whirledit.svg)](https://github.com/whirlpool-programmer/whirledit/blob/master/LICENSE)
-[![Created..](https://badges.pufler.dev/created/Whirlpool-Programmer/Whirledit)]() 
-[![Size](https://shields.io/github/repo-size/Whirlpool-Programmer/whirledit)]()
-[![How much i wrote!](https://shields.io/tokei/lines/github/whirlpool-programmer/whirledit)]()
+[![GitHub license](https://img.shields.io/github/license/Whmsft/whirledit.svg)](https://github.com/whirlpool-programmer/whirledit/blob/master/LICENSE)
+[![Created..](https://badges.pufler.dev/created/Whmsft/Whirledit)]() 
+[![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
+[![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
 
 WhirlEdit in v4b0 Visual Vector (8 October 2021):
 
