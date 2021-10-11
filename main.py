@@ -12,7 +12,9 @@ import yaml
 import shutil
 import widgets
 import zipfile
+import getpass
 import textwrap
+import datetime
 import tempfile
 import threading
 import subprocess
@@ -78,6 +80,18 @@ def Tab_reorder(event):
 def log_fake(message, call='INTERNAL'):
     logs = '{} [{}]: {}'.format(round(time.time()-start,2),call,message)
     logfile.writelines(logs+'\n')
+
+def greet_time():
+    hour =  int(str(datetime.datetime.now().time()).split(':')[0])
+    return (
+        "morning"
+        if 5 <= hour <= 11
+        else "afternoon"
+        if 12 <= hour <= 17
+        else "evening"
+        if 18 <= hour <= 22
+        else "night"
+    )
 
 # runners' file
 try:
@@ -177,7 +191,7 @@ def about(*args):
         a.resizable(False, False)
         a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
         a.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
-        z = Label(a, image=img100x100)
+        z = Label(a, image=logoIMG)
         z.pack(pady=5, padx=5)
         b = Label(a, text='WhirlEdit', font='Consolas 20')
         b.pack()
@@ -208,7 +222,6 @@ def fullscreen(*args):
 def set_syntax(lang):
     note[current_note()].config(language=lang)
     log(lang, call='SYNTAX')
-
 
 def togglesetti(*args):
     global nothing
@@ -263,24 +276,27 @@ def togglerunner(*args):
 
 def update(*args):
     thisfile = ""
-    if openedfiles[current_note()] == '' or openedfiles[current_note()] == ' ':
-        thisfile = 'None'
-    else:
-        thisfile = openedfiles[current_note()]
-    root.update()
-    cursyntax.set(identify(tabfmt[current_note()]))
-    fdir = "/".join(openedfiles[current_note()].split("/")[:-1])
-    my_line = note[current_note()].index(tk.INSERT).split('.')
-    note[current_note()]['font'] = data.config['Looks']['Font']['Font']+" "+data.config['Looks']['Font']['Size']
-    note[current_note()]['blockcursor'] = data.isBlockcursor
-    status['text'] = "File: {} | Line {}, Column {}".format(thisfile, my_line[0], my_line[1])
-    if fdir in openedfolders:
+    greet['text']= 'Good {}, {}'.format(greet_time(), getpass.getuser())
+    try:
+        if openedfiles[current_note()] == '' or openedfiles[current_note()] == ' ':
+            thisfile = 'None'
+        else:
+            thisfile = openedfiles[current_note()]
+        root.update()
+        cursyntax.set(identify(tabfmt[current_note()]))
+        fdir = "/".join(openedfiles[current_note()].split("/")[:-1])
+        my_line = note[current_note()].index(tk.INSERT).split('.')
+        note[current_note()]['font'] = data.config['Looks']['Font']['Font']+" "+data.config['Looks']['Font']['Size']
+        note[current_note()]['blockcursor'] = data.isBlockcursor
+        status['text'] = "File: {} | Line {}, Column {}".format(thisfile, my_line[0], my_line[1])
+        if fdir in openedfolders:
+            pass
+        else:
+            framed.add(fdir)
+            openedfolders.append(fdir)
+            log('added {}'.format(fdir), call='FOLDER')
+    except:
         pass
-    else:
-        framed.add(fdir)
-        openedfolders.append(fdir)
-        log('added {}'.format(fdir), call='FOLDER')
-
 
 def openthisfile(event):
     global extension
@@ -645,6 +661,7 @@ def runconf(*args):
 
 
 thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Default'], themes_file=f"{data.configuration['Looks']['Theme']['Folder']}/{data.configuration['Looks']['Theme']['Default']}.json").master
+
 log('Main Window created')
 try:
     thisroot.iconbitmap(r"./DATA/icons/favicon.v3.ico")
@@ -724,7 +741,7 @@ projectBar_icon_newfile = PhotoImage(file='./DATA/icons/{}/project.newfile.png'.
 projectBar_icon_newfold = PhotoImage(file='./DATA/icons/{}/project.newfolder.png'.format(data.config['Looks']['Icons']['Theme']), master=toolbar)
 projectBar_icon_closefi = PhotoImage(file='./DATA/icons/{}/project.closefile.png'.format(data.config['Looks']['Icons']['Theme']))
 
-img100x100 = tk.PhotoImage(data=zlib.decompress(data.logo))
+logoIMG = tk.PhotoImage(data=zlib.decompress(data.logo))
 
 newtabICON = PhotoImage(file='./DATA/icons/{}/main.newtab.png'.format(data.config['Looks']['Icons']['Theme']))
 
@@ -990,6 +1007,17 @@ notebook = widgets.CustomNotebook(root)#ttk.Notebook(root)
 notebook.grid(sticky=N + E + S + W)
 notebook.bind("<B1-Motion>", Tab_reorder)
 
+#Info = ttk.Label(notebook, image=logoIMG)
+#Info.place(relx=.37, rely=.5, anchor="center")
+
+nwtb = ttk.Button(notebook, text='New Tab', command=newTab, style='primary.Link.TButton')
+nwtb.place(relx=0.44,rely=0.5,anchor="center")
+
+opfl = ttk.Button(notebook, text='Open File', command=openFile, style='primary.Link.TButton')
+opfl.place(relx=0.55,rely=0.5,anchor="center")
+
+greet = tk.Label(notebook,text='Good {}, {}'.format(greet_time(), getpass.getuser()), font='Consolas 30')
+greet.place(relx=0.5,rely=0.4,anchor="center")
 
 def nexttab(*args):
     try:
@@ -997,7 +1025,7 @@ def nexttab(*args):
     except:
         notebook.select(0)
 
-newTab()
+#newTab()
 
 extension[current_note()] = ".*"
 
@@ -1074,7 +1102,7 @@ thisroot.bind('<Control-f>', startfind)
 thisroot.bind('<Control-h>', startreplace)
 thisroot.config(menu=None)
 thisroot.after(1000, exec('datafile = open("./DATA/runner.confscript").read()'))
-thisroot.after(100, update)
+thisroot.after(500, update)
 log('binded all keystrokes')
 log('starting main window')
 
