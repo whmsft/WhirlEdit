@@ -25,6 +25,7 @@ features of Visual Vector:
 6. introduction to Monokai-Aora (theme & scheme)
 7. Downside: temporary removal to tab close button
 8. auto indent, create an (auto) indent when last line is indented
+9. Welcome Screen
 
 ```
 CHANGELOG:
