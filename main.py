@@ -1007,9 +1007,6 @@ notebook = widgets.CustomNotebook(root)#ttk.Notebook(root)
 notebook.grid(sticky=N + E + S + W)
 notebook.bind("<B1-Motion>", Tab_reorder)
 
-#Info = ttk.Label(notebook, image=logoIMG)
-#Info.place(relx=.37, rely=.5, anchor="center")
-
 nwtb = ttk.Button(notebook, text='New Tab', command=newTab, style='primary.Link.TButton')
 nwtb.place(relx=0.44,rely=0.5,anchor="center")
 
