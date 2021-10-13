@@ -1039,12 +1039,32 @@ def nexttab(*args):
     except:
         notebook.select(0)
 
-#newTab()
-
 extension[current_note()] = ".*"
 
 btn = ttk.Button(thisroot,text = 'NEW')
 btn.place(anchor='ne')
+
+import urllib
+import requests
+import zipfile
+from alive_progress import alive_bar
+
+# taken directly from Proget (by whMSFT)
+def getfile(args):
+	args = list(args)
+	for file in args:
+		url = file
+		leng = urllib.request.urlopen(url)
+		local_filename = temp_dir+"/whirledit/"+file.split("/")[-1]
+		with requests.get(url, stream=True) as r:
+			with alive_bar(int(leng.length),title=url) as bar:
+				r.raise_for_status()
+				with open(local_filename, 'wb') as f:
+					for chunk in r.iter_content(chunk_size=8192):
+						f.write(chunk)
+						exec('bar()\n'*8192)
+        zipfile.ZipFile(local_filename,'r').extractall(Path(Path(__file__).parent.resolve()))
+		print("\ninstalled extension {}".format(local_filename.replace(".ext.7z","")))
 
 if len(sys.argv) >= 2:
     if os.path.isfile(sys.argv[1]):
@@ -1057,6 +1077,9 @@ if len(sys.argv) >= 2:
         file.close()
         notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
         note[current_note()].config(language=identify("."+filepath.split(".")[-1]))
+    elif sys.argv[1] == "extension":
+        extname = sys.argv[2]
+        getfile("https://whmsft.github.io/extensions/"+extname+'.ext.7z')
 
 root.add(notebook, before=termframe, height=450)
 
