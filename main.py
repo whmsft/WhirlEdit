@@ -50,6 +50,14 @@ except FileExistsError:
 logfile = open(os.path.abspath(Path(temp_dir, 'logs.txt')), 'w+')
 logfile.write('')
 
+def updateforever():
+    while True:
+        try:
+            update()
+            time.sleep(0.05)
+        except RuntimeError:
+            break
+
 def auto_indent(event):
     text = event.widget
 
@@ -74,6 +82,13 @@ def Tab_reorder(event):
     try:
         index = notebook.index(f"@{event.x},{event.y}")
         notebook.insert(index, child=notebook.select())
+    except tk.TclError:
+        pass
+
+def smartdeletetab(event):
+    try:
+        index = notebook.index(f"@{event.x},{event.y}")
+        notebook.forget(index)
     except tk.TclError:
         pass
 
@@ -684,7 +699,7 @@ style = ttk.Style(thisroot)
 statusbar = tk.Frame(thisroot)
 statusbar.pack(side='bottom', anchor='s', fill='x')
 
-status = Label(statusbar, text = 'setting up!', anchor='w')
+status = Label(statusbar, text = 'Welcome to WhirlEdit {}'.format(__version__), anchor='w')
 status.pack(side='left')
 
 cursyntax = StringVar()
@@ -868,8 +883,8 @@ def saveAsFile(*args):
         text = note[variable].get(1.0, tk.END)
         output_file.write(text)
         log('saved file {}'.format(filepath), call='FILES')
-    notebook.tab(frames[int(current_note())], text = filepath.split("/")[-1]+"   ")
-    note[current_note()].config(language=identify(filepath.split("/")[-1])+"   ")
+    notebook.tab(frames[int(current_note())], text = filepath.split("/")[-1]+"  ")
+    note[current_note()].config(language=identify(filepath.split("/")[-1])+"  ")
     note[current_note()].update()
     root.update()
 
@@ -885,7 +900,7 @@ def saveFile(*args):
             tabfmt[current_note()] = "."+openedfiles[variable].split(".")[-1]
             text = note[variable].get(1.0, tk.END)
             output_file.write(text)
-            notebook.tab(frames[variable], text = openedfiles[current_note()].split("/")[-1]+"   ")
+            notebook.tab(frames[variable], text = openedfiles[current_note()].split("/")[-1]+"  ")
             log('saved file {}'.format(filepath), call='FILES')
 
 def addtext(text=''):
@@ -914,7 +929,7 @@ def openFile(*self):
             #note[variable].insert(1.0,file.read()[:-1])
             openedfiles[variable] = filepath
             file.close()
-            notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
+            notebook.tab(frames[variable], text = filepath.split("/")[-1]+"  ")
             note[current_note()].config(language=identify("."+filepath.split(".")[-1]))
             log('opened file {}'.format(filepath), call='FILES')
         except UnicodeDecodeError as uce:
@@ -935,7 +950,7 @@ def newTab(*args):
     font = tkfont.Font(font=note[var]['font'])
     note[var].config(tabs=font.measure('    '))
     openedfiles[var] = ""
-    notebook.add(frames[var], text='Untitled   ')
+    notebook.add(frames[var], text='Untitled  ')
     extension[current_note()] = ".*"
     note[var].bind('<Control-Tab>',nexttab)
     note[var].bind('<Return>', auto_indent)
@@ -1081,7 +1096,7 @@ tkTextmenu.add_command(label="Copy")
 tkTextmenu.add_command(label="Paste")
 
 notebook.bind("<Double-Button>", newTab)
-notebook.bind("<ButtonRelease-2>", deltab)
+notebook.bind("<ButtonRelease-2>", smartdeletetab)
 thisroot.bind_all(data.configuration['Key Bindings']['Save'], saveFile)
 thisroot.bind_all(data.configuration['Key Bindings']['New'], newTab)
 thisroot.bind_all(data.configuration['Key Bindings']['Close'], deltab)
@@ -1099,7 +1114,7 @@ thisroot.bind('<Control-f>', startfind)
 thisroot.bind('<Control-h>', startreplace)
 thisroot.config(menu=None)
 thisroot.after(1000, exec('datafile = open("./DATA/runner.confscript").read()'))
-thisroot.after(500, update)
+threading.Thread(target=updateforever).start()
 log('binded all keystrokes')
 log('starting main window')
 
