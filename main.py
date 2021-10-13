@@ -39,13 +39,15 @@ from tkterminal import *
 
 start = time.time()
 
-# We can't use tempfile library on Linux since it will create temp file in /temp
-# and we need to have root access for it. Using this directory instead.
-temp_dir = Path(Path(__file__).parent.resolve(), 'temp')
-try:
-    os.mkdir(temp_dir)
-except FileExistsError:
-    pass
+temp_dir = tempfile.gettempdir()
+
+if not os.path.isdir(TEMP+'/WhirlEdit/'):
+    #if "OSError: [Errno 30] Read-only file system:" happens, we will create another temp folder
+    try:
+        os.mkdir(temp_dir+'\\Whirledit\\')
+    except OSError:
+        temp_dir = Path(Path(__file__).parent.resolve(), 'temp')
+        os.mkdir(temp_dir+'\\Whirledit\\')
 
 logfile = open(os.path.abspath(Path(temp_dir, 'logs.txt')), 'w+')
 logfile.write('')
