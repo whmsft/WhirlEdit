@@ -19,10 +19,10 @@ Looks:
     Theme: fluent.dark
   InitialSyntax: Python
   Scheme:
-    Default: azure-modified
+    Default: monokai-aora
     Folder: ./DATA/Schemes/
   Theme:
-    Default: forest-dark.whTheme
+    Default: monokai-aora
     Folder: ./DATA/Themes/
   WindowTitle: WhirlEdit
 """
