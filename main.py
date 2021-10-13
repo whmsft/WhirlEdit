@@ -1,5 +1,5 @@
 __version__ = 'v4 Visual Vector (Preview)'
-# from DATA.extensions import extmgr <- experimental, making extensions..
+# from DATA.extensions import extmgr <- experimental, making extensions that modify this code
 
 # <ordinary> imports
 import re
