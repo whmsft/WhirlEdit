@@ -10,12 +10,15 @@ import data
 import time
 import yaml
 import shutil
+import urllib
 import widgets
 import zipfile
 import getpass
+import zipfile
 import textwrap
 import datetime
 import tempfile
+import requests
 import threading
 import subprocess
 import webbrowser
@@ -30,6 +33,7 @@ from wday import read
 from tkinter import ttk
 from pathlib import Path
 from tkcode import CodeEditor
+from alive_progress import alive_bar
 from tkinter.messagebox import askyesnocancel, showerror
 from tkinter.filedialog import askopenfilename, asksaveasfilename, askdirectory
 
@@ -41,7 +45,7 @@ start = time.time()
 
 temp_dir = tempfile.gettempdir()
 
-if not os.path.isdir(TEMP+'/WhirlEdit/'):
+if not os.path.isdir(temp_dir+'/WhirlEdit/'):
     #if "OSError: [Errno 30] Read-only file system:" happens, we will create another temp folder
     try:
         os.mkdir(temp_dir+'\\Whirledit\\')
@@ -62,7 +66,6 @@ def updateforever():
 
 def auto_indent(event):
     text = event.widget
-
     # get leading whitespace from current line
     line = text.get("insert linestart", "insert")
     match = re.match(r'^(\s+)', line)
@@ -166,7 +169,7 @@ highlight = {
     "Go"          : [".go"],
     "Groovy"      : [".groovy",".gvy",".gradle",".jenkinsfile"],
     "Haskell"     : [".hs",".lhs"],
-    "HTML"        : [".htm",".html"],
+    "HTML"        : [".htm",".html",".xml",'.svg'],
     "Java"        : [".java",".jar",".class"],
     "JavaScript"  : [".js",".cjs",".mjs"],
     "JSON"        : [".json"],
@@ -323,6 +326,7 @@ def openthisfile(event):
     item_id = event.widget.focus()
     item = event.widget.item(item_id)
     values = item['text']
+    print(item)
     if os.path.isfile(values):
         try:
             variable = current_note()
@@ -676,6 +680,24 @@ def runconf(*args):
     except:
         pass
 
+def getfile(file):
+    url = file
+    leng = urllib.request.urlopen(url)
+    local_filename = temp_dir+"/whirledit/"+file.split("/")[-1]
+    with requests.get(url, stream=True) as r:
+        with alive_bar(int(leng.length),title=extname) as bar:
+            r.raise_for_status()
+            with open(local_filename, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    f.write(chunk)
+                    exec('bar()\n'*8192)
+    zipfile.ZipFile(local_filename,'r').extractall(Path(Path(__file__).parent.resolve()))
+    print("installed extension {}".format(local_filename.replace(".ext.7z","")))
+
+if len(sys.argv) > 1:
+    if sys.argv[1] == "extension":
+        extname = sys.argv[2]
+        getfile("https://whmsft.github.io/extensions/"+extname+'.ext.zip')
 
 thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Default'], themes_file=f"{data.configuration['Looks']['Theme']['Folder']}/{data.configuration['Looks']['Theme']['Default']}.json").master
 
@@ -732,35 +754,31 @@ settipaneframe = tk.Frame(splitter)
 
 toolbar = ttk.Frame(thisroot)
 toolbar.pack(fill='both', expand=True)
-toolbar_menu_icon = PhotoImage(file="./DATA/icons/logo-mini.png", master=toolbar).subsample(5)
+toolbar_menu_icon = PhotoImage(file=data.icons.logo_mini, master=toolbar).subsample(5)
 toolbar_menu = ttk.Button(toolbar, image=toolbar_menu_icon, command=about, style='primary.Link.TButton')
 toolbar_menu.pack(fill='x')
-tools_files_icon = PhotoImage(file="./DATA/icons/{}/sidebar.files.png".format(data.config['Looks']['Icons']['Theme']),
-                              master=toolbar)
+tools_files_icon = PhotoImage(file=data.icons.sidebar_files,master=toolbar)
 tools_files = ttk.Button(toolbar, image=tools_files_icon, command=togglesidepane, style='primary.Link.TButton')
 tools_files.pack(fill='x')
-tools_runner_icon = PhotoImage(file="./DATA/icons/{}/sidebar.runner.png".format(data.config['Looks']['Icons']['Theme']),
-                               master=toolbar)
+tools_runner_icon = PhotoImage(file=data.icons.sidebar_runner,master=toolbar)
 tools_runner = ttk.Button(toolbar, image=tools_runner_icon, command=togglerunner, style='primary.Link.TButton')
 tools_runner.pack(fill='x')
-tools_looks_icon = PhotoImage(file="./DATA/icons/{}/sidebar.looks.png".format(data.config['Looks']['Icons']['Theme']),
-                              master=toolbar)
+tools_looks_icon = PhotoImage(file=data.icons.sidebar_looks,master=toolbar)
 tools_looks = ttk.Button(toolbar, image=tools_looks_icon, command=togglelookpane, style='primary.Link.TButton')
 tools_looks.pack(fill='x')
-tools_settings_icon = PhotoImage(file="./DATA/icons/{}/sidebar.settings.png".format(data.config['Looks']['Icons']['Theme']),
-                                 master=toolbar)
+tools_settings_icon = PhotoImage(file=data.icons.sidebar_settings,master=toolbar)
 tools_settings = ttk.Button(toolbar,image=tools_settings_icon, command=togglesetti, style='primary.Link.TButton')
 tools_settings.pack(side='bottom', anchor='s', fill='x')
 
 log('Icons made and added', call='SIDEBAR')
 
-projectBar_icon_newfile = PhotoImage(file='./DATA/icons/{}/project.newfile.png'.format(data.config['Looks']['Icons']['Theme']), master=toolbar)
-projectBar_icon_newfold = PhotoImage(file='./DATA/icons/{}/project.newfolder.png'.format(data.config['Looks']['Icons']['Theme']), master=toolbar)
-projectBar_icon_closefi = PhotoImage(file='./DATA/icons/{}/project.closefile.png'.format(data.config['Looks']['Icons']['Theme']))
+projectBar_icon_newfile = PhotoImage(file=data.icons.project_newfile,master=toolbar)
+projectBar_icon_newfold = PhotoImage(file=data.icons.project_newfolder,master=toolbar)
+projectBar_icon_closefi = PhotoImage(file=data.icons.project_closefile,master=toolbar)
 
-logoIMG = tk.PhotoImage(data=zlib.decompress(data.logo))
+logoIMG = tk.PhotoImage(data=zlib.decompress(data.icons.logo))
 
-newtabICON = PhotoImage(file='./DATA/icons/{}/main.newtab.png'.format(data.config['Looks']['Icons']['Theme']))
+newtabICON = PhotoImage(file=data.icons.main_newtab)
 
 root = tk.PanedWindow(splitter, orient=VERTICAL, handlesize=5)
 
@@ -783,8 +801,8 @@ def termreset():
     log('reset', call='TERMINAL')
 
 termframe = ttk.Frame()
-termicon_clear = PhotoImage(file= './DATA/icons/{}/terminal.clear.png'.format(data.config['Looks']['Icons']['Theme']))
-termicon_reset = PhotoImage(file= './DATA/icons/{}/terminal.restart.png'.format(data.config['Looks']['Icons']['Theme']))
+termicon_clear = PhotoImage(file= data.icons.terminal_clear)
+termicon_reset = PhotoImage(file= data.icons.terminal_reset)
 tkterminal = Terminal(termframe, font='Consolas 10', relief='flat')
 tkterminal.basename = "$"
 tkterminal.shell = True
@@ -909,7 +927,7 @@ def addtext(text=''):
     var = current_note()
     #for i in text:#textwrap.wrap(text,1000)
     #    note[var].insert(END,i)
-    note[var].insert(END)
+    note[var].insert(END,text)
 
 def openFile(*self):
     global extension
@@ -1044,28 +1062,6 @@ extension[current_note()] = ".*"
 btn = ttk.Button(thisroot,text = 'NEW')
 btn.place(anchor='ne')
 
-import urllib
-import requests
-import zipfile
-from alive_progress import alive_bar
-
-# taken directly from Proget (by whMSFT)
-def getfile(args):
-	args = list(args)
-	for file in args:
-		url = file
-		leng = urllib.request.urlopen(url)
-		local_filename = temp_dir+"/whirledit/"+file.split("/")[-1]
-		with requests.get(url, stream=True) as r:
-			with alive_bar(int(leng.length),title=url) as bar:
-				r.raise_for_status()
-				with open(local_filename, 'wb') as f:
-					for chunk in r.iter_content(chunk_size=8192):
-						f.write(chunk)
-						exec('bar()\n'*8192)
-        zipfile.ZipFile(local_filename,'r').extractall(Path(Path(__file__).parent.resolve()))
-		print("\ninstalled extension {}".format(local_filename.replace(".ext.7z","")))
-
 if len(sys.argv) >= 2:
     if os.path.isfile(sys.argv[1]):
         extension[current_note()] = "."+filepath.split(".")[-1]
@@ -1077,9 +1073,6 @@ if len(sys.argv) >= 2:
         file.close()
         notebook.tab(frames[variable], text = filepath.split("/")[-1]+"   ")
         note[current_note()].config(language=identify("."+filepath.split(".")[-1]))
-    elif sys.argv[1] == "extension":
-        extname = sys.argv[2]
-        getfile("https://whmsft.github.io/extensions/"+extname+'.ext.7z')
 
 root.add(notebook, before=termframe, height=450)
 
@@ -1089,13 +1082,11 @@ class Generate:
             __widget__.event_generate("<<Copy>>")
         except:
             pass
-
     def cut(__widget__):
         try:
             __widget__.event_generate("<<Cut>>")
         except:
             pass
-
     def paste(__widget__):
         try:
             __widget__.event_generate("<<Paste>>")
