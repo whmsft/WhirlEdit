@@ -1,6 +1,5 @@
 import os
 import yaml
-import cairosvg
 import tempfile
 
 temp_dir = tempfile.gettempdir()
