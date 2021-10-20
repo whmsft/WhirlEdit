@@ -309,7 +309,7 @@ def update(*args):
         note[current_note()]['font'] = data.config['Looks']['Font']['Font']+" "+data.config['Looks']['Font']['Size']
         note[current_note()]['blockcursor'] = data.isBlockcursor
         status['text'] = "File: {} | Line {}, Column {}".format(thisfile, my_line[0], my_line[1])
-        if fdir in openedfolders:
+        if fdir in openedfolders or fdir in './':
             pass
         else:
             framed.add(fdir)
@@ -583,7 +583,9 @@ def runner_conf(thisType):
     command = command.replace("$base", base.replace(" ", "_"))
     command = command.replace("$dir", '"'+"/".join(filepath.split("/")[:-1])+'"')
     log('started {} via {}'.format(filepath, thisType), call='RUNNER')
-    subprocess.call("start cmd /k {}".format(command), shell=True)
+    cmd = "start cmd /k {}".format(command)
+    tkterminal.run_command(command)
+    #subprocess.call(cmd, shell=True)
 
 
 def get_confs():
@@ -923,12 +925,6 @@ def saveFile(*args):
             notebook.tab(frames[variable], text = openedfiles[current_note()].split("/")[-1]+"  ")
             log('saved file {}'.format(filepath), call='FILES')
 
-def addtext(text=''):
-    var = current_note()
-    #for i in text:#textwrap.wrap(text,1000)
-    #    note[var].insert(END,i)
-    note[var].insert(END,text)
-
 def openFile(*self):
     global extension
     global filepath
@@ -943,10 +939,14 @@ def openFile(*self):
             extension[current_note()] = "."+filepath.split(".")[-1]
             tabfmt[current_note()]= "."+filepath.split(".")[-1]
             note[variable].delete(1.0,END)
-            file = open(filepath,"r")
             note[current_note()]["language"] = identify(filepath.split("/")[-1])
-            threading.Thread(target=addtext,kwargs={'text':file.read()}, daemon=True).start()
-            #note[variable].insert(1.0,file.read()[:-1])
+            import chardet
+            with open(filepath, 'rb') as f:
+                result = chardet.detect(f.read())
+                encoding = result['encoding']
+            file = open(filepath,"rb")
+            content=file.read()[:-1]
+            note[variable].insert(1.0,content.decode('UTF-8'))
             openedfiles[variable] = filepath
             file.close()
             notebook.tab(frames[variable], text = filepath.split("/")[-1]+"  ")

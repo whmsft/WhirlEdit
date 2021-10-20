@@ -1,4 +1,18 @@
+import os
 import yaml
+import cairosvg
+import tempfile
+
+temp_dir = tempfile.gettempdir()
+
+if not os.path.isdir(temp_dir+'/WhirlEdit/'):
+    #if "OSError: [Errno 30] Read-only file system:" happens, we will create another temp folder
+    try:
+        os.mkdir(temp_dir+'\\Whirledit\\')
+    except OSError:
+        temp_dir = Path(Path(__file__).parent.resolve(), 'temp')
+        os.mkdir(temp_dir+'\\Whirledit\\')
+
 configuration = """
 Key Bindings:
   Close: <Control-w>
