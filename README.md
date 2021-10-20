@@ -90,7 +90,6 @@ v1:
 ## Known issues:
 
 1. Editing LARGE files (30kb+) may slow down loading & customization experience
-2. Some theme assests don't work as expected
 
 <hr>
 
@@ -100,6 +99,9 @@ v1:
 
 \> An adjective and a noun with same initials (currently preview is at "V": "Visual Vector")
 
+2. Why i made whirledit?
+
+\> WhirlEdit was made as nobody cares for tk/ttk.. moreover, Alexey-T's CudaText has also inspired a lot.
 <hr>
 
 # And now something completely different:
