@@ -25,7 +25,7 @@ features of Visual Vector:
 6. introduction to Monokai-Aora (theme & scheme)
 8. auto indent, create an (auto) indent when last line is indented
 9. Welcome Screen
-10. Improved CustomNotebook with better close icon
+10. Improved CustomNotebook and a better close icon
 
 ```
 CHANGELOG:
