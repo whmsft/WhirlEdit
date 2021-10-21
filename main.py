@@ -1,4 +1,4 @@
-__version__ = 'v4 Visual Vector (Preview)'
+__version__ = 'v4 Visual Vector'
 # from DATA.extensions import extmgr <- experimental, making extensions that modify this code
 
 # <ordinary> imports
@@ -33,7 +33,6 @@ from wday import read
 from tkinter import ttk
 from pathlib import Path
 from tkcode import CodeEditor
-from alive_progress import alive_bar
 from tkinter.messagebox import askyesnocancel, showerror
 from tkinter.filedialog import askopenfilename, asksaveasfilename, askdirectory
 
@@ -52,6 +51,31 @@ if not os.path.isdir(temp_dir+'/WhirlEdit/'):
     except OSError:
         temp_dir = Path(Path(__file__).parent.resolve(), 'temp')
         os.mkdir(temp_dir+'\\Whirledit\\')
+
+def getfile(file):
+    pgr = ['|','/','-','\\']
+    url = file
+    leng = urllib.request.urlopen(url)
+    local_filename = temp_dir+"/whirledit/"+file.split("/")[-1]
+    num = 0
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(local_filename, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                if num == 4:
+                    num = 0
+                else:
+                    num += 1
+                f.write(chunk)
+                print('installing {} [{}]'.format(local_filename.replace('.pkg.zip',''),pgr[num]))
+    zipfile.ZipFile(local_filename,'r').extractall(Path(Path(__file__).parent.resolve()))
+    print("installed {} {}".format(sys.argv[1],local_filename.replace(".pkg.zip","")))
+
+if len(sys.argv) > 1:
+    if sys.argv[1] in ["package","pkg","ext","extension"]:
+        for i in sys.argv[2:]:
+            pkgname = i
+            getfile("https://whmsft.github.io/extensions/"+pkgname+'.pkg.zip')
 
 logfile = open(os.path.abspath(Path(temp_dir, 'logs.txt')), 'w+')
 logfile.write('')
@@ -119,7 +143,7 @@ try:
 except FileNotFoundError:
     configs = open("./DATA/runner.confscript", "x")
 
-# idk, LOL
+# idk why again.. LOL
 datafile = open("./DATA/runner.confscript").read()
 if datafile.isspace():
     isConf = False
@@ -682,25 +706,6 @@ def runconf(*args):
     except:
         pass
 
-def getfile(file):
-    url = file
-    leng = urllib.request.urlopen(url)
-    local_filename = temp_dir+"/whirledit/"+file.split("/")[-1]
-    with requests.get(url, stream=True) as r:
-        with alive_bar(int(leng.length),title=extname) as bar:
-            r.raise_for_status()
-            with open(local_filename, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    f.write(chunk)
-                    exec('bar()\n'*8192)
-    zipfile.ZipFile(local_filename,'r').extractall(Path(Path(__file__).parent.resolve()))
-    print("installed extension {}".format(local_filename.replace(".ext.7z","")))
-
-if len(sys.argv) > 1:
-    if sys.argv[1] == "extension":
-        extname = sys.argv[2]
-        getfile("https://whmsft.github.io/extensions/"+extname+'.ext.zip')
-
 thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Default'], themes_file=f"{data.configuration['Looks']['Theme']['Folder']}/{data.configuration['Looks']['Theme']['Default']}.json").master
 
 log('Main Window created')
@@ -941,12 +946,9 @@ def openFile(*self):
             note[variable].delete(1.0,END)
             note[current_note()]["language"] = identify(filepath.split("/")[-1])
             import chardet
-            with open(filepath, 'rb') as f:
-                result = chardet.detect(f.read())
-                encoding = result['encoding']
-            file = open(filepath,"rb")
+            file = open(filepath)
             content=file.read()[:-1]
-            note[variable].insert(1.0,content.decode('UTF-8'))
+            note[variable].insert(1.0,content)
             openedfiles[variable] = filepath
             file.close()
             notebook.tab(frames[variable], text = filepath.split("/")[-1]+"  ")
