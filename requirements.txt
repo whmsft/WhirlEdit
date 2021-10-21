@@ -5,3 +5,4 @@ tkterminal
 confscript
 ttkbootstrap
 requests
+alive_progress
