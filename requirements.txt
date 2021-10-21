@@ -4,3 +4,4 @@ tkcode
 tkterminal
 confscript
 ttkbootstrap
+requests
