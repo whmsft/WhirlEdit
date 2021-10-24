@@ -1,6 +1,8 @@
 # NOTE: v4.0 is going to be released on 28th October 2021
 ## on the occassion of Bill Gates 66th BirthDay
 
+<hr>
+
 ### Latest Stable release : [v3.4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.4)
 ### Latest preview release: [v4b0](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4b0)
 <hr>
@@ -13,7 +15,7 @@
 [![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
 
-WhirlEdit in v4b0 Vivid Violet (8 October 2021):
+WhirlEdit in v4 (preview) as of 24th October 2021
 
 ![](screenshot.png)
 
@@ -91,13 +93,15 @@ v1:
 <br>
 <hr>
 
-## Known issues:
+## Known issues (that can't be fixed in the nearby future):
 
 1. Editing LARGE files (30kb+) may slow down loading & customization experience.
 
 2. Lots of images aren't supported by the image previewer.
 
 3. The error handler is not so advanced.. so in case of Error, a popup displays the error and the editor crashes.
+
+4. Multi-line strings/comments are not highlighted due to a "pygments" problem
 
 <hr>
 
