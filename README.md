@@ -1,3 +1,6 @@
+# NOTE: v4.0 is going to be released on 28th October 2021
+## on the occassion of Bill Gates 66th BirthDay
+
 ### Latest Stable release : [v3.4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.4)
 ### Latest preview release: [v4b0](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4b0)
 <hr>
@@ -9,8 +12,6 @@
 [![Created..](https://badges.pufler.dev/created/Whmsft/Whirledit)]() 
 [![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
-
-## NOTE: v4.0 is going to be released on 28th October 2021
 
 WhirlEdit in v4b0 Vivid Violet (8 October 2021):
 
