@@ -1,4 +1,5 @@
 __version__ = 'v4 Visual Vector'
+
 # <ordinary> imports
 import re
 import os
@@ -243,7 +244,7 @@ def about(*args):
         yCordinate = int((screenHeight/2) - (windowHeight/2))
         a = tk.Toplevel(thisroot)
         nothing[4] = 0
-        #a.wm_attributes("-topmost", 1)
+        a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
         a.title('Whirledit')
         a.resizable(False, False)
         a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
@@ -670,7 +671,7 @@ def new_runner():
             #switch.config(text='No Console')
     def helpwindow():
         a = tk.Toplevel(root)
-        a.wm_attributes("-topmost",1)
+        a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
         a.resizable(False,False)
         a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
         a.title("Help")
@@ -1124,6 +1125,21 @@ def startfind(*args):
 def startreplace(*args):
     widgets.Replace(thisroot, note[current_note()])
 
+def toggle_searchbox(*args):
+    if sboxshow:
+        searchbox.place_forget()
+    else:
+        searchbox.place(relx=0.4,rely=0.1)
+        searchbox.focus_set()
+def exec_command_in_searchbox(event):
+    cmd = searchbox.get()
+    exec(cmd)
+
+#special widget: internal command processor
+searchbox = ttk.Entry(thisroot, font='consolas 15', width=25)
+sboxshow=False
+searchbox.bind('<Return>',exec_command_in_searchbox)
+
 tkTextmenu = tk.Menu(root, tearoff=0)
 tkTextmenu.add_command(label="Cut")
 tkTextmenu.add_command(label="Copy")
@@ -1146,6 +1162,7 @@ thisroot.bind_all(data.configuration['Key Bindings']['Fullscreen'], fullscreen)
 thisroot.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
 thisroot.bind('<Control-f>', startfind)
 thisroot.bind('<Control-h>', startreplace)
+thisroot.bind('<Control-P>', toggle_searchbox)
 thisroot.config(menu=None)
 thisroot.after(1000, exec('datafile = open("./DATA/runner.confscript").read()'))
 threading.Thread(target=updateforever).start()
@@ -1170,3 +1187,5 @@ log('removed logs file')
 
 log('Exiting program')
 print('** See you later **')
+sys.exit()
+exit()
