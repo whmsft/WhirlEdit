@@ -90,7 +90,11 @@ v1:
 
 ## Known issues:
 
-1. Editing LARGE files (30kb+) may slow down loading & customization experience
+1. Editing LARGE files (30kb+) may slow down loading & customization experience.
+
+2. Lots of images aren't supported by the image previewer.
+
+3. The error handler is not so advanced.. so in case of Error, a popup displays the error and the editor crashes.
 
 <hr>
 
@@ -102,10 +106,12 @@ v1:
 
 2. Why i made whirledit?
 
-\> WhirlEdit was made as nobody cares for tk/ttk.. moreover, Alexey-T's CudaText has also inspired a lot.
+\> This project started as a simple project on my way learning tkinter Later, in May-June 2021 The project restarted as i got ideas for tabs and using "ttk".
+
 <hr>
 
 # And now something completely different:
 
 ![Joke](https://readme-jokes.vercel.app/api)
 
+(c) 2020-21 WhMSFT (penguin.wp OR Whirlpool-programmer)
