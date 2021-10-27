@@ -5,3 +5,4 @@ tkterminal
 confscript
 ttkbootstrap
 requests
+py7zr
