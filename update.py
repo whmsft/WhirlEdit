@@ -1,7 +1,9 @@
+import py7zr
+"""
 import os
+import time
 import sys
 import urllib
-import zipfile
 import platform
 import requests
 import requests
@@ -10,10 +12,8 @@ import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 
-latestver = urllib.request.urlopen("https://github.com/whmsft/whmsft/raw/main/projects/whirledit.latest-version.txt").read().decode()
-
-updatelink = f'\rhttps://whmsft.github.io/releases/whirledit-{latestver}-{platform.platform()}.zip'
-
+latestver = urllib.request.urlopen("https://github.com/whmsft/whmsft/raw/main/projects/whirledit.latest-version.txt").read().decode().split()[0]
+updatelink = 'https://whmsft.github.io/releases/whirledit-{}-{}.7z'.format(latestver,platform.platform().split('-')[0].lower())
 def printProgressBar(iteration, total, length=50,fill = '█', printEnd = "\r"):
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
@@ -39,12 +39,14 @@ def getfile(file):
                 else:
                     num += 1
                 f.write(chunk)
-    zipfile.ZipFile(local_filename,'r').extractall(Path(Path(__file__).parent.resolve()))
+    py7zr.SevenZipFile(local_filename, mode='r').extractall(path="./")
+    os.remove(local_filename)
 
 def download_latest(url=''):
     local_filename = "./"+url.split("/")[-1]
     size=response.headers['content-length']
     pbar['maximum'] = int(size)
+    text['text'] = 'Downloading..'
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
         f=open(local_filename,'wb')
@@ -52,30 +54,14 @@ def download_latest(url=''):
             f.write(chunk)
             pbar['value'] += len(chunk)
     f.close()
-    text['text'] = 'Installing'
-    zipfile.ZipFile(local_filename,'r').extractall(Path(Path(__file__).parent.resolve()))
-    text['text'] = 'Done'
-    root.destroy()
-    exit()
+    text['text'] = 'Installing..'
+    py7zr.SevenZipFile(local_filename, mode='r').extractall(path="./")
+    os.remove(local_filename)
+    text['text'] = 'Done!'
+    time.sleep(0.5)
     sys.exit()
-
-if not latestver.split()[0] == open('currentversion.txt','r').read().split()[0]:
-    if '--gui' not in sys.argv:
-        getfile(updatelink)
-        print('Upgraded WhirlEdit to {}'.format(latestver))
-        exit()
-    else:
-        root = tk.Tk()
-        root.wm_attributes("-topmost",1)
-        response = requests.head(updatelink)
-        text = tk.Label(root,text='Downloading',font='segoe\ ui 20')
-        text.pack()
-        pbar = ttk.Progressbar(root,maximum=response.headers['content-length'],length=250)
-        pbar.pack(side='left', pady=5,padx=5)
-        cancel=tk.Button(root,text=' x ', bg='red',fg='white', activeforeground='white', activebackground='red',borderwidth=0,relief='flat', command=lambda:exec('root.destroy()\nexit\nsys.exit()'))
-        cancel.pack(side='left',padx=5,pady=5)
-        root.after(50,lambda:threading.Thread(target=download_latest,kwargs={"url":updatelink}, daemon=True).start())
-        root.mainloop()
-else:
-    print('Already at the latest version {}'.format(latestver))
-    exit()
+"""
+updfile=open('./updfile.txt').read()
+py7zr.SevenZipFile(updfile, mode='r').extractall(path="./")
+os.remove('./updfile.txt')
+os.remove(updfile)
