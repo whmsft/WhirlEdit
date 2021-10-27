@@ -1,5 +1,5 @@
 # NOTE: v4.0 is going to be released on 28th October 2021
-## on the occassion of Bill Gates 66th BirthDay
+## on the occassion of Bill Gates 66th BirthDay & my 1 year avoiding google :)
 
 <hr>
 
