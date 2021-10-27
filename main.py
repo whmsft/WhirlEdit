@@ -1,4 +1,5 @@
 __version__ = 'v4 Visual Vector'
+# from DATA.extensions import extmgr <- experimental, making extensions that modify this code
 
 # <ordinary> imports
 import re
@@ -18,6 +19,7 @@ import textwrap
 import datetime
 import tempfile
 import requests
+import platform
 import threading
 import subprocess
 import webbrowser
@@ -32,7 +34,7 @@ from wday import read
 from tkinter import ttk
 from pathlib import Path
 from tkcode import CodeEditor
-from tkinter.messagebox import askyesnocancel, showerror
+from tkinter.messagebox import *
 from tkinter.filedialog import askopenfilename, asksaveasfilename, askdirectory
 
 # <*> imports
@@ -221,18 +223,54 @@ highlight = {
     "Vim"         : [".vim"],
     "YAML"        : [".yaml",".yml"],
 }
+def download_latest(url=''):
+    local_filename = temp_dir+"/"+url.split("/")[-1]
+    size=response.headers['content-length']
+    pbar['maximum'] = int(size)
+    dtext['text'] = 'Downloading..'
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        f=open(local_filename,'wb')
+        for chunk in r.iter_content(chunk_size=8192):
+            f.write(chunk)
+            pbar['value'] += len(chunk)
+    f.close()
+    dtext['text'] = 'Installing..'
+    with open('./updfile.txt','w+') as updfile:
+        updfile.write(local_filename)
+    subprocess.run(str(Path(Path(__file__).parent.resolve()))+'/update')
+    dtext['text'] = 'Closing to install'
+    sys.exit()
 def check_for_update(*args):
-    latestver = urllib.request.urlopen("https://github.com/whmsft/whmsft/raw/main/projects/whirledit.latest-version.txt").read().decode()
+    global response, pbar, proot, dtext
+    d['text'] = '\nChecking for\nUpdates..\n'
+    latestver = urllib.request.urlopen("https://github.com/whmsft/whmsft/raw/main/projects/whirledit.latest-version.txt").read().decode().split()[0]
+    d['text'] = '\nJust there..\n\n'
+    updatelink = 'https://whmsft.github.io/releases/whirledit-{}-{}.7z'.format(latestver,platform.platform().split('-')[0].lower())
     if not latestver.split()[0] == open('currentversion.txt','r').read().split()[0]:
-        if os.path.isfile('./update.exe') or os.path.isfile('./update.py'):
-            choice_to_update = askyesnocancel('Update','New version {} available.\nDownload and install?'.format(latestver))
-            if choice_to_update:
-                threading.Thread(target=os.system('{}/update --gui'.format(Path(__file__).parent.resolve()))).start()
-                thisroot.destroy()
+        d['text'] = '\nUpdate available\n({} -> {})'.format(open('currentversion.txt','r').read().split()[0],latestver.split()[0])
+        if not os.path.isfile('./update.exe' or './update.py'):
+            showerror('Update','update.exe, a major component to update is not found')
+        choice_to_update = askyesnocancel('Update','New version {} available.\nDownload and install?\nNOTE: close any unsaved work'.format(latestver))
+        if choice_to_update:
+                proot = tk.Toplevel(root)
+                proot.title('WhirlEdit Updater')
+                proot.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
+                dtext = tk.Label(proot,text='Housekeeping..',font='segoe\ ui 20')
+                dtext.pack()
+                dtext['text'] = 'Finding info about update'
+                response = requests.head(updatelink)
+                pbar = ttk.Progressbar(proot,maximum=response.headers['content-length'],length=250)
+                pbar.pack(side='left', pady=5,padx=5)
+                proot.after(50,lambda:threading.Thread(target=download_latest,kwargs={"url":updatelink}, daemon=True).start())
+                proot.mainloop()
                 exit()
     else:
+        d['text'] = "\nNo updates\navailable\n"
+        d['text'] = "\nWritten in Python\nby whMSFT\n"
         showinfo('Update','Already at the latest version')
 def about(*args):
+    global d
     log('opening about')
     def nothingmod(_pos, val, ext=None):
         nothing[_pos] = val
