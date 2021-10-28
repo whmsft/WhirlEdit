@@ -1,4 +1,8 @@
 import py7zr
+from urllib import request
+import sys, os
+import tkinter as tk
+from tkinter import ttk
 """
 import os
 import time
@@ -61,7 +65,40 @@ def download_latest(url=''):
     time.sleep(0.5)
     sys.exit()
 """
-updfile=open('./updfile.txt').read()
-py7zr.SevenZipFile(updfile, mode='r').extractall(path="./")
-os.remove('./updfile.txt')
-os.remove(updfile)
+def download_latest(url=''):
+    local_filename = "./"+url.split("/")[-1]
+    size=response.headers['content-length']
+    pbar['maximum'] = int(size)
+    dtext['text'] = 'Downloading..'
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        f=open(local_filename,'wb')
+        for chunk in r.iter_content(chunk_size=8192):
+            f.write(chunk)
+            pbar['value'] += len(chunk)
+    f.close()
+    dtext['text'] = 'Installing..'
+    py7zr.SevenZipFile(local_filename, mode='r').extractall(path="./")
+    os.remove(local_filename)
+    sys.exit()
+def check_for_update(*args):
+    global response, pbar, proot, dtext
+    latestver = urllib.request.urlopen("https://github.com/whmsft/whmsft/raw/main/projects/whirledit.latest-version.txt").read().decode().split()[0]
+    updatelink = 'https://whmsft.github.io/releases/whirledit-{}-{}.7z'.format(latestver,platform.platform().split('-')[0].lower())
+    if not latestver.split()[0] == open('currentversion.txt','r').read().split()[0]:
+        choice_to_update = askyesnocancel('Update','New version {} available.\nDownload and install?\nNOTE: close WhirlEdit.exe else installation will not finish'.format(latestver))
+        if choice_to_update:
+                proot = tk.Toplevel(root)
+                proot.title('WhirlEdit Updater')
+                proot.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
+                dtext = tk.Label(proot,text='Housekeeping..',font='segoe\ ui 20')
+                dtext.pack()
+                dtext['text'] = 'Finding info about update'
+                response = requests.head(updatelink)
+                pbar = ttk.Progressbar(proot,maximum=response.headers['content-length'],length=250)
+                pbar.pack(side='left', pady=5,padx=5)
+                proot.after(50,lambda:threading.Thread(target=download_latest,kwargs={"url":updatelink}, daemon=True).start())
+                proot.mainloop()
+    else:
+        showinfo('Update','Already at the latest version')
+check_for_update()
