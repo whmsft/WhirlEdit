@@ -1,10 +1,4 @@
-# NOTE: v4.0 is going to be released on 28th October 2021
-## on the occassion of Bill Gates 66th BirthDay & my 1 year avoiding google :)
-
-<hr>
-
-### Latest Stable release : [v3.4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v3.4)
-### Latest preview release: [v4b0](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4b0)
+## Latest release : [v4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4)
 <hr>
 
 [![Run on Repl.it](https://repl.it/badge/github/Whmsft/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
@@ -15,26 +9,20 @@
 [![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
 
-WhirlEdit in v4 (preview) as of 24th October 2021
-
-![](screenshot.png)
-
-### Under development: v4 (Visual Vector)
-
-features of Visual Vector:
-1. able to run on Linux
-2. Code has been formatted BETTER
-3. all external widgets are available in `widgets.py`
-4. the data for default conf, icon in data format, etc. is in `data.py`
-5. Complete UI change with `ttkbootstrap`
-6. introduction to Monokai-Aora (theme & scheme)
-8. auto indent, create an (auto) indent when last line is indented
-9. Welcome Screen
-10. Improved CustomNotebook and a better close icon
-11. an all NEW updating feature
-
 ```
 CHANGELOG:
+
+v4.0:
+> UI
+  + Complete UI change with `ttkbootstrap`
+  + introduction to Monokai-Aora (theme & scheme)
+  + auto indent, create an (auto) indent when last line is indented
+  + Welcome Screen
+  + Improved CustomNotebook and a better close icon
+> features
+  + all external widgets are available in `widgets.py`
+  + the data for default conf, icon in data format, etc. is in `data.py`
+  + an all NEW updating feature
 
 v3.5:
 > bugfixes
@@ -109,7 +97,7 @@ v1:
 
 1. What is the codename scheme?
 
-\> An adjective and a noun with same initials (currently preview is at "V": "Visual Vector")
+\> An adjective and a noun with same initials (currently at "V": "Visual Vector")
 
 2. Why i made whirledit?
 
