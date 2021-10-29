@@ -23,6 +23,7 @@ v4.0:
   + all external widgets are available in `widgets.py`
   + the data for default conf, icon in data format, etc. is in `data.py`
   + an all NEW updating feature
+  + extensions installation via command line
 
 v3.5:
 > bugfixes
