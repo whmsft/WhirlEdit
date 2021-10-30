@@ -43,6 +43,11 @@ from tkterminal import *
 
 start = time.time()
 
+system = platform.platform().split('-')[0]
+print("Whirledit {} running on {}".format(__version__,system))
+
+PATH = str(Path(Path(__file__).parent.resolve()))
+
 temp_dir = tempfile.gettempdir()
 
 if not os.path.isdir(temp_dir+'/WhirlEdit/'):
@@ -50,7 +55,7 @@ if not os.path.isdir(temp_dir+'/WhirlEdit/'):
     try:
         os.mkdir(temp_dir+'\\Whirledit\\')
     except OSError:
-        temp_dir = Path(Path(__file__).parent.resolve(), 'temp')
+        temp_dir = (PATH+ 'temp')
         os.mkdir(temp_dir+'\\Whirledit\\')
 
 def getfile(file):
@@ -73,7 +78,7 @@ def getfile(file):
                     num += 1
                 f.write(chunk)
                 print('installing {} [{}]'.format(local_filename.replace('.pkg.zip',''),pgr[num]))
-    zipfile.ZipFile(local_filename,'r').extractall(Path(Path(__file__).parent.resolve()))
+    zipfile.ZipFile(local_filename,'r').extractall(PATH)
     print("installed {} {}".format(sys.argv[1],local_filename.replace(".pkg.zip","")))
 
 if len(sys.argv) > 1:
@@ -145,12 +150,12 @@ def greet_time():
 
 # runners' file
 try:
-    configs = open("./DATA/runner.confscript", "r+")
+    configs = open(PATH+"/DATA/runner.confscript", "r+")
 except FileNotFoundError:
-    configs = open("./DATA/runner.confscript", "x")
+    configs = open(PATH+"/DATA/runner.confscript", "x")
 
 # idk why again.. LOL
-datafile = open("./DATA/runner.confscript").read()
+datafile = open(PATH+"/DATA/runner.confscript").read()
 if datafile.isspace():
     isConf = False
 else:
@@ -250,7 +255,7 @@ def about(*args):
         a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
         a.title('Whirledit')
         a.resizable(False, False)
-        a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
+        a.iconbitmap(rPATH+"/DATA/icons/favicon.v3.ico")
         a.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
         z = Label(a, image=logoIMG)
         z.pack(pady=5, padx=5)
@@ -353,7 +358,7 @@ def update(*args):
         note[current_note()]['font'] = data.config['Looks']['Font']['Font']+" "+data.config['Looks']['Font']['Size']
         note[current_note()]['blockcursor'] = data.isBlockcursor
         status['text'] = "File: {} | Line {}, Column {}".format(thisfile, my_line[0], my_line[1])
-        if fdir in openedfolders or fdir in './':
+        if fdir in openedfolders or fdir in PATH+'/':
             pass
         else:
             framed.add(fdir)
@@ -653,7 +658,7 @@ def current_note(*args):
 
 def new_runner():
     global configs
-    configs = open("./DATA/runner.confscript","r+")
+    configs = open(PATH+"/DATA/runner.confscript","r+")
     log('new runner dialog opened')
     global conf
 
@@ -676,7 +681,7 @@ def new_runner():
         a = tk.Toplevel(root)
         a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
         a.resizable(False,False)
-        a.iconbitmap(r"./DATA/icons/favicon.v3.ico")
+        a.iconbitmap(rPATH+"/DATA/icons/favicon.v3.ico")
         a.title("Help")
         b = Label(a, text='Keywords', font="Consolas", anchor='w').pack(expand=True)
         b = Label(a, text='$file: filepath', font="Consolas", anchor='w').pack(expand=True)
@@ -686,7 +691,7 @@ def new_runner():
         a.mainloop()
     conf = tk.Toplevel(root)
     conf.wm_attributes("-topmost", 1)
-    conf.iconbitmap(r"./DATA/icons/favicon.v3.ico")
+    conf.iconbitmap(rPATH+"/DATA/icons/favicon.v3.ico")
     conf.resizable(False, False)
     conf.title("Configure new Runner")
     conf.geometry("400x250")
@@ -730,7 +735,7 @@ thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Defaul
 
 log('Main Window created')
 try:
-    thisroot.iconbitmap(r"./DATA/icons/favicon.v3.ico")
+    thisroot.iconbitmap(PATH+"/DATA/icons/favicon.v3.ico")
 except tk.TclError:
     log('icon adding error')
 else:
@@ -1167,7 +1172,7 @@ thisroot.bind('<Control-f>', startfind)
 thisroot.bind('<Control-h>', startreplace)
 thisroot.bind('<Control-P>', toggle_searchbox)
 thisroot.config(menu=None)
-thisroot.after(1000, exec('datafile = open("./DATA/runner.confscript").read()'))
+thisroot.after(1000, exec('datafile = open(PATH+"/DATA/runner.confscript").read()'))
 threading.Thread(target=updateforever).start()
 log('binded all keystrokes')
 log('starting main window')
@@ -1179,7 +1184,7 @@ except Exception as e:
     showerror(type(e).__name__, e)
 
 configs.close()
-open('./DATA/configure.yaml','w+').write(yaml.dump(data.config))
+open(PATH+'/DATA/configure.yaml','w+').write(yaml.dump(data.config))
 try:
     shutil.rmtree(tempfile.gettempdir()+'/WhirlEdit')
     log('removed TEMP/WhirlEdit folder')
