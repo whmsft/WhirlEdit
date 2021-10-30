@@ -1,8 +1,12 @@
 import py7zr
 from urllib import request
+import requests
 import sys, os
 import tkinter as tk
 from tkinter import ttk
+import platform
+from tkinter.messagebox import *
+import threading
 """
 import os
 import time
@@ -13,7 +17,7 @@ import requests
 import requests
 import threading
 import tkinter as tk
-from tkinter import ttk
+from tkinter import tt
 from pathlib import Path
 
 latestver = urllib.request.urlopen("https://github.com/whmsft/whmsft/raw/main/projects/whirledit.latest-version.txt").read().decode().split()[0]
@@ -83,12 +87,12 @@ def download_latest(url=''):
     sys.exit()
 def check_for_update(*args):
     global response, pbar, proot, dtext
-    latestver = urllib.request.urlopen("https://github.com/whmsft/whmsft/raw/main/projects/whirledit.latest-version.txt").read().decode().split()[0]
+    latestver = request.urlopen("https://github.com/whmsft/whmsft/raw/main/projects/whirledit.latest-version.txt").read().decode().split()[0]
     updatelink = 'https://whmsft.github.io/releases/whirledit-{}-{}.7z'.format(latestver,platform.platform().split('-')[0].lower())
     if not latestver.split()[0] == open('currentversion.txt','r').read().split()[0]:
-        choice_to_update = askyesnocancel('Update','New version {} available.\nDownload and install?\nNOTE: close WhirlEdit.exe else installation will not finish'.format(latestver))
+        choice_to_update = askyesnocancel('Update','New version {} available.\nDownload and install?\nNOTE: close WhirlEdit.exe else installation will not finish \n also, once started, the update can\'t be cancelled'.format(latestver))
         if choice_to_update:
-                proot = tk.Toplevel(root)
+                proot = tk.Toplevel()
                 proot.title('WhirlEdit Updater')
                 proot.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
                 dtext = tk.Label(proot,text='Housekeeping..',font='segoe\ ui 20')
