@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
-
+from pathlib import Path
+PATH = str(Path(Path(__file__).parent.resolve()))
+print('root = {}'.format(PATH))
 class Find(tk.Toplevel):
 	"""Find whole or partial words within a text widget"""
 
@@ -348,9 +350,9 @@ class Notebook(ttk.Notebook):
 		...
 		style = ttk.Style()
 		self.images = (
-			tk.PhotoImage("img_close", file='./DATA/icons/close.n.png'),
-			tk.PhotoImage("img_closeactive", file='./DATA/icons/close.n.png'),
-			tk.PhotoImage("img_closepressed", file='./DATA/icons/close.a.png'),
+			tk.PhotoImage("img_close", file=PATH+'/DATA/icons/close.n.png'),
+			tk.PhotoImage("img_closeactive", file=PATH+'/DATA/icons/close.n.png'),
+			tk.PhotoImage("img_closepressed", file=PATH+'/DATA/icons/close.a.png'),
 		)
 
 		style.element_create("close", "image", "img_close",
@@ -534,9 +536,9 @@ class CustomNotebook(ttk.Notebook):
     def __initialize_custom_style(self):
         style = ttk.Style()
         self.images = (
-            tk.PhotoImage("img_close", file='./DATA/icons/close.n.png'),
-            tk.PhotoImage("img_closeactive", file='./DATA/icons/close.h.png'),
-            tk.PhotoImage("img_closepressed", file='./DATA/icons/close.a.png'),
+            tk.PhotoImage("img_close", file=PATH+'/DATA/icons/close.n.png'),
+            tk.PhotoImage("img_closeactive", file=PATH+'/DATA/icons/close.h.png'),
+            tk.PhotoImage("img_closepressed", file=PATH+'/DATA/icons/close.a.png'),
         )
 
         style.element_create(

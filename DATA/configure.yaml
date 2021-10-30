@@ -18,8 +18,8 @@ Looks:
   InitialSyntax: Python
   Scheme:
     Default: monokai-aora
-    Folder: ./DATA/Schemes/
+    Folder: /DATA/Schemes/
   Theme:
     Default: monokai-aora
-    Folder: ./DATA/Themes/
+    Folder: /DATA/Themes/
   WindowTitle: WhirlEdit (Preview)

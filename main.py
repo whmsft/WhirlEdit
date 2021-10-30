@@ -427,7 +427,7 @@ class Settings(object):
     def savechangesSETTINGS(self):
         data.config['Looks']['Theme']['Folder']  = self.themeFolder.get()
         data.config['Looks']['Theme']['Default'] = self.themeName.get()
-        data.config['Looks']['Scheme']['Folder'] = self.schemeFolder.get()
+        data.config['Looks']['Scheme']['Folder'] = PATH+self.schemeFolder.get()
         log('modified',call='SETTINGS')
     def __init__(self,master):
         frame = tk.Frame(master)
@@ -510,10 +510,10 @@ class LooksPane(object):
         self.curscheme = tk.StringVar()
         self.curscheme.set(data.config['Looks']['Scheme']['Default'])
         curscheme_values = [data.config['Looks']['Scheme']['Default']]
-        for i in os.listdir(data.configuration['Looks']['Scheme']['Folder']):
+        for i in os.listdir(PATH+data.configuration['Looks']['Scheme']['Folder']):
             if i.lower().endswith('.json'):
                 curscheme_values.append(i[:-5])
-        self.b = ttk.OptionMenu(frame, self.curscheme, *curscheme_values, command = lambda a='s':note[current_note()].config(highlighter = data.configuration['Looks']['Scheme']['Folder']+self.curscheme.get()+'.json'))
+        self.b = ttk.OptionMenu(frame, self.curscheme, *curscheme_values, command = lambda a='s':note[current_note()].config(highlighter = PATH+data.configuration['Looks']['Scheme']['Folder']+self.curscheme.get()+'.json'))
         self.d = tk.Label(frame,text='Syntax')
         widgets.create_tool_tip(self.b, text='Select The color-scheme\nto use..')
         self.d.grid(row=2, column=0)
@@ -731,7 +731,7 @@ def runconf(*args):
     except:
         pass
 
-thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Default'], themes_file=f"{data.configuration['Looks']['Theme']['Folder']}/{data.configuration['Looks']['Theme']['Default']}.json").master
+thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Default'], themes_file=PATH+"{}/{}.json".format(data.configuration['Looks']['Theme']['Folder'],data.configuration['Looks']['Theme']['Default'])).master
 
 log('Main Window created')
 try:
@@ -853,7 +853,7 @@ rootframe.add(splitter,height=400)
 root.add(termframe,height=180)
 
 try:
-    default_highlight = data.configuration['Looks']['Scheme']['Folder']+data.configuration['Looks']['Scheme']['Default']+'.json'
+    default_highlight = PATH+data.configuration['Looks']['Scheme']['Folder']+data.configuration['Looks']['Scheme']['Default']+'.json'
     log('set scheme {}'.format(default_highlight),call='LOOKS')
 except Exception as e:
     log('({}) {}'.format(type(e).__name__, e), call='ERROR')

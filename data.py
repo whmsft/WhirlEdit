@@ -56,7 +56,7 @@ class icons:
   sidebar_runner = PATH+"/DATA/icons/{}/sidebar.runner.png".format(config['Looks']['Icons']['Theme'])
   sidebar_looks = PATH+"/DATA/icons/{}/sidebar.looks.png".format(config['Looks']['Icons']['Theme'])
   sidebar_settings = PATH+"/DATA/icons/{}/sidebar.settings.png".format(config['Looks']['Icons']['Theme'])
-  project_newfile = PATH+'/DATA/icons/{}/project.newfile.png'.format(config['Looks']['Icons']['Theme']), 
+  project_newfile = PATH+'/DATA/icons/{}/project.newfile.png'.format(config['Looks']['Icons']['Theme'])
   project_newfolder = PATH+'/DATA/icons/{}/project.newfolder.png'.format(config['Looks']['Icons']['Theme'])
   project_closefile = PATH+'/DATA/icons/{}/project.closefile.png'.format(config['Looks']['Icons']['Theme'])
   main_newtab = PATH+'/DATA/icons/{}/main.newtab.png'.format(config['Looks']['Icons']['Theme'])
