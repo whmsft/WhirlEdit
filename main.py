@@ -48,7 +48,7 @@ print("Whirledit {} running on {}".format(__version__,system))
 
 PATH = str(Path(Path(__file__).parent.resolve()))
 
-temp_dir = tempfile.gettempdir()
+temp_dir = str(tempfile.gettempdir())
 
 if not os.path.isdir(temp_dir+'/WhirlEdit/'):
     #if "OSError: [Errno 30] Read-only file system:" happens, we will create another temp folder
