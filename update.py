@@ -87,6 +87,9 @@ def download_latest(url=''):
     sys.exit()
 def check_for_update(*args):
     global response, pbar, proot, dtext
+    root = tk.Tk()
+    root.overrideredirect(1)
+    root.withdraw()
     latestver = request.urlopen("https://github.com/whmsft/whmsft/raw/main/projects/whirledit.latest-version.txt").read().decode().split()[0]
     updatelink = 'https://whmsft.github.io/releases/whirledit-{}-{}.7z'.format(latestver,platform.platform().split('-')[0].lower())
     if not latestver.split()[0] == open('currentversion.txt','r').read().split()[0]:
@@ -103,6 +106,8 @@ def check_for_update(*args):
                 pbar.pack(side='left', pady=5,padx=5)
                 proot.after(50,lambda:threading.Thread(target=download_latest,kwargs={"url":updatelink}, daemon=True).start())
                 proot.mainloop()
+        else:
+            sys.exit()
     else:
         showinfo('Update','Already at the latest version')
 check_for_update()
