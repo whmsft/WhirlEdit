@@ -1,5 +1,4 @@
 ## Latest release : [v4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4)
-<hr>
 
 [![Run on Repl.it](https://repl.it/badge/github/Whmsft/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
 [![Build Status](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml)
