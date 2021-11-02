@@ -52,10 +52,10 @@ temp_dir = str(tempfile.gettempdir())
 
 if not os.path.isdir(temp_dir+'/WhirlEdit/'):
 		if system=='windows':
-      os.mkdir(temp_dir+'\\Whirledit\\')
-    else:
-      temp_dir = Path(Path(__file__).parent.resolve(), 'temp')
-      os.mkdir(temp_dir+'\\Whirledit\\')
+			os.mkdir(temp_dir+'\\Whirledit\\')
+		else:
+			temp_dir = str(Path(Path(__file__).parent.resolve(), 'temp'))
+			os.mkdir(temp_dir+'\\Whirledit\\')
 
 def getfile(file):
     pgr = ['|','/','-','\\']
