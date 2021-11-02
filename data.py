@@ -2,15 +2,16 @@ import os
 import yaml
 import tempfile
 from pathlib import Path
+import platform
 
+system = platform.platform().split('-')[0].lower()
 PATH = str(Path(Path(__file__).parent.resolve()))
-temp_dir = tempfile.gettempdir()
+temp_dir = str(tempfile.gettempdir())
 
 if not os.path.isdir(temp_dir+'/WhirlEdit/'):
-    #if "OSError: [Errno 30] Read-only file system:" happens, we will create another temp folder
-    try:
-        os.mkdir(temp_dir+'\\Whirledit\\')
-    except OSError:
+		if system=='windows':
+      os.mkdir(temp_dir+'\\Whirledit\\')
+    else:
         temp_dir = Path(Path(__file__).parent.resolve(), 'temp')
         os.mkdir(temp_dir+'\\Whirledit\\')
 

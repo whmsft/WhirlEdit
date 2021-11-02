@@ -43,7 +43,7 @@ from tkterminal import *
 
 start = time.time()
 
-system = platform.platform().split('-')[0]
+system = platform.platform().split('-')[0].lower()
 print("Whirledit {} running on {}".format(__version__,system))
 
 PATH = str(Path(Path(__file__).parent.resolve()))
@@ -51,12 +51,11 @@ PATH = str(Path(Path(__file__).parent.resolve()))
 temp_dir = str(tempfile.gettempdir())
 
 if not os.path.isdir(temp_dir+'/WhirlEdit/'):
-    #if "OSError: [Errno 30] Read-only file system:" happens, we will create another temp folder
-    try:
-        os.mkdir(temp_dir+'\\Whirledit\\')
-    except OSError:
-        temp_dir = (PATH+ 'temp')
-        os.mkdir(temp_dir+'\\Whirledit\\')
+		if system=='windows':
+      os.mkdir(temp_dir+'\\Whirledit\\')
+    else:
+      temp_dir = Path(Path(__file__).parent.resolve(), 'temp')
+      os.mkdir(temp_dir+'\\Whirledit\\')
 
 def getfile(file):
     pgr = ['|','/','-','\\']
