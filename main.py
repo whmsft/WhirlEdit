@@ -1,4 +1,4 @@
-__version__ = 'v4 Visual Vector'
+__version__ = 'v4.1b Wild Walrus'
 # from DATA.extensions import extmgr <- experimental, making extensions that modify this code
 
 # <ordinary> imports

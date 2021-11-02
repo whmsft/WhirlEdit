@@ -9,6 +9,8 @@
 [![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
 
+### Current status: Fixing "running on Linux"
+
 ```
 CHANGELOG:
 
