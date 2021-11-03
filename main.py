@@ -51,12 +51,11 @@ PATH = str(Path(Path(__file__).parent.resolve()))
 temp_dir = str(tempfile.gettempdir())
 
 if not os.path.isdir(temp_dir+'/WhirlEdit/'):
-		if system=='windows':
+	if not system=='windows':
+		temp_dir = str(Path(Path(__file__).parent.resolve(), 'temp'))
+		try:
 			os.mkdir(temp_dir+'\\Whirledit\\')
-		else:
-			temp_dir = str(Path(Path(__file__).parent.resolve(), 'temp'))
-			if not os.path.isfile(temp_dir+'/WhirlEdit/'):
-				os.mkdir(temp_dir+'\\Whirledit\\')
+		except: pass
 
 def getfile(file):
     pgr = ['|','/','-','\\']
@@ -88,9 +87,6 @@ if len(sys.argv) > 1:
             getfile("https://whmsft.github.io/extensions/"+pkgname+'.pkg.zip')
         exit()
 
-logfile = open(os.path.abspath(Path(temp_dir, 'logs.txt')), 'w+')
-logfile.write('')
-
 def updateforever():
     while True:
         try:
@@ -114,7 +110,6 @@ def auto_indent(event):
 
 def log_call(message, call="INTERNAL"):
     logs = '{} [{}]: {}'.format(round(time.time()-start, 2), call, message)
-    logfile.writelines(logs+'\n')
     print(logs)
 
 
@@ -134,7 +129,6 @@ def smartdeletetab(event):
 
 def log_fake(message, call='INTERNAL'):
     logs = '{} [{}]: {}'.format(round(time.time()-start,2),call,message)
-    logfile.writelines(logs+'\n')
 
 def greet_time():
     hour =  int(str(datetime.datetime.now().time()).split(':')[0])
@@ -1197,3 +1191,4 @@ log('Exiting program')
 print('** See you later **')
 sys.exit()
 exit()
+
