@@ -1,8 +1,15 @@
 pyyaml
+
 wday
+
 tkcode
+
 tkterminal
+
 confscript
+
 ttkbootstrap
+
 requests
+
 py7zr
