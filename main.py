@@ -44,7 +44,6 @@ from tkterminal import *
 start = time.time()
 
 system = platform.platform().split('-')[0].lower()
-print("Whirledit {} running on {}".format(__version__,system))
 
 PATH = str(Path(Path(__file__).parent.resolve()))
 
@@ -87,6 +86,7 @@ if len(sys.argv) > 1:
             getfile("https://whmsft.github.io/extensions/"+pkgname+'.pkg.zip')
         exit()
 
+print("Whirledit {} running on {}".format(__version__,system))
 def updateforever():
     while True:
         try:
@@ -222,17 +222,6 @@ highlight = {
     "Vim"         : [".vim"],
     "YAML"        : [".yaml",".yml"],
 }
-def check_for_update(*args):
-    global response, pbar, proot, dtext
-    d['text'] = '\nChecking for\nUpdates..\n'
-    latestver = urllib.request.urlopen("https://github.com/whmsft/whmsft/raw/main/projects/whirledit.latest-version.txt").read().decode().split()[0]
-    if not latestver.split()[0] == open('currentversion.txt','r').read().split()[0]:
-        d['text'] = '\nUpdate available\n({} -> {})'.format(open('currentversion.txt','r').read().split()[0],latestver.split()[0])
-        showinfo('Update','Open update.exe to download & install updates')
-    else:
-        d['text'] = "\nNo updates\navailable\n"
-        d['text'] = "\nWritten in Python\nby whMSFT\n"
-        showinfo('Update','Already at the latest version')
 def about(*args):
     global d
     log('opening about')
@@ -249,7 +238,7 @@ def about(*args):
         a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
         a.title('Whirledit')
         a.resizable(False, False)
-        a.iconbitmap(rPATH+"/DATA/icons/favicon.v3.ico")
+        a.iconbitmap(PATH+"/DATA/icons/favicon.v3.ico")
         a.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
         z = Label(a, image=logoIMG)
         z.pack(pady=5, padx=5)
@@ -261,11 +250,9 @@ def about(*args):
         d.pack()
         e = ttk.Button(a, text='GitHub',
                        command=lambda: webbrowser.open('http://github.com/whmsft/WhirlEdit'))
-        e.pack(side='left',anchor='center',pady=0,padx=30)
+        e.pack(padx=10,pady=10)
 #        tk.Label(a,text=' ').pack()
-        f = ttk.Button(a,text='Check for updates', command=check_for_update)
 #        f.pack(side='bottom',anchor='center')
-        f.pack(side='left',anchor='center', pady=0,padx=0)
         a.protocol("WM_DELETE_WINDOW", lambda: nothingmod(4, 1))
     else:
         pass

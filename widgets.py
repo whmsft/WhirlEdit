@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 PATH = str(Path(Path(__file__).parent.resolve()))
-print('root = {}'.format(PATH))
 class Find(tk.Toplevel):
 	"""Find whole or partial words within a text widget"""
 
