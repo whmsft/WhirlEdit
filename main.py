@@ -251,8 +251,6 @@ def about(*args):
         e = ttk.Button(a, text='GitHub',
                        command=lambda: webbrowser.open('http://github.com/whmsft/WhirlEdit'))
         e.pack(padx=10,pady=10)
-#        tk.Label(a,text=' ').pack()
-#        f.pack(side='bottom',anchor='center')
         a.protocol("WM_DELETE_WINDOW", lambda: nothingmod(4, 1))
     else:
         pass
