@@ -1,3 +1,10 @@
+
+# Please note: the license is updated and is no more MIT, it's now GNU GPL v3
+
+In easiest terms, it will not allow you to publish closed source versions of Whirledit
+
+<Hr>
+
 ## Latest release : [v4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4)
 
 [![Run on Repl.it](https://repl.it/badge/github/Whmsft/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
