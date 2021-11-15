@@ -1,5 +1,4 @@
 __version__ = 'v4.1b Wild Walrus'
-
 # <ordinary> imports
 import re
 import os
@@ -1168,11 +1167,5 @@ try:
     log('removed TEMP/WhirlEdit folder')
 except:
     pass
-
-log('removed logs file')
-
 log('Exiting program')
 print('** See you later **')
-sys.exit()
-exit()
-
