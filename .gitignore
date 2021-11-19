@@ -131,3 +131,6 @@ dmypy.json
 # PyVenv files
 Scripts/
 pyvenv.cfg
+
+# Building files
+__freeze__.bat
