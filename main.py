@@ -1,3 +1,13 @@
+# ----------------------------------------- #
+# name: WhirlEdit                           #
+# version: 4.1b                             #
+# codename: Wild Walrus                     #
+# author: Whmsft                            #
+# contributors: @Redysz                     #
+# license: GNU GPLv3                        #
+# platforms: Windows, Linux (maybe mac too) #
+# ----------------------------------------- #
+
 __version__ = 'v4.1b Wild Walrus'
 # <ordinary> imports
 import re
