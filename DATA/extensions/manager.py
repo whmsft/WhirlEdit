@@ -10,6 +10,37 @@ from pathlib import Path
 
 PATH = str(Path(Path(__file__).parent.resolve()))
 
+
+'''
+BASIC TUTOR for extensions:
+
+extensions here can have new blocks of code to modify WhirlEdit execution
+
+the structure is like this:
+
+directory Extensions:
+    manager.py (the main manager)
+    EXTENSION_NAME (a directory):
+        main.py (main script file of the extension)
+
+how will main.py look like?
+it will have a string (basically a block of code you want to execute)
+the string will be connected by this line:
+tasks.after_imports.append(--the block of code--)
+
+
+a simple example:
+main.py:
+```
+tasks.after_imports.append("""
+print('imports imported...')
+""")
+```
+
+this is quite simple.. :)
+'''
+
+
 class tasks:
     class after_imports:
         pass
@@ -39,8 +70,8 @@ class tasks:
         pass
 
 print('Extension Manager platform 1')
-print('...')
 
 for i in os.listdir(PATH):
     if os.path.isdir(i):
         exec(open(PATH+'/{}/main.py'.format(i)))
+        print('loaded "{}"'.format(i))

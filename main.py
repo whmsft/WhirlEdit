@@ -9,6 +9,10 @@
 # ----------------------------------------- #
 
 __version__ = 'v4.1b Wild Walrus'
+
+# most important import: extmanager
+import DATA.extensions.manager as xtmgr
+
 # <ordinary> imports
 import re
 import os
