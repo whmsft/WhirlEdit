@@ -6,6 +6,9 @@
 # ----------------------------------- #
 
 import os
+from pathlib import Path
+
+PATH = str(Path(Path(__file__).parent.resolve()))
 
 class tasks:
     class after_imports:
@@ -38,7 +41,6 @@ class tasks:
 print('Extension Manager platform 1')
 print('...')
 
-for i in os.listdir('./'):
-    print(i)
-
-import time; time.sleep(10)
+for i in os.listdir(PATH):
+    if os.path.isdir(i):
+        exec(open(PATH+'/{}/main.py'.format(i)))
