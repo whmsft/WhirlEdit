@@ -13,7 +13,6 @@ __version__ = 'v4.1b Wild Walrus'
 # most important import: extmanager
 import DATA.extensions.manager as xtmgr
 
-# <ordinary> imports
 import re
 import os
 import sys
@@ -38,8 +37,6 @@ import webbrowser
 import ttkbootstrap
 import tkinter as tk
 import tkinter.font as tkfont
-
-# <from> imports
 from confscript import dump
 from confscript import read as cfsread
 from wday import read
@@ -48,8 +45,6 @@ from pathlib import Path
 from tkcode import CodeEditor
 from tkinter.messagebox import *
 from tkinter.filedialog import askopenfilename, asksaveasfilename, askdirectory
-
-# <*> imports
 from tkinter import *
 from tkterminal import *
 
