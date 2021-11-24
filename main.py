@@ -8,7 +8,7 @@
 # platforms: Windows, Linux (maybe mac too) #
 # ----------------------------------------- #
 
-__version__ = 'v4.1b Wild Walrus'
+__version__ = 'v4.1 Wild Walrus'
 
 # most important import: extmanager
 import DATA.extensions.manager as xtmgr
@@ -235,7 +235,7 @@ highlight = {
     "Vim"         : [".vim"],
     "YAML"        : [".yaml",".yml"],
 }
-xtmgr.execute(main_vars_definition)
+xtmgr.execute(xtmgr.tasks.main_vars_definition)
 
 def about(*args):
     log('opening about')
@@ -726,9 +726,9 @@ def runconf(*args):
         runner_conf(thisext)
     except:
         pass
-xtmgr.execute(before_root_definition)
+xtmgr.execute(xtmgr.tasks.before_root_definition)
 thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Default'], themes_file=PATH+"{}/{}.json".format(data.configuration['Looks']['Theme']['Folder'],data.configuration['Looks']['Theme']['Default'])).master
-xtmgr.execute(after_root_definition)
+xtmgr.execute(xtmgr.tasks.after_root_definition)
 log('Main Window created')
 try:
     thisroot.iconbitmap(PATH+"/DATA/icons/favicon.v3.ico")

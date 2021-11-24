@@ -43,18 +43,18 @@ this is quite simple.. :)
 
 
 class tasks:
-    list after_imports = []
-    list before_extension_installation = []
-    list after_extension_installation = []
-    list main_vars_definition = []
-    list main_funcs_definition = []
-    list main_classes_definition = []
-    list before_root_definition = []
-    list after_root_definition = []
-    list sidebar_widgets = []
-    list before_mainloop = []
-    list before_configs_save = []
-    list onexit = []
+    after_imports = []
+    before_extension_installation = []
+    after_extension_installation = []
+    main_vars_definition = []
+    main_funcs_definition = []
+    main_classes_definition = []
+    before_root_definition = []
+    after_root_definition = []
+    sidebar_widgets = []
+    before_mainloop = []
+    before_configs_save = []
+    onexit = []
 
 print('Extension Manager platform 1')
 
@@ -66,6 +66,6 @@ def close():
     sys.exit()
 
 for i in os.listdir(PATH):
-    if os.path.isdir(i):
-        exec(open(PATH+'/{}/main.py'.format(i)))
+    if os.path.isdir(i) and i != '__pycache__':
+        exec(open(PATH+'/{}/main.py'.format(i))) 
         print('loaded "{}"'.format(i))
