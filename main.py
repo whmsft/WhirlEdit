@@ -48,6 +48,8 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename, askdirectory
 from tkinter import *
 from tkterminal import *
 
+xtmgr.execute(xtmgr.tasks.after_imports)
+
 start = time.time()
 
 system = platform.platform().split('-')[0].lower()
@@ -86,12 +88,16 @@ def getfile(file):
     zipfile.ZipFile(local_filename,'r').extractall(PATH)
     print("installed {} {}".format(sys.argv[1],local_filename.replace(".pkg.zip","")))
 
+xtmgr.execute(xtmgr.tasks.before_extension_installation)
+
 if len(sys.argv) > 1:
     if sys.argv[1] in ["package","pkg","plugin"]:
         for i in sys.argv[2:]:
             pkgname = i
             getfile("https://whmsft.github.io/extensions/"+pkgname+'.pkg.zip')
         exit()
+
+xtmgr.execute(xtmgr.tasks.after_extension_installation)
 
 print("Whirledit {} running on {} {}".format(__version__,system,'deXtop' if system == 'linux' else 'desktop'))
 def updateforever():
@@ -229,8 +235,9 @@ highlight = {
     "Vim"         : [".vim"],
     "YAML"        : [".yaml",".yml"],
 }
+xtmgr.execute(main_vars_definition)
+
 def about(*args):
-    global d
     log('opening about')
     def nothingmod(_pos, val, ext=None):
         nothing[_pos] = val
@@ -408,6 +415,7 @@ def changekeybind(*args):
     tk.Label(menu, text='Info: Change the entries and hit <Return> to save').pack()
     menu.mainloop()
 
+xtmgr.execute(xtmgr.tasks.main_funcs_definition)
 
 class Settings(object):
     def savechangesSETTINGS(self):
@@ -603,6 +611,8 @@ class PathView(object):
             for p in os.listdir(abspath):
                 self.insert_node(node, p, os.path.join(abspath, p))
 
+xtmgr.execute(xtmgr.tasks.main_classes_definition)
+
 def identify(extension):
     for y in highlight.keys():
         for z in highlight[y]:
@@ -716,9 +726,9 @@ def runconf(*args):
         runner_conf(thisext)
     except:
         pass
-
+xtmgr.execute(before_root_definition)
 thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Default'], themes_file=PATH+"{}/{}.json".format(data.configuration['Looks']['Theme']['Folder'],data.configuration['Looks']['Theme']['Default'])).master
-
+xtmgr.execute(after_root_definition)
 log('Main Window created')
 try:
     thisroot.iconbitmap(PATH+"/DATA/icons/favicon.v3.ico")
@@ -787,6 +797,8 @@ tools_looks.pack(fill='x')
 tools_settings_icon = PhotoImage(file=data.icons.sidebar_settings,master=toolbar)
 tools_settings = ttk.Button(toolbar,image=tools_settings_icon, command=togglesetti, style='primary.Link.TButton')
 tools_settings.pack(side='bottom', anchor='s', fill='x')
+
+xtmgr.execute(xtmgr.tasks.sidebar_widgets)
 
 log('Icons made and added', call='SIDEBAR')
 
@@ -1162,7 +1174,7 @@ thisroot.after(1000, exec('datafile = open(PATH+"/DATA/runner.confscript").read(
 threading.Thread(target=updateforever).start()
 log('binded all keystrokes')
 log('starting main window')
-
+xtmgr.execute(xtmgr.tasks.before_mainloop)
 try:
     thisroot.mainloop()
 except Exception as e:
@@ -1170,6 +1182,7 @@ except Exception as e:
     showerror(type(e).__name__, e)
 
 configs.close()
+xtmgr.execute(xtmgr.tasks.before_configs_save)
 open(PATH+'/DATA/configure.yaml','w+').write(yaml.dump(data.config))
 try:
     shutil.rmtree(tempfile.gettempdir()+'/WhirlEdit')
@@ -1178,3 +1191,4 @@ except:
     pass
 log('Exiting program')
 print('** See you later **')
+xtmgr.execute(xtmgr.tasks.onexit)

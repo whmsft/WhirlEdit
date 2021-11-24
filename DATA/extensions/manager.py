@@ -6,6 +6,7 @@
 # ----------------------------------- #
 
 import os
+import sys
 from pathlib import Path
 
 PATH = str(Path(Path(__file__).parent.resolve()))
@@ -51,12 +52,18 @@ class tasks:
     list before_root_definition = []
     list after_root_definition = []
     list sidebar_widgets = []
-    list before_scheme_definition = []
     list before_mainloop = []
     list before_configs_save = []
     list onexit = []
 
 print('Extension Manager platform 1')
+
+def execute(task):
+    for i in task:
+        exec(task)
+
+def close():
+    sys.exit()
 
 for i in os.listdir(PATH):
     if os.path.isdir(i):
