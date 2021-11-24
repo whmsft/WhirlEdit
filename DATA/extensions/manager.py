@@ -42,32 +42,19 @@ this is quite simple.. :)
 
 
 class tasks:
-    class after_imports:
-        pass
-    class before_extension_installation:
-        pass
-    class after_extension_installation:
-        pass
-    class main_vars_definition:
-        pass
-    class main_funcs_definition:
-        pass
-    class main_classes_definition:
-        pass
-    class before_root_definition:
-        pass
-    class after_root_definition:
-        pass
-    class sidebar_widgets:
-        pass
-    class before_scheme_definition:
-        pass
-    class before_mainloop:
-        pass
-    class before_configs_save:
-        pass
-    class onexit:
-        pass
+    list after_imports = []
+    list before_extension_installation = []
+    list after_extension_installation = []
+    list main_vars_definition = []
+    list main_funcs_definition = []
+    list main_classes_definition = []
+    list before_root_definition = []
+    list after_root_definition = []
+    list sidebar_widgets = []
+    list before_scheme_definition = []
+    list before_mainloop = []
+    list before_configs_save = []
+    list onexit = []
 
 print('Extension Manager platform 1')
 
