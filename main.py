@@ -93,7 +93,7 @@ if len(sys.argv) > 1:
             getfile("https://whmsft.github.io/extensions/"+pkgname+'.pkg.zip')
         exit()
 
-print("Whirledit {} running on {}".format(__version__,system))
+print("Whirledit {} running on {} {}".format(__version__,system,'deXtop' if system == 'linux' else 'desktop'))
 def updateforever():
     while True:
         try:
