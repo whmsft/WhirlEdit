@@ -1,7 +1,4 @@
-
-# Please note: the license is updated and is no more MIT, it's now GNU GPL v3
-
-In easiest terms, it will not allow you to publish closed source versions of Whirledit
+## Planning for WhirlEdit's 1st Bday is under dev
 
 <Hr>
 
