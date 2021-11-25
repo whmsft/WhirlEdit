@@ -27,7 +27,7 @@ directory Extensions:
 how will main.py look like?
 it will have a string (basically a block of code you want to execute)
 the string will be connected by this line:
-tasks.after_imports.append(--the block of code--)
+tasks.{the place where you want your code}.append(--the block of code--)
 
 
 a simple example:
