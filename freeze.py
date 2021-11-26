@@ -104,4 +104,5 @@ open('app.py','w+').write(main_running_file)
 
 os.mkdir('./application')
 
-# More like: building files coping them etc.etc. will be added later
+os.system('pyinstaller --noconfirm --windowed --icon ./data/icons/favicon.v3.ico --name Whirledit --version-file version_file.txt app.py')
+

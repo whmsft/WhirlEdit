@@ -130,6 +130,7 @@ dmypy.json
 
 # PyVenv files
 Scripts/
+Include/
 pyvenv.cfg
 
 # my Building files
