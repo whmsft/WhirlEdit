@@ -1,6 +1,4 @@
-import os
 
-main_running_file = """
 import re
 import os
 import sys
@@ -42,13 +40,13 @@ replaceitms = {
 PATH = str(Path(Path(__file__).parent.resolve()))
 import animation
 import requests
-indefined = ['Downloading (|)','Downloading (\\)','Downloading (-)','Downloading (/)']
+indefined = ['Downloading (|)','Downloading (\)','Downloading (-)','Downloading (/)']
 
 @animation.wait(indefined,speed=0)
 def getfile(file):
     try:
         global pgr, num
-        pgr = ['|','/','-','\\\\']
+        pgr = ['|','/','-','\\']
         url = file
         local_filename = PATH+'/upgrade.tmp'
         with requests.get(url, stream=True) as r:
@@ -78,9 +76,3 @@ if os.path.isdir(PATH+'/src/'):
 else:
     print('Source directory not found, Downloading it..')
     getfile('https://github.com/whmsft/WhirlEdit/archive/refs/heads/main.zip')
-"""
-
-with open('app.py','w+') as appfile:
-    appfile.write(main_running_file)
-
-os.system('pyinstaller --noconfirm --icon ./data/icons/favicon.v3.ico --name Whirledit app.py')
