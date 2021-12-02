@@ -135,3 +135,7 @@ pyvenv.cfg
 
 # my Building files
 __freeze__.bat
+
+# Files you shall not see ;)
+Application/
+app.py
