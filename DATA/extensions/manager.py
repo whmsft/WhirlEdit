@@ -58,14 +58,18 @@ class tasks:
 
 print('Extension Manager platform 1')
 
-def execute(task):
+def getTask(task):
     for i in task:
-        exec(task)
+        return i
 
 def close():
     sys.exit()
 
+print('scanning extension(s)')
 for i in os.listdir(PATH):
-    if os.path.isdir(i) and i != '__pycache__':
-        exec(open(PATH+'/{}/main.py'.format(i))) 
+    ipath = 'data/extensions/'+i
+    if os.path.isdir(os.path.abspath(ipath)) and i != '__pycache__':
+        print('Found extension: {}'.format(i))
+    if os.path.isdir(os.path.abspath(ipath)) and i != '__pycache__':
+        exec(open(ipath+'/__init__.py').read()) 
         print('loaded "{}"'.format(i))

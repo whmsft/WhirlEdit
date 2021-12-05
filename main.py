@@ -48,7 +48,7 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename, askdirectory
 from tkinter import *
 from tkterminal import *
 
-xtmgr.execute(xtmgr.tasks.after_imports)
+exec(xtmgr.getTask(xtmgr.tasks.after_imports))
 
 start = time.time()
 
@@ -88,7 +88,7 @@ def getfile(file):
     zipfile.ZipFile(local_filename,'r').extractall(PATH)
     print("installed {} {}".format(sys.argv[1],local_filename.replace(".pkg.zip","")))
 
-xtmgr.execute(xtmgr.tasks.before_extension_installation)
+exec(xtmgr.getTask(xtmgr.tasks.before_extension_installation))
 
 if len(sys.argv) > 1:
     if sys.argv[1] in ["package","pkg","plugin"]:
@@ -97,7 +97,7 @@ if len(sys.argv) > 1:
             getfile("https://whmsft.github.io/extensions/"+pkgname+'.pkg.zip')
         exit()
 
-xtmgr.execute(xtmgr.tasks.after_extension_installation)
+exec(xtmgr.getTask(xtmgr.tasks.after_extension_installation))
 
 print("Whirledit {} running on {} {}".format(__version__,system,'deXtop' if system == 'linux' else 'desktop'))
 def updateforever():
@@ -235,7 +235,7 @@ highlight = {
     "Vim"         : [".vim"],
     "YAML"        : [".yaml",".yml"],
 }
-xtmgr.execute(xtmgr.tasks.main_vars_definition)
+exec(xtmgr.getTask(xtmgr.tasks.main_vars_definition))
 
 def about(*args):
     log('opening about')
@@ -415,7 +415,7 @@ def changekeybind(*args):
     tk.Label(menu, text='Info: Change the entries and hit <Return> to save').pack()
     menu.mainloop()
 
-xtmgr.execute(xtmgr.tasks.main_funcs_definition)
+exec(xtmgr.getTask(xtmgr.tasks.main_funcs_definition))
 
 class Settings(object):
     def savechangesSETTINGS(self):
@@ -611,7 +611,7 @@ class PathView(object):
             for p in os.listdir(abspath):
                 self.insert_node(node, p, os.path.join(abspath, p))
 
-xtmgr.execute(xtmgr.tasks.main_classes_definition)
+exec(xtmgr.getTask(xtmgr.tasks.main_classes_definition))
 
 def identify(extension):
     for y in highlight.keys():
@@ -726,9 +726,9 @@ def runconf(*args):
         runner_conf(thisext)
     except:
         pass
-xtmgr.execute(xtmgr.tasks.before_root_definition)
+exec(xtmgr.getTask(xtmgr.tasks.before_root_definition))
 thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Default'], themes_file=PATH+"{}/{}.json".format(data.configuration['Looks']['Theme']['Folder'],data.configuration['Looks']['Theme']['Default'])).master
-xtmgr.execute(xtmgr.tasks.after_root_definition)
+exec(xtmgr.getTask(xtmgr.tasks.after_root_definition))
 log('Main Window created')
 try:
     thisroot.iconbitmap(PATH+"/DATA/icons/favicon.v3.ico")
@@ -798,7 +798,7 @@ tools_settings_icon = PhotoImage(file=data.icons.sidebar_settings,master=toolbar
 tools_settings = ttk.Button(toolbar,image=tools_settings_icon, command=togglesetti, style='primary.Link.TButton')
 tools_settings.pack(side='bottom', anchor='s', fill='x')
 
-xtmgr.execute(xtmgr.tasks.sidebar_widgets)
+exec(xtmgr.getTask(xtmgr.tasks.sidebar_widgets))
 
 log('Icons made and added', call='SIDEBAR')
 
@@ -1005,58 +1005,6 @@ def newTab(*args):
     tabfmt[current_note()] = '.py'
     log('new tab added', call='TABS')
 
-# MENUBAR -> coming back in next few releases
-'''
-Menubar = Menu(root, activebackground="#0084FF", activeforeground="#FFFFFF",
-               bg="#FFFFFF", fg="#0084FF", font="consolas")
-
-Filemenu = Menu(root, tearoff = 0)
-Filemenu.add_command(label="New",command=newTab)
-Filemenu.add_separator()
-Filemenu.add_command(label="Open", command=openFile)
-Filemenu.add_command(label="Save", command=saveFile)
-Filemenu.add_command(label="Save As", command=saveAsFile)
-Filemenu.add_separator()
-Filemenu.add_command(label="Close", command=deltab)
-Filemenu.add_separator()
-Filemenu.add_command(label="Exit", command=thisroot.destroy)
-Menubar.add_cascade(label="File", menu=Filemenu)
-
-viewMenu = Menu(root,tearoff=0)
-viewMenu.add_command(label = "Toggle Project Pane", command = lambda:togglesidepane())
-viewMenu.add_command(label = "Toggle Fullscreen", command = lambda:fullscreen())
-Menubar.add_cascade(label = "View", menu = viewMenu)
-
-toolsMenu = Menu(root,tearoff=0)
-confmenu = Menu(root,tearoff=0)
-runmenu = Menu(root,tearoff = 0)
-
-runner_command = StringVar()
-if isConf:
-    for i in get_confs():
-        if i != "@":
-            runmenu.add("command",label = i, command = lambda i=i: runner_conf(i))
-    runmenu.add_separator()
-runmenu.add_command(label= "New Runner",command = lambda:new_runner())
-toolsMenu.add_cascade(label = "Runner", menu = runmenu)
-toolsMenu.add_command(label = "Open cmd here", command = lambda:opencmd())
-Menubar.add_cascade(label="Tools",menu = toolsMenu)
-
-syntaxMenu = Menu(root,tearoff=0)
-setSyntaxMenu = Menu(root,tearoff=0)
-for i in highlight.keys():
-    setSyntaxMenu.add_command(label = i,command = lambda lang=i: set_syntax(lang))
-syntaxMenu.add_cascade(label = "Syntax", menu = setSyntaxMenu)
-Menubar.add_cascade(label = "Looks",menu = syntaxMenu)
-
-Helpmenu = Menu(root, tearoff = 0)
-Helpmenu.add_command(label = "Website", command=lambda:webbrowser.open("http://Whirlpool-Programmer.github.io/software/WhirlEdit/"))
-Helpmenu.add_separator()
-Helpmenu.add_command(label = "Changelog", command=None)
-Helpmenu.add_command(label = "About",command = about)
-Menubar.add_cascade(label = "Help", menu=Helpmenu)
-'''
-
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 
@@ -1137,6 +1085,7 @@ def toggle_searchbox(*args):
     else:
         searchbox.place(relx=0.4,rely=0.1)
         searchbox.focus_set()
+
 def exec_command_in_searchbox(event):
     cmd = searchbox.get()
     exec(cmd)
@@ -1174,7 +1123,7 @@ thisroot.after(1000, exec('datafile = open(PATH+"/DATA/runner.confscript").read(
 threading.Thread(target=updateforever).start()
 log('binded all keystrokes')
 log('starting main window')
-xtmgr.execute(xtmgr.tasks.before_mainloop)
+exec(xtmgr.getTask(xtmgr.tasks.before_mainloop))
 try:
     thisroot.mainloop()
 except Exception as e:
@@ -1182,7 +1131,7 @@ except Exception as e:
     showerror(type(e).__name__, e)
 
 configs.close()
-xtmgr.execute(xtmgr.tasks.before_configs_save)
+exec(xtmgr.getTask(xtmgr.tasks.before_configs_save))
 open(PATH+'/DATA/configure.yaml','w+').write(yaml.dump(data.config))
 try:
     shutil.rmtree(tempfile.gettempdir()+'/WhirlEdit')
@@ -1191,4 +1140,4 @@ except:
     pass
 log('Exiting program')
 print('** See you later **')
-xtmgr.execute(xtmgr.tasks.onexit)
+exec(xtmgr.getTask(xtmgr.tasks.onexit))
