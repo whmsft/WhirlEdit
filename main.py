@@ -26,6 +26,7 @@ import time
 import yaml
 import shutil
 import urllib
+import chardet
 import widgets
 import zipfile
 import getpass
@@ -972,7 +973,6 @@ def openFile(*self):
             tabfmt[current_note()]= "."+filepath.split(".")[-1]
             note[variable].delete(1.0,END)
             note[current_note()]["language"] = identify(filepath.split("/")[-1])
-            import chardet
             file = open(filepath)
             content=file.read()[:-1]
             note[variable].insert(1.0,content)
