@@ -59,8 +59,8 @@ class tasks:
 print('Extension Manager platform 1')
 
 def getTask(task):
-    for i in task:
-        return i
+    return task
+        
 
 def close():
     sys.exit()
