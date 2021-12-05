@@ -1,6 +1,6 @@
 # ----------------------------------------- #
 # name: WhirlEdit                           #
-# version: 4.1b                             #
+# version: 4.1                              #
 # codename: Wild Walrus                     #
 # author: Whmsft                            #
 # contributors: @Redysz                     #
