@@ -26,7 +26,6 @@ import time
 import yaml
 import shutil
 import urllib
-import chardet
 import widgets
 import zipfile
 import getpass

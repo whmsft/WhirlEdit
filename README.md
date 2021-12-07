@@ -2,7 +2,7 @@
 
 <Hr>
 
-## Latest release : [v4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4)
+## Latest release : ~~[v4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4)~~ v4.1
 
 [![Run on Repl.it](https://repl.it/badge/github/Whmsft/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
 [![Build Status](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml)
@@ -17,18 +17,26 @@
 ```
 CHANGELOG:
 
+v4.1:
+> UI:
+  + Slight rework
+  - bugfixes
+> features:
+  + extensions modify execution code
+  - remove updating features (see #8)
+
 v4.0:
 > UI
-  + Complete UI change with `ttkbootstrap`
+  + Complete UI change with ttkbootstrap
   + introduction to Monokai-Aora (theme & scheme)
-  + auto indent, create an (auto) indent when last line is indented
+  + auto-indent when last line is indented
   + Welcome Screen
-  + Improved CustomNotebook and a better close icon
+  + new close icon for tabs
 > features
-  + all external widgets are available in `widgets.py`
-  + the data for default conf, icon in data format, etc. is in `data.py`
-  + an all NEW updating feature
-  + extensions installation via command line
+  + widgets' code in "widgets.py"
+  + default data in "data.py"
+  + updating feature
+  + extensions install via command line
 
 v3.5:
 > bugfixes
@@ -36,7 +44,7 @@ v3.5:
 > UI
   + new style syntax change button
 > features
-  + an image previewer (VERY EXPERIMENTAL!)
+  + an image previewer
   + raise error on UnicodeDecodeError
  
 v3.4:
