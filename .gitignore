@@ -139,3 +139,4 @@ __freeze__.bat
 # Files you shall not see ;)
 Application/
 app.py
+extension/
