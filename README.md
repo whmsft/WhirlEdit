@@ -1,6 +1,4 @@
-## Planning for WhirlEdit's 1st Bday is under dev
-
-<Hr>
+## HAPPY BDAY whirlEdit!
 
 ## Latest release : ~~[v4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4)~~ v4.1
 
