@@ -123,4 +123,5 @@ v1:
 
 ![Joke](https://readme-jokes.vercel.app/api)
 
-(c) 2020-21 WhMSFT (penguin.wp OR Whirlpool-programmer)
+(c) 2020-21 whmsft 
+Licensed under GNU GPL v3
