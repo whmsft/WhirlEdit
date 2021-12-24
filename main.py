@@ -646,15 +646,16 @@ def get_confs():
 
 def current_note(*args):
     variable = notebook.select()
-    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!customnotebook.!frame', '') == "":
+    print(variable)
+    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!interactivenotebook.!frame', '') == "":
         variable = 0
     else:
-        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!customnotebook.!frame', ''))
+        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!interactivenotebook.!frame', ''))
         if variable == 0:
             pass
         else:
             variable = int(variable) -1
-    return variable
+    return int(variable)
 
 def new_runner():
     global configs
@@ -731,7 +732,8 @@ def runconf(*args):
     except:
         pass
 execute((xtmgr.tasks.before_root_definition))
-thisroot = ttkbootstrap.Style(theme=data.configuration['Looks']['Theme']['Default'], themes_file=PATH+"{}/{}.json".format(data.configuration['Looks']['Theme']['Folder'],data.configuration['Looks']['Theme']['Default'])).master
+theme_file = PATH+"{}/{}.json".format(data.configuration['Looks']['Theme']['Folder'],data.configuration['Looks']['Theme']['Default'])
+thisroot = ttkbootstrap.Style(theme = data.configuration['Looks']['Theme']['Default'],themes_file=theme_file).master
 execute((xtmgr.tasks.after_root_definition))
 log('Main Window created')
 try:
@@ -811,8 +813,6 @@ projectBar_icon_newfold = PhotoImage(file=data.icons.project_newfolder,master=to
 projectBar_icon_closefi = PhotoImage(file=data.icons.project_closefile,master=toolbar)
 
 logoIMG = tk.PhotoImage(data=zlib.decompress(data.icons.logo))
-
-newtabICON = PhotoImage(file=data.icons.main_newtab)
 
 root = tk.PanedWindow(splitter, orient=VERTICAL, handlesize=5)
 
@@ -894,14 +894,14 @@ def getpos(*args):
 
 def current_note():
     variable = notebook.select()
-    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!customnotebook.!frame','') == "":
+    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!interactivenotebook.!frame','') == "":
         variable = 0
     else:
-        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!customnotebook.!frame',''))
+        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!interactivenotebook.!frame',''))
         if variable == 0:
             pass
         else:
-            variable = int(variable) -1
+            variable = int(variable)-1
     return variable
 
 def deltab(*args):
@@ -970,7 +970,8 @@ def openFile(*self):
         try:
             extension[current_note()] = "."+filepath.split(".")[-1]
             tabfmt[current_note()]= "."+filepath.split(".")[-1]
-            note[variable].delete(1.0,END)
+            print(note)
+            note[int(current_note())].delete(1.0,END)
             note[current_note()]["language"] = identify(filepath.split("/")[-1])
             file = open(filepath)
             content=file.read()[:-1]
@@ -992,17 +993,19 @@ def select_all(event):
 def newTab(*args):
     global var
     global notebook
-    frames[var] = ttk.Frame(notebook)
-    note[var] = (CodeEditor(frames[var],blockcursor=data.configuration['Looks']['Font']['BlockCursor'],width=40, height=100, language=data.configuration['Looks']['InitialSyntax'], autofocus=True, insertofftime=0, padx=0, pady=0, font=data.font, highlighter = default_highlight))
-    note[var].pack(fill="both", expand=True)
-    font = tkfont.Font(font=note[var]['font'])
-    note[var].config(tabs=font.measure('    '))
-    openedfiles[var] = ""
-    notebook.add(frames[var], text='Untitled  ')
+    frames[var+1] = ttk.Frame(notebook)
+    note[var+1] = ''
+    print(note)
+    note[var+1] = CodeEditor(frames[var+1],blockcursor=data.configuration['Looks']['Font']['BlockCursor'],width=40, height=100, language=data.configuration['Looks']['InitialSyntax'], autofocus=True, insertofftime=0, padx=0, pady=0, font=data.font, highlighter = default_highlight)
+    note[var+1].pack(fill="both", expand=True)
+    font = tkfont.Font(font=note[var+1]['font'])
+    note[var+1].config(tabs=font.measure('    '))
+    notebook.add(frames[var+1], text='Untitled  ')
+    openedfiles[int(current_note())] = ""
     extension[current_note()] = ".*"
-    note[var].bind('<Control-Tab>',nexttab)
-    note[var].bind('<Return>', auto_indent)
-    note[var].bind("<Control-a>",select_all)
+    note[var+1].bind('<Control-Tab>',nexttab)
+    note[var+1].bind('<Return>', auto_indent)
+    note[var+1].bind("<Control-a>",select_all)
     var = var + 1
     nexttab()
     tabfmt[current_note()] = '.py'
@@ -1011,10 +1014,9 @@ def newTab(*args):
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 
-newtabbtn = ttk.Button(thisroot, image=newtabICON, command=newTab, style='primary.Link.TButton')
-newtabbtn.place(anchor='ne', relx=1, x=-5, y=5)
-
-notebook = widgets.CustomNotebook(root)#ttk.Notebook(root)
+#notebook = widgets.interactivenotebook(root)#ttk.Notebook(root)
+from ttkbootstrap import widgets as bootwid
+notebook = bootwid.interactive_notebook.InteractiveNotebook(root, newtab = newTab)
 notebook.grid(sticky=N + E + S + W)
 notebook.bind("<B1-Motion>", Tab_reorder)
 
@@ -1132,7 +1134,7 @@ try:
 except Exception as e:
     log('({}) {}'.format(type(e).__name__, e), call='ERROR')
     showerror(type(e).__name__, e)
-
+thisroot.quit()
 configs.close()
 execute((xtmgr.tasks.before_configs_save))
 open(PATH+'/DATA/configure.yaml','w+').write(yaml.dump(data.config))
@@ -1143,4 +1145,4 @@ except:
     pass
 log('Exiting program')
 print('** See you later **')
-execute((xtmgr.tasks.onexit))
+sys.exit()

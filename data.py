@@ -61,6 +61,5 @@ class icons:
   project_newfile = PATH+'/DATA/icons/{}/project.newfile.png'.format(config['Looks']['Icons']['Theme'])
   project_newfolder = PATH+'/DATA/icons/{}/project.newfolder.png'.format(config['Looks']['Icons']['Theme'])
   project_closefile = PATH+'/DATA/icons/{}/project.closefile.png'.format(config['Looks']['Icons']['Theme'])
-  main_newtab = PATH+'/DATA/icons/{}/main.newtab.png'.format(config['Looks']['Icons']['Theme'])
   terminal_clear = PATH+'/DATA/icons/{}/terminal.clear.png'.format(config['Looks']['Icons']['Theme'])
   terminal_reset = PATH+'/DATA/icons/{}/terminal.restart.png'.format(config['Looks']['Icons']['Theme'])  

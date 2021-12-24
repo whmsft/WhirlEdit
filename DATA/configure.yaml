@@ -17,9 +17,9 @@ Looks:
     Theme: fluent.dark
   InitialSyntax: Python
   Scheme:
-    Default: monokai-aora
+    Default: ayu-dark-mod
     Folder: /DATA/Schemes/
   Theme:
-    Default: monokai-aora
+    Default: wm10
     Folder: /DATA/Themes/
   WindowTitle: WhirlEdit (Preview)
