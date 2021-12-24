@@ -1,4 +1,6 @@
-## HAPPY BDAY whirlEdit!
+# HELP!
+
+**If you're experienced, I want you to make an executable for your platform (windows/mac/linux) and help me.. For more info get in touch at [whirlpool.programmer@outlook.com](mailto:whirlpool.programmer@outlook.com)**
 
 ## Latest release : ~~[v4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4)~~ v4.1
 
@@ -121,4 +123,5 @@ v1:
 
 ![Joke](https://readme-jokes.vercel.app/api)
 
-(c) 2020-21 WhMSFT (penguin.wp OR Whirlpool-programmer)
+(c) 2020-21 whmsft 
+Licensed under GNU GPL v3
