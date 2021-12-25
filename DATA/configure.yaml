@@ -17,7 +17,7 @@ Looks:
     Theme: fluent.dark
   InitialSyntax: Python
   Scheme:
-    Default: ayu-dark-mod
+    Default: azure-black
     Folder: /DATA/Schemes/
   Theme:
     Default: wm10
