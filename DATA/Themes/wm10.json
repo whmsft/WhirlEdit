@@ -1,0 +1,22 @@
+{
+    "wm10": {
+        "type": "dark",
+        "colors": {
+            "primary": "#0084ff",
+            "secondary": "#202020",
+            "success": "#77b300",
+            "info": "#9933cc",
+            "warning": "#ff8800",
+            "danger": "#cc0000",
+            "bg": "#000000",
+            "fg": "#ffffff",
+            "selectbg": "#101010",
+            "selectfg": "#ffffff",
+            "border": "#000000",
+            "inputfg": "#ffffff",
+            "inputbg": "#000000",
+            "light": "#ffffff",
+            "dark": "#000000"
+        }
+    }
+}
