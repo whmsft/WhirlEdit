@@ -1,20 +1,18 @@
 # ----------------------------------------- #
 # name: WhirlEdit                           #
-# version: 4.1                              #
-# codename: Wild Walrus                     #
-# author: Whmsft                            #
-# contributors: @Redysz                     #
+# version: 5.dev                            #
+# codename: thruster                        #
+# author: whmsft                            #
 # license: GNU GPLv3                        #
 # platforms: Windows, Linux (maybe mac too) #
 # ----------------------------------------- #
 
-__version__ = 'v4.1 Wild Walrus'
+__version__ = 'v5.dev Thruster'
 
 def execute(key):
     for i in key:
         exec(i)
 
-# most important import: extmanager
 import DATA.extensions.manager as xtmgr
 
 import re
@@ -52,14 +50,10 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename, askdirectory
 from tkinter import *
 from tkterminal import *
 
-execute((xtmgr.tasks.after_imports))
-
+execute(xtmgr.tasks.after_imports)
 start = time.time()
-
 system = platform.platform().split('-')[0].lower()
-
 PATH = str(Path(Path(__file__).parent.resolve()))
-
 temp_dir = str(tempfile.gettempdir())
 
 if not os.path.isdir(temp_dir+'/WhirlEdit/'):
@@ -92,7 +86,7 @@ def getfile(file):
     zipfile.ZipFile(local_filename,'r').extractall(PATH)
     print("installed {} {}".format(sys.argv[1],local_filename.replace(".pkg.zip","")))
 
-execute((xtmgr.tasks.before_extension_installation))
+execute(xtmgr.tasks.before_extension_installation)
 
 if len(sys.argv) > 1:
     if sys.argv[1] in ["package","pkg","plugin"]:
@@ -101,9 +95,10 @@ if len(sys.argv) > 1:
             getfile("https://whmsft.github.io/extensions/"+pkgname+'.pkg.zip')
         exit()
 
-execute((xtmgr.tasks.after_extension_installation))
+execute(xtmgr.tasks.after_extension_installation)
 
 print("Whirledit {} running on {} {}".format(__version__,system,'deXtop' if system == 'linux' else 'desktop'))
+
 def updateforever():
     while True:
         try:
@@ -114,21 +109,15 @@ def updateforever():
 
 def auto_indent(event):
     text = event.widget
-    # get leading whitespace from current line
     line = text.get("insert linestart", "insert")
     match = re.match(r'^(\s+)', line)
     whitespace = match.group(0) if match else ""
-
-    # insert the newline and the whitespace
     text.insert("insert", f"\n{whitespace}")
-
-    # return "break" to inhibit default insertion of newline
     return "break"
 
 def log_call(message, call="INTERNAL"):
     logs = '{} [{}]: {}'.format(round(time.time()-start, 2), call, message)
     print(logs)
-
 
 def Tab_reorder(event):
     try:
@@ -165,13 +154,7 @@ try:
 except FileNotFoundError:
     configs = open(PATH+"/DATA/runner.confscript", "x")
 
-# idk why again.. LOL
 datafile = open(PATH+"/DATA/runner.confscript").read()
-if datafile.isspace():
-    isConf = False
-else:
-    isConf = True
-
 if datafile.isspace():
     isConf = False
 else:
