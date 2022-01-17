@@ -11,8 +11,8 @@ Logs:
 Looks:
   Font:
     BlockCursor: true
-    Font: Consolas
-    Size: '12'
+    Font: Consolas\ 12
+    Size: bold
   Icons:
     Theme: fluent.dark
   InitialSyntax: Python

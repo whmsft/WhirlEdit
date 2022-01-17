@@ -133,5 +133,5 @@ Scripts/
 Include/
 pyvenv.cfg
 
-# Files you shall not see ;)
+# Folders you may not see :|
 Application/
