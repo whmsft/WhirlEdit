@@ -1,0 +1,22 @@
+{
+    "journal": {
+        "type": "light",
+        "colors": {
+            "primary": "#eb6864",
+            "secondary": "#aaaaaa",
+            "success": "#22b24c",
+            "info": "#336699",
+            "warning": "#f5e625",
+            "danger": "#f57a00",
+            "light": "#F8F9FA",
+            "dark": "#222222",
+            "bg": "#ffffff",
+            "fg": "#222222",
+            "selectbg": "#aaaaaa",
+            "selectfg": "#ffffff",
+            "border": "#ced4da",
+            "inputfg": "#565656",
+            "inputbg": "#fff"
+        },
+    }
+}

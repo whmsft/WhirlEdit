@@ -1,0 +1,22 @@
+{
+    "morph": {
+        "type": "light",
+        "colors": {
+            "primary": "#378DFC",
+            "secondary": "#aaaaaa",
+            "success": "#43cc29",
+            "info": "#5B62F4",
+            "warning": "#FFC107",
+            "danger": "#E52527",
+            "light": "#F0F5FA",
+            "dark": "#212529",
+            "bg": "#D9E3F1",
+            "fg": "#7B8AB8",
+            "selectbg": "#aaaaaa",
+            "selectfg": "#FBFDFF",
+            "border": "#B9C7DA",
+            "inputfg": "#7F8EBA",
+            "inputbg": "#F0F5FA"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "solar": {
+        "type": "dark",
+        "colors": {
+            "primary": "#bc951a",
+            "secondary": "#94a2a4",
+            "success": "#44aca4",
+            "info": "#3f98d7",
+            "warning": "#d05e2f",
+            "danger": "#d95092",
+            "light": "#A9BDBD",
+            "dark": "#073642",
+            "bg": "#002B36",
+            "fg": "#ffffff",
+            "selectbg": "#0b5162",
+            "selectfg": "#ffffff",
+            "border": "#00252e",
+            "inputfg": "#A9BDBD",
+            "inputbg": "#073642"
+        }
+    }
+}

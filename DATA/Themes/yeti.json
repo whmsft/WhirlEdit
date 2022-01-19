@@ -1,0 +1,22 @@
+{
+    "yeti": {
+        "type": "light",
+        "colors": {
+            "primary": "#008cba",
+            "secondary": "#707070",
+            "success": "#43ac6a",
+            "info": "#5bc0de",
+            "warning": "#e99002",
+            "danger": "#f04124",
+            "light": "#EEEEEE",
+            "dark": "#222222",
+            "bg": "#ffffff",
+            "fg": "#222222",
+            "selectbg": "#707070",
+            "selectfg": "#ffffff",
+            "border": "#cccccc",
+            "inputfg": "#222222",
+            "inputbg": "#fff"
+        }
+    }
+}

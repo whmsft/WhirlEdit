@@ -1,0 +1,22 @@
+{
+    "lumen": {
+        "type": "light",
+        "colors": {
+            "primary": "#158cba",
+            "secondary": "#919191",
+            "success": "#28b62c",
+            "info": "#75caeb",
+            "warning": "#ff851b",
+            "danger": "#ff4136",
+            "light": "#F6F6F6",
+            "dark": "#555555",
+            "bg": "#ffffff",
+            "fg": "#555555",
+            "selectbg": "#919191",
+            "selectfg": "#ffffff",
+            "border": "#ced4da",
+            "inputfg": "#555555",
+            "inputbg": "#fff"
+        }
+    }
+}

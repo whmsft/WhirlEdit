@@ -1,0 +1,22 @@
+{
+    "cosmo": {
+        "type": "light",
+        "colors": {
+            "primary": "#2780e3",
+            "secondary": "#7E8081",
+            "success": "#3fb618",
+            "info": "#9954bb",
+            "warning": "#ff7518",
+            "danger": "#ff0039",
+            "light": "#F8F9FA",
+            "dark": "#373A3C",
+            "bg": "#ffffff",
+            "fg": "#373a3c",
+            "selectbg": "#7e8081",
+            "selectfg": "#ffffff",
+            "border": "#ced4da",
+            "inputfg": "#373a3c",
+            "inputbg": "#fdfdfe"
+        }
+    }
+}

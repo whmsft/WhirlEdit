@@ -1,0 +1,22 @@
+{
+    "pulse": {
+        "type": "light",
+        "colors": {
+            "primary": "#593196",
+            "secondary": "#69676E",
+            "success": "#13b955",
+            "info": "#009cdc",
+            "warning": "#efa31d",
+            "danger": "#fc3939",
+            "light": "#F9F8FC",
+            "dark": "#17141F",
+            "bg": "#ffffff",
+            "fg": "#444444",
+            "selectbg": "#69676e",
+            "selectfg": "#ffffff",
+            "border": "#cbc8d0",
+            "inputfg": "#444444",
+            "inputbg": "#fdfdfe"
+        }
+    }
+}
