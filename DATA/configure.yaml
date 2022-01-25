@@ -10,16 +10,16 @@ Logs:
   Logging: false
 Looks:
   Font:
-    BlockCursor: true
-    Font: Consolas\ 12
-    Size: bold
+    BlockCursor: false
+    Font: Consolas
+    Size: '12'
   Icons:
     Theme: fluent.dark
-  InitialSyntax: Python
+  InitialSyntax: Text
   Scheme:
-    Default: azure-black
+    Default: azure
     Folder: /DATA/Schemes/
   Theme:
-    Default: wm10
+    Default: darkly
     Folder: /DATA/Themes/
   WindowTitle: WhirlEdit (Preview)
