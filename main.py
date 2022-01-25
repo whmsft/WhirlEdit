@@ -230,8 +230,11 @@ list_of_lexers.remove('__init__.py')
 for i in range(len(list_of_lexers)):
     list_of_lexers[i] = list_of_lexers[i].replace('.py', '')
 for i in list_of_lexers:
-    print("Lexers.{}.{}.filenames".format(i,i))
-    highlight[i] = eval("Lexers.{}.{}.filenames".format(i,i))
+    temp_filenames = eval("Lexers.{}.{}.filenames".format(i,i))
+    for x in range(len(temp_filenames)):
+        temp_filenames[x] = temp_filenames[x][1:]
+    print(temp_filenames)
+    highlight[i] = temp_filenames
 print(highlight)
 
 execute((xtmgr.tasks.main_vars_definition))

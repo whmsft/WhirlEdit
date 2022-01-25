@@ -24,6 +24,7 @@ class Python(RegexLexer):
     aliases = ['python', 'py', 'sage', 'python3', 'py3']
     filenames = [
         '*.py',
+        '*.py3',
         '*.pyw',
         # Jython
         '*.jy',
