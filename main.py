@@ -13,7 +13,12 @@ def execute(key):
     for i in key:
         exec(i)
 
+from DATA import Lexers
 import DATA.extensions.manager as xtmgr
+
+import re
+from pygments.lexer import *
+from pygments.token import *
 
 import re
 import os
@@ -33,7 +38,6 @@ import datetime
 import tempfile
 import requests
 import platform
-import threading
 import subprocess
 import webbrowser
 import ttkbootstrap
@@ -100,12 +104,8 @@ execute(xtmgr.tasks.after_extension_installation)
 print("Whirledit {} running on {} {}".format(__version__,system,'deXtop' if system == 'linux' else 'desktop'))
 
 def updateforever():
-    while True:
-        try:
-            update()
-            time.sleep(0.05)
-        except RuntimeError:
-            break
+    update()
+    thisroot.after(10,updateforever)
 
 def auto_indent(event):
     text = event.widget
@@ -180,7 +180,8 @@ canvas      = {}
 scrolly     = {}
 scrollx     = {}
 var         = 0
-highlight = {
+highlight = {}
+'''
     "Ada"         : [".adb",".ads"],
     "Bash"        : [".sh",".csh",".ksh"],
     "Batch"       : [".cmd",".bat"],
@@ -221,7 +222,18 @@ highlight = {
     "TypeScript"  : [".ts",".tsx"],
     "Vim"         : [".vim"],
     "YAML"        : [".yaml",".yml"],
-}
+}'''
+
+list_of_lexers = os.listdir(PATH+'/DATA/Lexers/')
+list_of_lexers.remove('__pycache__')
+list_of_lexers.remove('__init__.py')
+for i in range(len(list_of_lexers)):
+    list_of_lexers[i] = list_of_lexers[i].replace('.py', '')
+for i in list_of_lexers:
+    print("Lexers.{}.{}.filenames".format(i,i))
+    highlight[i] = eval("Lexers.{}.{}.filenames".format(i,i))
+print(highlight)
+
 execute((xtmgr.tasks.main_vars_definition))
 
 def about(*args):
@@ -754,7 +766,8 @@ def givename_ext(lang):
 def syntaxchange(*args):
     print(cursyntax.get())
     tabfmt[current_note()] = givename_ext(cursyntax.get()) # give extension on language name
-    note[current_note()].config(language=cursyntax.get())
+    #note[current_note()].config(language=cursyntax.get())
+    note[current_note()].lexer = eval('Lexers.{}.{}'.format(cursyntax.get(),cursyntax.get()))
 
 
 syntaxchoose = ttk.OptionMenu(statusbar, cursyntax, *languages,command=syntaxchange, style='primary.Outline.TButton')
@@ -974,22 +987,24 @@ def select_all(event):
     note[current_note()].see(INSERT)
 
 def newTab(*args):
+    #pygments.lexers.installers
     global var
     global notebook
     frames[var+1] = ttk.Frame(notebook)
     note[var+1] = ''
-    note[var+1] = CodeEditor(frames[var+1],blockcursor=data.configuration['Looks']['Font']['BlockCursor'],width=40, height=100, language=data.configuration['Looks']['InitialSyntax'], autofocus=True, insertofftime=0, padx=0, pady=0, font=data.font, highlighter = default_highlight)
+    note[var+1] = CodeEditor(frames[var+1],blockcursor=data.configuration['Looks']['Font']['BlockCursor'],width=40, height=100, autofocus=True, insertofftime=0, padx=0, pady=0, font=data.font, highlighter = default_highlight)
     note[var+1].pack(fill="both", expand=True)
+    note[var+1].lexer = eval("Lexers."+data.configuration['Looks']['InitialSyntax']+'.'+data.configuration['Looks']['InitialSyntax'])
     font = tkfont.Font(font=note[var+1]['font'])
     note[var+1].config(tabs=font.measure('    '))
     notebook.add(frames[var+1], text='Untitled  ')
     nexttab()
     openedfiles[int(var)+1] = ""
-    print(openedfiles)
     extension[current_note()] = ".*"
     note[var+1].bind('<Control-Tab>',nexttab)
     note[var+1].bind('<Return>', auto_indent)
     note[var+1].bind("<Control-a>",select_all)
+    #note[var+1].lexer = NSIS.NSIS
     var = var + 1
     tabfmt[current_note()] = '.py'
     log('new tab added', call='TABS')
@@ -1108,7 +1123,6 @@ thisroot.bind('<Control-h>', startreplace)
 thisroot.bind('<Control-P>', toggle_searchbox)
 thisroot.config(menu=None)
 thisroot.after(1000, exec('datafile = open(PATH+"/DATA/runner.confscript").read()'))
-threading.Thread(target=updateforever).start()
 log('binded all keystrokes')
 log('starting main window')
 execute((xtmgr.tasks.before_mainloop))
