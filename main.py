@@ -1011,7 +1011,7 @@ def newTab(*args):
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 
-notebook = widgets.CustomNotebook(root)
+notebook = widgets.Notebook(root)
 notebook.grid(sticky=N + E + S + W)
 notebook.bind("<B1-Motion>", Tab_reorder)
 
