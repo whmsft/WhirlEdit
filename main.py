@@ -108,6 +108,7 @@ def updateforever():
     thisroot.after(10,updateforever)
 
 def auto_indent(event):
+    global line
     text = event.widget
     line = text.get("insert linestart", "insert")
     match = re.match(r'^(\s+)', line)
@@ -180,6 +181,7 @@ canvas      = {}
 scrolly     = {}
 scrollx     = {}
 var         = 0
+
 highlight = {}
 '''
     "Ada"         : [".adb",".ads"],
@@ -670,12 +672,6 @@ def new_runner():
         configs.close()
         conf.quit()
         log('created {}'.format(name.get()), call='RUNNER')
-
-    def switch_function():
-        if gui.get():
-            switch.config(text='Console')
-        #else:
-            #switch.config(text='No Console')
     def helpwindow():
         a = tk.Toplevel(root)
         a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
@@ -1015,9 +1011,7 @@ def newTab(*args):
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
 
-#notebook = widgets.interactivenotebook(root)#ttk.Notebook(root)
-from ttkbootstrap import widgets as bootwid
-notebook = bootwid.interactive_notebook.InteractiveNotebook(root, newtab = newTab)
+notebook = widgets.CustomNotebook(root)
 notebook.grid(sticky=N + E + S + W)
 notebook.bind("<B1-Motion>", Tab_reorder)
 
@@ -1042,6 +1036,7 @@ btn = ttk.Button(thisroot,text = 'NEW')
 btn.place(anchor='ne')
 
 if len(sys.argv) >= 2:
+    variable = current_note()
     if os.path.isfile(sys.argv[1]):
         extension[current_note()] = "."+filepath.split(".")[-1]
         note[variable].delete(1.0,END)
@@ -1086,20 +1081,46 @@ def startreplace(*args):
     widgets.Replace(thisroot, note[current_note()])
 
 def toggle_searchbox(*args):
+    global sboxshow
+    print(sboxshow)
     if sboxshow:
         searchbox.place_forget()
+        sboxshow = False
     else:
         searchbox.place(relx=0.4,rely=0.1)
         searchbox.focus_set()
+        sboxshow = True
 
 def exec_command_in_searchbox(event):
-    cmd = searchbox.get()
-    exec(cmd)
+    cmd = searchbox_entry.get()
+    if cmd[0] == '!':
+        exec(cmd[1:])
+    elif cmd[0] == '$':
+        os.system(cmd[1:])
+    else:
+        cmd = cmd.lower()
+        print("command_pallete.{}['{}']".format(cmd.split()[0], cmd.split()[1]))
+        exec(eval("command_pallete.{}['{}']".format(cmd.split()[0], cmd.split()[1]))+'()')
+    toggle_searchbox()
+
+class command_pallete:
+    file= {
+        "": None,
+        "open": "openFile",
+        "save": "saveFile",
+        "saveas": "saveAsFile",
+        "close": "deltab",
+        "quit": "sys.exit",
+    }
 
 #special widget: internal command processor
-searchbox = ttk.Entry(thisroot, font='consolas 15', width=25)
+searchbox = ttk.Frame(thisroot, borderwidth=3)
+searchbox_text = ttk.Label(searchbox, font='consolas 15', text = ':')
+searchbox_text.pack(side='left')
+searchbox_entry = ttk.Entry(searchbox, font='consolas 15', width=25)
+searchbox_entry.pack(side='right')
 sboxshow=False
-searchbox.bind('<Return>',exec_command_in_searchbox)
+searchbox_entry.bind('<Return>',exec_command_in_searchbox)
 
 tkTextmenu = tk.Menu(root, tearoff=0)
 tkTextmenu.add_command(label="Cut")
@@ -1123,7 +1144,8 @@ thisroot.bind_all(data.configuration['Key Bindings']['Fullscreen'], fullscreen)
 thisroot.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
 thisroot.bind('<Control-f>', startfind)
 thisroot.bind('<Control-h>', startreplace)
-thisroot.bind('<Control-P>', toggle_searchbox)
+thisroot.bind('<F1>', toggle_searchbox)
+thisroot.bind('<Control-;>',toggle_searchbox)
 thisroot.config(menu=None)
 thisroot.after(1000, exec('datafile = open(PATH+"/DATA/runner.confscript").read()'))
 log('binded all keystrokes')
