@@ -644,19 +644,6 @@ def get_confs():
         confs.append(i)
     return confs
 
-def current_note(*args):
-    variable = notebook.select()
-    print(variable)
-    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame', '') == "":
-        variable = 0
-    else:
-        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame', ''))
-        if variable == 0:
-            pass
-        else:
-            variable = int(variable) -1
-    return int(variable)
-
 def new_runner():
     global configs
     configs = open(PATH+"/DATA/runner.confscript","r+")
@@ -766,8 +753,10 @@ def syntaxchange(*args):
     print(cursyntax.get())
     tabfmt[current_note()] = givename_ext(cursyntax.get()) # give extension on language name
     #note[current_note()].config(language=cursyntax.get())
+    print(current_note())
+    print(note)
+    print('Lexers.{}.{}'.format(cursyntax.get(),cursyntax.get()))
     note[current_note()].lexer = eval('Lexers.{}.{}'.format(cursyntax.get(),cursyntax.get()))
-
 
 syntaxchoose = ttk.OptionMenu(statusbar, cursyntax, *languages,command=syntaxchange, style='primary.Outline.TButton')
 #syntaxchoose.config(indicatoron=False, bd=0, relief='flat')
@@ -892,13 +881,13 @@ def getpos(*args):
 def current_note():
     variable = notebook.select()
     if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
-        variable = 0
+        variable = 1
     else:
         variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame',''))
         if variable == 0:
             pass
         else:
-            variable = int(variable)-1
+            variable = int(variable)
     return variable
 
 def deltab(*args):
