@@ -647,10 +647,10 @@ def get_confs():
 def current_note(*args):
     variable = notebook.select()
     print(variable)
-    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!interactivenotebook.!frame', '') == "":
+    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame', '') == "":
         variable = 0
     else:
-        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!interactivenotebook.!frame', ''))
+        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame', ''))
         if variable == 0:
             pass
         else:
@@ -891,10 +891,10 @@ def getpos(*args):
 
 def current_note():
     variable = notebook.select()
-    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!interactivenotebook.!frame','') == "":
+    if str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame','') == "":
         variable = 0
     else:
-        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!interactivenotebook.!frame',''))
+        variable = int(str(notebook.select()).replace('.!panedwindow.!panedwindow.!panedwindow.!notebook.!frame',''))
         if variable == 0:
             pass
         else:

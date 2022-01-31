@@ -1,3 +1,6 @@
+Features:
+  Logging: false
+  Terminal: true
 Key Bindings:
   Close: <Control-w>
   Fullscreen: <F11>
@@ -6,9 +9,6 @@ Key Bindings:
   Open cmd: <Control-Shift-t>
   Run: <F5>
   Save: <Control-s>
-Features:
-  Logging: false
-  Terminal: true
 Looks:
   Font:
     BlockCursor: false
