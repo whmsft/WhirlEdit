@@ -256,7 +256,7 @@ def about(*args):
         a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
         a.title('Whirledit')
         a.resizable(False, False)
-        a.iconbitmap(PATH+"/DATA/icons/favicon.v3.ico")
+        a.iconbitmap(PATH+"/DATA/icons/favicon.ico")
         a.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
         z = Label(a, image=logoIMG)
         z.pack(pady=5, padx=5)
@@ -676,7 +676,7 @@ def new_runner():
         a = tk.Toplevel(root)
         a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
         a.resizable(False,False)
-        a.iconbitmap(PATH+"/DATA/icons/favicon.v3.ico")
+        a.iconbitmap(PATH+"/DATA/icons/favicon.ico")
         a.title("Help")
         b = Label(a, text='Keywords', font="Consolas", anchor='w').pack(expand=True)
         b = Label(a, text='$file: filepath', font="Consolas", anchor='w').pack(expand=True)
@@ -686,7 +686,7 @@ def new_runner():
         a.mainloop()
     conf = tk.Toplevel(root)
     conf.wm_attributes("-topmost", 1)
-    conf.iconbitmap(PATH+"/DATA/icons/favicon.v3.ico")
+    conf.iconbitmap(PATH+"/DATA/icons/favicon.ico")
     conf.resizable(False, False)
     conf.title("Configure new Runner")
     conf.geometry("400x250")
@@ -731,7 +731,7 @@ thisroot = ttkbootstrap.Style(theme = data.configuration['Looks']['Theme']['Defa
 execute((xtmgr.tasks.after_root_definition))
 log('Main Window created')
 try:
-    thisroot.iconbitmap(PATH+"/DATA/icons/favicon.v3.ico")
+    thisroot.iconbitmap(PATH+"/DATA/icons/favicon.ico")
 except tk.TclError:
     log('icon adding error')
 else:
