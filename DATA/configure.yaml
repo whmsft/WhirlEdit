@@ -6,8 +6,9 @@ Key Bindings:
   Open cmd: <Control-Shift-t>
   Run: <F5>
   Save: <Control-s>
-Logs:
+Features:
   Logging: false
+  Terminal: true
 Looks:
   Font:
     BlockCursor: false

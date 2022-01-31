@@ -105,7 +105,7 @@ print("Whirledit {} running on {} {}".format(__version__,system,'deXtop' if syst
 
 def updateforever():
     update()
-    thisroot.after(10,updateforever)
+    mainwindow.after(10,updateforever)
 
 def auto_indent(event):
     global line
@@ -162,7 +162,7 @@ else:
     isConf = True
 
 # define <logs> function
-if data.configuration['Logs']['Logging']:
+if data.configuration['Features']['Logging']:
     log = log_call
 else:
     log = log_fake
@@ -251,7 +251,7 @@ def about(*args):
         windowHeight = 320
         xCordinate = int((screenWidth/2) - (windowWidth/2))
         yCordinate = int((screenHeight/2) - (windowHeight/2))
-        a = tk.Toplevel(thisroot)
+        a = tk.Toplevel(mainwindow)
         nothing[4] = 0
         a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
         a.title('Whirledit')
@@ -277,11 +277,11 @@ def about(*args):
 def fullscreen(*args):
     if nothing[1] == 0:
         log('on', call='FULLSCREEN')
-        thisroot.wm_attributes("-fullscreen",1)
+        mainwindow.wm_attributes("-fullscreen",1)
         nothing[1] = 1
     else:
         log('off', call='FULLSCREEN')
-        thisroot.wm_attributes("-fullscreen",0)
+        mainwindow.wm_attributes("-fullscreen",0)
         nothing[1] = 0
 
 
@@ -400,7 +400,7 @@ def openthisfile(event):
 def changekeybind(*args):
     def getit__(index):
         data.config['Key Bindings'][theselabels[i]['text']] = theseentries[i].get()
-    menu = tk.Toplevel(thisroot)
+    menu = tk.Toplevel(mainwindow)
     theseframes  = {}
     theselabels  = {}
     theseentries = {}
@@ -493,8 +493,8 @@ class LooksPane(object):
         if self.g.get() =='':
             pass
         else:
-            thisroot.title(self.g.get())
-            data.config['Looks']['WindowTitle'] = thisroot.title()
+            mainwindow.title(self.g.get())
+            data.config['Looks']['WindowTitle'] = mainwindow.title()
         data.font = self.i.get()
         data.config['Looks']['Font']['Font'] = r"\ ".join(data.font.split()[0:-1])
         data.config['Looks']['Font']['Size'] = data.font.split()[-1]
@@ -727,28 +727,28 @@ def runconf(*args):
         pass
 execute((xtmgr.tasks.before_root_definition))
 theme_file = PATH+"{}/{}.json".format(data.configuration['Looks']['Theme']['Folder'],data.configuration['Looks']['Theme']['Default'])
-thisroot = ttkbootstrap.Style(theme = data.configuration['Looks']['Theme']['Default'],themes_file=theme_file).master
+mainwindow = ttkbootstrap.Style(theme = data.configuration['Looks']['Theme']['Default'],themes_file=theme_file).master
 execute((xtmgr.tasks.after_root_definition))
 log('Main Window created')
 try:
-    thisroot.iconbitmap(PATH+"/DATA/icons/favicon.ico")
+    mainwindow.iconbitmap(PATH+"/DATA/icons/favicon.ico")
 except tk.TclError:
     log('icon adding error')
 else:
     log('icon added')
-thisroot.title(data.configuration['Looks']['WindowTitle'])
+mainwindow.title(data.configuration['Looks']['WindowTitle'])
 log('title set')
 windowWidth = 800
 windowHeight = 550
-screenWidth  = thisroot.winfo_screenwidth()
-screenHeight = thisroot.winfo_screenheight()
+screenWidth  = mainwindow.winfo_screenwidth()
+screenHeight = mainwindow.winfo_screenheight()
 xCordinate = int((screenWidth/2) - (windowWidth/2))
 yCordinate = int((screenHeight/2) - (windowHeight/2))
-thisroot.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
+mainwindow.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
 log('geometry set')
-style = ttk.Style(thisroot)
+style = ttk.Style(mainwindow)
 
-statusbar = tk.Frame(thisroot)
+statusbar = tk.Frame(mainwindow)
 statusbar.pack(side='bottom', anchor='s', fill='x')
 
 status = Label(statusbar, text = 'Welcome to WhirlEdit {}'.format(__version__), anchor='w')
@@ -773,7 +773,7 @@ syntaxchoose = ttk.OptionMenu(statusbar, cursyntax, *languages,command=syntaxcha
 #syntaxchoose.config(indicatoron=False, bd=0, relief='flat')
 syntaxchoose.pack(side='right')
 
-rootframe = tk.PanedWindow(thisroot, handlesize=5, orient=tk.VERTICAL)
+rootframe = tk.PanedWindow(mainwindow, handlesize=5, orient=tk.VERTICAL)
 rootframe.pack(side='right', expand=True, fill='both')
 splitter = tk.PanedWindow(rootframe, handlesize=5, orient=tk.HORIZONTAL)
 
@@ -781,7 +781,7 @@ filespaneframe = tk.Frame(splitter)
 lookspaneframe = tk.Frame(splitter)
 settipaneframe = tk.Frame(splitter)
 
-toolbar = ttk.Frame(thisroot)
+toolbar = ttk.Frame(mainwindow)
 toolbar.pack(fill='both', expand=True)
 toolbar_menu_icon = PhotoImage(file=data.icons.logo_mini, master=toolbar).subsample(5)
 toolbar_menu = ttk.Button(toolbar, image=toolbar_menu_icon, command=about, style='primary.Link.TButton')
@@ -819,35 +819,37 @@ runpane = RunnerPane(runnerpaneframe)
 
 splitter.add(root)
 
+if data.configuration['Features']['Terminal']:
+    def termreset():
+        global tkterminal
+        tkterminal.pack_forget()
+        tkterminal = Terminal(termframe, font='Consolas 10')
+        tkterminal.basename = "$"
+        tkterminal.shell = True
+        tkterminal.pack(side='left', anchor='w', fill='both', expand=True)
+        log('reset', call='TERMINAL')
 
-def termreset():
-    global tkterminal
-    tkterminal.pack_forget()
-    tkterminal = Terminal(termframe, font='Consolas 10')
+    termframe = ttk.Frame()
+    termicon_clear = PhotoImage(file= data.icons.terminal_clear)
+    termicon_reset = PhotoImage(file= data.icons.terminal_reset)
+    tkterminal = Terminal(termframe, font='Consolas 10', relief='flat')
     tkterminal.basename = "$"
     tkterminal.shell = True
-    tkterminal.pack(side='left', anchor='w', fill='both', expand=True)
-    log('reset', call='TERMINAL')
-
-termframe = ttk.Frame()
-termicon_clear = PhotoImage(file= data.icons.terminal_clear)
-termicon_reset = PhotoImage(file= data.icons.terminal_reset)
-tkterminal = Terminal(termframe, font='Consolas 10', relief='flat')
-tkterminal.basename = "$"
-tkterminal.shell = True
-newframe = tk.Frame(termframe)
-newframe.pack(side='right',anchor='ne')
-tkterm_clear = ttk.Button(newframe,style='secondary.Link.TButton',image=termicon_clear,  command=lambda:tkterminal.clear())#anchor='n',relief='flat',borderwidth=0,
-tkterm_reset = ttk.Button(newframe,style='secondary.Link.TButton',image=termicon_reset, command=lambda:termreset())#anchor='n',relief='flat', borderwidth=0,
-widgets.create_tool_tip(tkterm_clear, "Clear the terminal")
-widgets.create_tool_tip(tkterm_reset, "Restart the terminal\nJust in case you crashed..")
-tkterm_clear.pack(side='top')
-tkterm_reset.pack(side='top')
-tkterminal.pack(side='left',anchor='w',fill='both',expand=True)
-log('placed',call='TERMINAL')
-termframe.pack(fill='both',expand=True)
-rootframe.add(splitter,height=400)
-root.add(termframe,height=180)
+    newframe = tk.Frame(termframe)
+    newframe.pack(side='right',anchor='ne')
+    tkterm_clear = ttk.Button(newframe,style='secondary.Link.TButton',image=termicon_clear,  command=lambda:tkterminal.clear())#anchor='n',relief='flat',borderwidth=0,
+    tkterm_reset = ttk.Button(newframe,style='secondary.Link.TButton',image=termicon_reset, command=lambda:termreset())#anchor='n',relief='flat', borderwidth=0,
+    widgets.create_tool_tip(tkterm_clear, "Clear the terminal")
+    widgets.create_tool_tip(tkterm_reset, "Restart the terminal\nJust in case you crashed..")
+    tkterm_clear.pack(side='top')
+    tkterm_reset.pack(side='top')
+    tkterminal.pack(side='left',anchor='w',fill='both',expand=True)
+    log('placed',call='TERMINAL')
+    termframe.pack(fill='both',expand=True)
+    rootframe.add(splitter,height=400)
+    root.add(termframe,height=180)
+else:
+    rootframe.add(splitter, height=400)
 
 try:
     default_highlight = PATH+data.configuration['Looks']['Scheme']['Folder']+data.configuration['Looks']['Scheme']['Default']+'.json'
@@ -916,7 +918,7 @@ def deltab(*args):
                     pass
         log('deleted current tab', call='TABS')
     except:
-        thisroot.quit()
+        mainwindow.quit()
 
 def saveAsFile(*args):
     global notebook
@@ -1032,7 +1034,7 @@ def nexttab(*args):
 
 extension[current_note()] = ".*"
 
-btn = ttk.Button(thisroot,text = 'NEW')
+btn = ttk.Button(mainwindow,text = 'NEW')
 btn.place(anchor='ne')
 
 if len(sys.argv) >= 2:
@@ -1075,10 +1077,10 @@ def texteditmenu(event):
     tkTextmenu.tk.call("tk_popup", tkTextmenu, event.x_root, event.y_root)
 
 def startfind(*args):
-    widgets.Find(thisroot, note[current_note()])
+    widgets.Find(mainwindow, note[current_note()])
 
 def startreplace(*args):
-    widgets.Replace(thisroot, note[current_note()])
+    widgets.Replace(mainwindow, note[current_note()])
 
 def toggle_searchbox(*args):
     global sboxshow
@@ -1114,7 +1116,7 @@ class command_pallete:
     }
 
 #special widget: internal command processor
-searchbox = ttk.Frame(thisroot, borderwidth=3)
+searchbox = ttk.Frame(mainwindow, borderwidth=3)
 searchbox_text = ttk.Label(searchbox, font='consolas 15', text = ':')
 searchbox_text.pack(side='left')
 searchbox_entry = ttk.Entry(searchbox, font='consolas 15', width=25)
@@ -1129,34 +1131,34 @@ tkTextmenu.add_command(label="Paste")
 
 notebook.bind("<Double-Button>", newTab)
 notebook.bind("<ButtonRelease-2>", smartdeletetab)
-thisroot.bind_all(data.configuration['Key Bindings']['Save'], saveFile)
-thisroot.bind_all(data.configuration['Key Bindings']['New'], newTab)
-thisroot.bind_all(data.configuration['Key Bindings']['Close'], deltab)
-thisroot.bind_all(data.configuration['Key Bindings']['Open'], openFile)
-thisroot.bind_all("<Control-F5>",runfile)
-thisroot.bind_all(data.configuration['Key Bindings']['Run'], runconf)
-thisroot.bind_all(data.configuration['Key Bindings']['Open cmd'], opencmd)
-thisroot.bind_all("<Key>", update)
-thisroot.bind_all("<Button-1>", update)
-thisroot.bind_all('<Control-Tab>', nexttab)
+mainwindow.bind_all(data.configuration['Key Bindings']['Save'], saveFile)
+mainwindow.bind_all(data.configuration['Key Bindings']['New'], newTab)
+mainwindow.bind_all(data.configuration['Key Bindings']['Close'], deltab)
+mainwindow.bind_all(data.configuration['Key Bindings']['Open'], openFile)
+mainwindow.bind_all("<Control-F5>",runfile)
+mainwindow.bind_all(data.configuration['Key Bindings']['Run'], runconf)
+mainwindow.bind_all(data.configuration['Key Bindings']['Open cmd'], opencmd)
+mainwindow.bind_all("<Key>", update)
+mainwindow.bind_all("<Button-1>", update)
+mainwindow.bind_all('<Control-Tab>', nexttab)
 notebook.bind_all('<Control-Tab>', nexttab)
-thisroot.bind_all(data.configuration['Key Bindings']['Fullscreen'], fullscreen)
-thisroot.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
-thisroot.bind('<Control-f>', startfind)
-thisroot.bind('<Control-h>', startreplace)
-thisroot.bind('<F1>', toggle_searchbox)
-thisroot.bind('<Control-;>',toggle_searchbox)
-thisroot.config(menu=None)
-thisroot.after(1000, exec('datafile = open(PATH+"/DATA/runner.confscript").read()'))
+mainwindow.bind_all(data.configuration['Key Bindings']['Fullscreen'], fullscreen)
+mainwindow.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
+mainwindow.bind('<Control-f>', startfind)
+mainwindow.bind('<Control-h>', startreplace)
+mainwindow.bind('<F1>', toggle_searchbox)
+mainwindow.bind('<Control-;>',toggle_searchbox)
+mainwindow.config(menu=None)
+mainwindow.after(1000, exec('datafile = open(PATH+"/DATA/runner.confscript").read()'))
 log('binded all keystrokes')
 log('starting main window')
 execute((xtmgr.tasks.before_mainloop))
 try:
-    thisroot.mainloop()
+    mainwindow.mainloop()
 except Exception as e:
     log('({}) {}'.format(type(e).__name__, e), call='ERROR')
     showerror(type(e).__name__, e)
-thisroot.quit()
+mainwindow.quit()
 configs.close()
 execute((xtmgr.tasks.before_configs_save))
 open(PATH+'/DATA/configure.yaml','w+').write(yaml.dump(data.config))
