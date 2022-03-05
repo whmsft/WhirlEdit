@@ -3,6 +3,6 @@ wday
 tkcode
 tkterminal
 confscript
-ttkbootstrap
+ttkbootstrap==0.5.3
 requests
 terminal-animation
