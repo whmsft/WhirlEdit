@@ -1,3 +1,5 @@
+# actual version: 4.88.495161
+
 # ----------------------------------------- #
 # name: WhirlEdit                           #
 # version: 5.dev                            #

@@ -1,5 +1,7 @@
 ![whirlEdit full logo](logo-full.png)
 
+when writing "whirlEdit" remember to capitalize "E" because it focuses more on editing that "whirling"
+
 [![Run on Repl.it](https://repl.it/badge/github/Whmsft/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
 [![Build Status](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
@@ -8,6 +10,15 @@
 [![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
 
+FUTURE NOTES: (what i want whirlEdit to be)
+```
+Better extensions
+more and more syntax highlighting
+custom theme loader (it depened on ttkbootstrap for themes)
+change "wday" and "confscript" formats to YAML
+better UI
+fast and quick
+lightweight
 ```
 CHANGELOG:
 
