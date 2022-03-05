@@ -1,6 +1,4 @@
-# WhirlEdit: A {text} \<editor\>
-
-## Latest release : ~~[v4](https://github.com/Whirlpool-Programmer/WhirlEdit/releases/tag/v4)~~ v4.1
+![whirlEdit full logo](logo-full.png)
 
 [![Run on Repl.it](https://repl.it/badge/github/Whmsft/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
 [![Build Status](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml)
@@ -9,8 +7,6 @@
 [![Created..](https://badges.pufler.dev/created/Whmsft/Whirledit)]() 
 [![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
-
-#### Thanks to replit, The project is now available for LINUX TOO!
 
 ```
 CHANGELOG:
@@ -93,27 +89,15 @@ v1:
 <br>
 <hr>
 
-## Known issues (that can't be fixed in the nearby future):
+## WhirlEdit can't:
 
-1. Editing LARGE files (30kb+) may slow down loading & customization experience.
+1. edit large files (30kb+) (it may slow down loading & customization experience) (even the source code "main.py" can't be opened without a lag).
 
-2. Lots of images aren't supported by the image previewer.
+2. preview most of images in previewer (it is not so advanced)
 
-3. The error handler is not so advanced.. so in case of Error, a popup displays the error and the editor crashes.
+3. be "really" stable (it may crash on any error, either internal problem or extension)
 
-4. Multi-line strings/comments are not highlighted due to a "pygments" problem
-
-<hr>
-
-## Questions:
-
-1. What is the codename scheme?
-
-\> An adjective and a noun with same initials (currently at "V": "Visual Vector")
-
-2. Why i made whirledit?
-
-\> This project started as a simple project on my way learning tkinter Later, in May-June 2021 The project restarted as i got ideas for tabs and using "ttk".
+4. highlight multi-line strings/comments (due to a "pygments" problem)
 
 <hr>
 
@@ -121,5 +105,5 @@ v1:
 
 ![Joke](https://readme-jokes.vercel.app/api)
 
-(c) 2020-21 whmsft 
+(c) 2020-22 whmsft
 Licensed under GNU GPL v3
