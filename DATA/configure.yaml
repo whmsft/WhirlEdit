@@ -11,9 +11,9 @@ Key Bindings:
   Save: <Control-s>
 Looks:
   Font:
-    BlockCursor: false
+    BlockCursor: true
     Font: Consolas
-    Size: '12'
+    Size: '13'
   Icons:
     Theme: fluent.dark
   InitialSyntax: Text
@@ -23,4 +23,4 @@ Looks:
   Theme:
     Default: darkly
     Folder: /DATA/Themes/
-  WindowTitle: WhirlEdit (Preview)
+  WindowTitle: WhirlEdit preview

@@ -71,3 +71,8 @@ Application/
 
 # VScode, oh..
 .vscode/
+
+# Nuitka, you know.....
+main.build/
+main.cmd
+main.exe

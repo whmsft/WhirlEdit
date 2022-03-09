@@ -1,5 +1,3 @@
-# actual version: 4.88.495161
-
 # ----------------------------------------- #
 # name: WhirlEdit                           #
 # version: 5.dev                            #
@@ -22,7 +20,6 @@ import re
 from pygments.lexer import *
 from pygments.token import *
 
-import re
 import os
 import sys
 import zlib
@@ -926,6 +923,7 @@ def saveAsFile(*args):
         output_file.write(text)
         log('saved file {}'.format(filepath), call='FILES')
     notebook.tab(frames[int(current_note())], text = filepath.split("/")[-1]+"  ")
+    openedfiles[current_note()] = filepath
     note[current_note()].config(language=identify(filepath.split("/")[-1]))
     note[current_note()].update()
     root.update()
@@ -1086,15 +1084,18 @@ def toggle_searchbox(*args):
 
 def exec_command_in_searchbox(event):
     cmd = searchbox_entry.get()
-    if cmd[0] == '!':
-        exec(cmd[1:])
-    elif cmd[0] == '$':
-        os.system(cmd[1:])
-    else:
-        cmd = cmd.lower()
-        print("command_pallete.{}['{}']".format(cmd.split()[0], cmd.split()[1]))
-        exec(eval("command_pallete.{}['{}']".format(cmd.split()[0], cmd.split()[1]))+'()')
-    toggle_searchbox()
+    try:
+        if cmd[0] == '!':
+            exec(cmd[1:])
+        elif cmd[0] == '$':
+            os.system(cmd[1:])
+        else:
+            cmd = cmd.lower()
+            print("command_pallete.{}['{}']".format(cmd.split()[0], cmd.split()[1]))
+            exec(eval("command_pallete.{}['{}']".format(cmd.split()[0], cmd.split()[1]))+'()')
+        toggle_searchbox()
+    except:
+        toggle_searchbox()
 
 class command_pallete:
     file= {

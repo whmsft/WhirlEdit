@@ -19,9 +19,12 @@ change "wday" and "confscript" formats to YAML
 better UI
 fast and quick
 lightweight
-```
-CHANGELOG:
+switch executable building from pyinstaller to nuitka
 
+```
+
+CHANGELOG:
+```
 v4.1:
 > UI:
   + Slight rework
