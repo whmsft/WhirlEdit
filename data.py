@@ -13,7 +13,7 @@ if not os.path.isdir(temp_dir+'/WhirlEdit/'):
 			os.mkdir(temp_dir+'\\Whirledit\\')
 		else:
 				temp_dir = str(Path(Path(__file__).parent.resolve(), 'temp'))
-				if not os.path.isfile(temp_dir+'/WhirlEdit/'):
+				if not os.path.isdir(temp_dir+'/WhirlEdit/'):
 					os.mkdir(temp_dir+'\\Whirledit\\')
 
 configuration = """
