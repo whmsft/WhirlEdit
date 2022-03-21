@@ -469,8 +469,9 @@ class Settings(object):
 class RunnerPane(object):
     def __init__(self,master):
         frame = tk.Frame(master)
-        self.button = ttk.Button(frame,text='Open CMD', command=lambda: opencmd())
-        widgets.create_tool_tip(self.button, text='open Windows Command Processor (cmd)\nin the current directory')
+        if system == "windows":
+            self.button = ttk.Button(frame,text='Open CMD', command=lambda: opencmd())
+            widgets.create_tool_tip(self.button, text='open Windows Command Processor (cmd)\nin the current directory')
         self.rubbish0 = tk.Label(frame,text=' ')
         self.rubbish0.grid()
         self.l1 = tk.Label(frame,text='  ')
@@ -485,7 +486,7 @@ class RunnerPane(object):
         self.chooserunner.grid(row=2,column=1, sticky='nsew')
         self.rubbish1 = tk.Label(frame,text=' ')
         self.rubbish1.grid()
-        self.button.grid(row=4, column=1)
+        if system == "windows": self.button.grid(row=4, column=1)
         self.rubbish2=tk.Label(frame,text=' ').grid()
         self.newrunbtn = ttk.Button(frame, text = 'New Runner', command=lambda:new_runner())
         self.newrunbtn.grid(row=6, column=1)
@@ -861,10 +862,7 @@ def opencmd(*args):
             cwd = "/".join(filepath.split("/")[:-1])
         drive = cwd[:2]
         log('cmd starting at {}'.format(cwd), call='RUNNER')
-        if system == "windows":
-            subprocess.call('start cmd /k cd /d "{}"'.format(cwd), shell=True)
-        else:
-            subprocess.call("start xterm", shell = true)
+        subprocess.call('start cmd /k cd /d "{}"'.format(cwd), shell=True)
     except:
         subprocess.call('start cmd /k "{}"'.format(openedfiles[current_note()]), shell=True)
 
