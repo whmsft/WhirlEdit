@@ -10,17 +10,20 @@ when writing "whirlEdit" remember to capitalize "E" because it focuses more on e
 [![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
 
+## Please NOTE: whirlEdit, after being >1 years old, isn't yet stable enough
+
+It is very much possible that the entire code may be replaced by 2023
+
+<hr>
+
 FUTURE NOTES: (what i want whirlEdit to be)
 ```
-Better extensions
-more and more syntax highlighting
-custom theme loader (it depened on ttkbootstrap for themes)
+better extensions (possible rewrite of extension manager)
+more and more syntax highlighting  -> doing, Doing, DOING!
 change "wday" and "confscript" formats to YAML
-better UI
-fast and quick
-lightweight
-switch executable building from pyinstaller to nuitka
-
+better UI -> LARGE rewriting
+lightweight  -> Nuitka (see below)
+switch executable building from pyinstaller to nuitka -> Under progress
 ```
 
 CHANGELOG:
