@@ -258,7 +258,10 @@ def about(*args):
             a.wm_attributes('-topmost', 'true')
         a.title('Whirledit')
         a.resizable(False, False)
-        a.iconbitmap(PATH+"/DATA/icons/favicon.ico")
+        try:
+            a.iconbitmap(PATH+"/DATA/icons/favicon.ico")
+        except: # errors on replit's Ubuntu system
+            pass
         a.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, xCordinate, yCordinate))
         z = Label(a, image=logoIMG)
         z.pack(pady=5, padx=5)
