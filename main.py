@@ -269,7 +269,7 @@ def about(*args):
         b.pack()
         c = Label(a, text=__version__, font='Consolas 10')
         c.pack()
-        d = Label(a, text='\nWritten in Python\nby whMSFT\n',font='Consolas 15')
+        d = Label(a, text='\nWritten in Python\nby whmsft\n',font='Consolas 15')
         d.pack()
         e = ttk.Button(a, text='GitHub',
                        command=lambda: webbrowser.open('http://github.com/whmsft/WhirlEdit'))
