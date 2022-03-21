@@ -252,7 +252,10 @@ def about(*args):
         yCordinate = int((screenHeight/2) - (windowHeight/2))
         a = tk.Toplevel(mainwindow)
         nothing[4] = 0
-        a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
+        if system == 'windows':
+            a.wm_attributes('-topmost', 'true', '-toolwindow', 'true')
+        else:
+            a.wm_attributes('-topmost', 'true')
         a.title('Whirledit')
         a.resizable(False, False)
         a.iconbitmap(PATH+"/DATA/icons/favicon.ico")
@@ -855,7 +858,10 @@ def opencmd(*args):
             cwd = "/".join(filepath.split("/")[:-1])
         drive = cwd[:2]
         log('cmd starting at {}'.format(cwd), call='RUNNER')
-        subprocess.call('start cmd /k cd /d "{}"'.format(cwd), shell=True)
+        if system == "windows":
+            subprocess.call('start cmd /k cd /d "{}"'.format(cwd), shell=True)
+        else:
+            subprocess.call("start xterm", shell = true)
     except:
         subprocess.call('start cmd /k "{}"'.format(openedfiles[current_note()]), shell=True)
 
