@@ -1109,7 +1109,7 @@ class command_pallete:
 
 #special widget: internal command processor
 searchbox = ttk.Frame(mainwindow, borderwidth=3)
-searchbox_text = ttk.Label(searchbox, font='consolas 15', text = ':')
+searchbox_text = ttk.Label(searchbox, font='consolas 15', text = '>')
 searchbox_text.pack(side='left')
 searchbox_entry = ttk.Entry(searchbox, font='consolas 15', width=25)
 searchbox_entry.pack(side='right')
@@ -1139,7 +1139,7 @@ mainwindow.bind_class("Text", "<Button-3><ButtonRelease-3>", texteditmenu)
 mainwindow.bind('<Control-f>', startfind)
 mainwindow.bind('<Control-h>', startreplace)
 mainwindow.bind('<F1>', toggle_searchbox)
-mainwindow.bind('<Control-;>',toggle_searchbox)
+mainwindow.bind('<Control-P>',toggle_searchbox)
 mainwindow.config(menu=None)
 mainwindow.after(1000, exec('datafile = open(PATH+"/DATA/runner.confscript").read()'))
 log('binded all keystrokes')
