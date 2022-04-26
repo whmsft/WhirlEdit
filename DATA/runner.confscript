@@ -81,3 +81,7 @@ extensions: .swift
 == Tcl ==
 command: tclsh $file
 extensions: .tcl,.tbc
+---
+== Wren ==
+command: wren $file
+extensions: .wren

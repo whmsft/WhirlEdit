@@ -7,7 +7,7 @@
 # platforms: Windows, Linux (maybe mac too) #
 # ----------------------------------------- #
 
-__version__ = 'v5.dev Thruster'
+__version__ = 'v5.0.1 Thruster'
 
 def execute(key):
     for i in key:

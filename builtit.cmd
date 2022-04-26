@@ -1,0 +1,1 @@
+python -m nuitka main.py --windows-disable-console --windows-icon-from-ico=E:\Programming\Projects\WhirlEdit\WhirlEdit\DATA\icons\favicon.ico --windows-company-name=whmsft --windows-product-name=whirledit --windows-file-version=4.7.0.3 --windows-product-version=5.0.1.0 
