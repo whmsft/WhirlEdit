@@ -2,15 +2,18 @@
 
 when writing "whirlEdit" remember to capitalize "E" because it focuses more on editing that "whirling"
 
-[![Run on Repl.it](https://repl.it/badge/github/Whmsft/WhirlEdit)](https://repl.it/github/whirlpool-programmer/WhirlEdit)
+[![Old screenshot](https://github.com/whmsft/WhirlEdit/raw/2f83fac9a30d441cfb4eb9a5c0964ffb9a980f6d/screenshot.png)](https://github.com/whmsft/WhirlEdit/raw/2f83fac9a30d441cfb4eb9a5c0964ffb9a980f6d/screenshot.png) 
+<i>Screenshot from 24 October 2021</i>
+
 [![Build Status](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![GitHub license](https://img.shields.io/github/license/Whmsft/whirledit.svg)](https://github.com/whirlpool-programmer/whirledit/blob/master/LICENSE)
-[![Created..](https://badges.pufler.dev/created/Whmsft/Whirledit)]() 
 [![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
 [![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
 
-## Please NOTE: whirlEdit, after being >1 years old, isn't yet stable enough
+### Please NOTE: whirlEdit, after being >1 years old, isn't yet stable enough
+
+And also I am not getting enough time to improve this editor (maybe, I will make another lighter one soon) 
 
 It is very much possible that the entire code may be replaced by 2023
 
