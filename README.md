@@ -117,7 +117,7 @@ v1:
 
 3. be "really" stable (it may crash on any error, either internal problem or extension)
 
-4. highlight multi-line strings/comments (due to a "pygments" problem)
+4. highlight multi-line strings/comments (due to a "tkcode" problem)
 
 <hr>
 
