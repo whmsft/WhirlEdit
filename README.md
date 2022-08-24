@@ -8,15 +8,11 @@ when writing "whirlEdit" remember to capitalize "E" because it focuses more on e
 [![Build Status](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml/badge.svg)](https://github.com/whmsft/whirledit/actions/workflows/python-app.yml)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![GitHub license](https://img.shields.io/github/license/Whmsft/whirledit.svg)](https://github.com/whirlpool-programmer/whirledit/blob/master/LICENSE)
-[![Size](https://shields.io/github/repo-size/Whmsft/whirledit)]()
-[![How much i wrote!](https://shields.io/tokei/lines/github/whmsft/whirledit)]()
+![Size](https://shields.io/github/repo-size/Whmsft/WhirlEdit)
 
-### Please NOTE: whirlEdit, after being >1 years old, isn't yet stable enough
+### Please NOTE: WhirlEdit is now obsolete! I just started [Thee editor](https://github.com/whmsft/thee)
 
-And also I am not getting enough time to improve this editor (maybe, I will make another lighter one soon) 
-
-It is very much possible that the entire code may be replaced by 2023
-
+WhirlEdit is still usable if you want to
 <hr>
 
 FUTURE NOTES: (what i want whirlEdit to be)
